@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WhiteMoon — Chatbot IA para Talleres de Coches</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--card:#111119;--border:#1e1e2e;--purple:#7c3aed;--purple-light:rgba(124,58,237,.1);--purple-mid:rgba(124,58,237,.2);--green:#22c55e;--text:#e0e0e0;--muted:#888;--white:#fff}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;position:relative}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(124,58,237,.06) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(6,182,212,.04) 0%,transparent 50%);pointer-events:none}
+.header{text-align:center;margin-bottom:30px;position:relative;z-index:1}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
+.logo-text{font-size:1.6rem;font-weight:800;color:var(--white);letter-spacing:-.02em}.logo-text span{color:var(--purple)}
+.header p{color:var(--muted);font-size:.88rem;font-weight:300}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--purple-light);border:1px solid var(--purple-mid);color:var(--purple);padding:5px 14px;border-radius:20px;font-size:.7rem;font-weight:600;margin-top:10px;letter-spacing:.03em}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.chat-container{width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);position:relative;z-index:1;display:flex;flex-direction:column}
+.chat-head{background:linear-gradient(135deg,#d4a24a,#7c3aed);padding:18px;color:var(--white);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.chat-head-info{display:flex;align-items:center;gap:12px}
+.chat-head-avatar{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.chat-head-avatar svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chat-head-name{font-weight:700;font-size:.95rem}.chat-head-sub{font-size:.7rem;opacity:.75;display:flex;align-items:center;gap:4px}
+.chat-head-sub::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+.chat-msgs{flex:1;overflow-y:auto;padding:18px;background:#0d0d18;scroll-behavior:smooth;min-height:300px;max-height:55vh}
+.chat-msgs::-webkit-scrollbar{width:4px}.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.msg{max-width:85%;margin-bottom:10px;padding:12px 16px;font-size:.84rem;line-height:1.55;animation:msgIn .3s ease-out;white-space:pre-line}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.bot{background:var(--purple-light);border:1px solid var(--purple-mid);color:var(--text);border-radius:16px 16px 16px 4px}
+.msg.user{background:linear-gradient(135deg,#d4a24a,#7c3aed);color:var(--white);margin-left:auto;border-radius:16px 16px 4px 16px}
+.quick-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.quick-btn{background:rgba(124,58,237,.06);border:1px solid var(--purple-mid);color:var(--purple);border-radius:20px;padding:7px 16px;font-size:.76rem;cursor:pointer;font-family:inherit;font-weight:500;transition:all .2s}
+.quick-btn:hover{background:var(--purple);color:var(--white);transform:translateY(-1px)}
+.cal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;max-width:290px}
+.cal-title{text-align:center;font-weight:700;font-size:.84rem;color:var(--white);margin-bottom:10px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal-day{font-weight:700;color:var(--muted);font-size:.65rem;padding:4px 0}
+.cal-num{padding:6px 2px;border-radius:8px;font-size:.74rem;cursor:pointer;border:1px solid transparent;transition:all .2s;color:var(--text)}
+.cal-num:hover{background:var(--purple-light);border-color:var(--purple)}.cal-num.sel{background:var(--purple);color:var(--white);border-color:var(--purple)}
+.cal-off{padding:6px 2px;color:#333;font-size:.74rem;border-radius:8px}
+.times{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;max-width:300px}
+.time-btn{padding:6px 13px;border-radius:8px;font-size:.73rem;background:var(--purple-light);color:var(--purple);border:1px solid var(--purple-mid);cursor:pointer;font-family:inherit;transition:all .2s;font-weight:500}
+.time-btn:hover,.time-btn.sel{background:var(--purple);color:var(--white)}
+.chat-input{padding:14px;border-top:1px solid var(--border);display:flex;gap:10px;background:var(--card);flex-shrink:0}
+.chat-input input{flex:1;background:#0d0d18;border:1px solid var(--border);border-radius:22px;padding:12px 18px;font-size:.9rem;color:var(--white);font-family:inherit;outline:none;transition:border .2s;min-width:0}
+.chat-input input:focus{border-color:var(--purple)}.chat-input input::placeholder{color:#555}
+.send-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#d4a24a,#7c3aed);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 3px 12px rgba(124,58,237,.3);flex-shrink:0}
+.send-btn:hover{transform:scale(1.05)}.send-btn svg{width:16px;height:16px;stroke:var(--white);fill:none;stroke-width:2}
+.chat-footer{text-align:center;padding:8px;font-size:.6rem;color:#444;background:var(--card);border-top:1px solid rgba(255,255,255,.03)}.chat-footer a{color:#555}
+.wa-confirm{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);border-radius:14px;padding:16px;margin-bottom:10px;text-align:center}
+.wa-confirm .wa-icon{font-size:2rem;margin-bottom:8px}.wa-confirm .wa-title{font-weight:700;color:var(--green);font-size:.88rem;margin-bottom:4px}
+.wa-confirm .wa-text{font-size:.76rem;color:var(--muted);line-height:1.5}
+@media(max-width:480px){body{padding:8px}.header{margin-bottom:10px}.header p{font-size:.76rem}.logo-text{font-size:1.2rem}.badge{font-size:.65rem;padding:4px 10px}.chat-container{border-radius:16px;max-width:100%;flex:1}.chat-msgs{max-height:calc(100vh - 260px);min-height:200px;padding:12px}.chat-head{padding:12px}.chat-head-name{font-size:.86rem}.chat-input{padding:10px}.chat-input input{padding:10px 14px;font-size:.86rem}.msg{font-size:.8rem;padding:10px 12px}.quick-btn{font-size:.72rem;padding:6px 12px}.cal{max-width:100%;padding:10px}.cal-num,.cal-off{padding:5px 1px;font-size:.7rem}.times{max-width:100%}.time-btn{padding:5px 10px;font-size:.7rem}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">
+    <div class="logo-text">WHITE<span>MOON</span></div>
+  </div>
+  <p>Chatbot IA para Talleres de Coches</p>
+  <div class="badge">Demo en vivo - Interactua con el chatbot</div>
+</div>
+<div class="chat-container">
+  <div class="chat-head">
+    <div class="chat-head-info">
+      <div class="chat-head-avatar"><svg viewBox="0 0 24 24"><path d="M5 17h14M5 17v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2M5 17l1.5-6h11L19 17M19 17v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2M6.5 11l1.2-4.2A2 2 0 0 1 9.6 5.3h4.8a2 2 0 0 1 1.9 1.5L17.5 11"/><circle cx="7.5" cy="14.5" r="1"/><circle cx="16.5" cy="14.5" r="1"/></svg></div>
+      <div>
+        <div class="chat-head-name">Agente IA - Taller de Coches</div>
+        <div class="chat-head-sub">En linea - Respuesta inmediata</div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="msgs">
+    <div class="msg bot">Hola! Bienvenido/a a nuestro taller.
+
+Soy tu asistente virtual. En que te puedo ayudar hoy?</div>
+    <div class="quick-btns" id="initBtns">
+      <button class="quick-btn" style="background:linear-gradient(135deg,#d4a24a,#7c3aed);color:#fff;font-size:.9rem;padding:11px 26px;border:none" onclick="pickMain(this,'cita')">Pedir cita</button>
+    </div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="input" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')send()">
+    <button class="send-btn" onclick="send()"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+  </div>
+  <div class="chat-footer">Powered by <a href="https://whitemoon.es" target="_blank">WhiteMoon</a> - Agencia de IA</div>
+</div>
+<script>
+var WA_NUMBER='';
+var WEBHOOK_URL='https://whitemoon.app.n8n.cloud/webhook/chatbot-taller';
+var state={step:0,service:'',zona:'',name:'',apellidos:'',tel:'',matricula:'',modelo:'',date:'',time:''};
+
+function addMsg(text,type){var c=document.getElementById('msgs');var d=document.createElement('div');d.className='msg '+(type||'bot');d.textContent=text;c.appendChild(d);c.scrollTop=c.scrollHeight}
+function addHtml(html){var c=document.getElementById('msgs');var d=document.createElement('div');d.innerHTML=html;c.appendChild(d);c.scrollTop=c.scrollHeight}
+
+function pickMain(el,type){
+  var text=el.textContent.trim();
+  addMsg(text,'user');
+  var initBtns=document.getElementById('initBtns');if(initBtns)initBtns.remove();
+  var svcBtns=document.getElementById('svcBtns');if(svcBtns)svcBtns.remove();
+
+  if(type==='cita'){
+    setTimeout(function(){
+      addMsg('Por supuesto! Para que servicio quieres pedir cita?');
+      setTimeout(function(){
+        addHtml('<div class="quick-btns" id="svcBtns"><button class="quick-btn" onclick="pickMain(this,\'pintura\')">Pintura / Chapa</button><button class="quick-btn" onclick="pickMain(this,\'itv\')">Revision pre-ITV</button><button class="quick-btn" onclick="pickMain(this,\'mantenimiento\')">Mantenimiento vehiculo</button><button class="quick-btn" onclick="pickMain(this,\'mecanica\')">Mecanica general</button><button class="quick-btn" onclick="pickMain(this,\'neumaticos\')">Neumaticos</button><button class="quick-btn" onclick="pickMain(this,\'diagnosis\')">Diagnosis electronica</button></div>');
+      },300);
+    },800);
+    return;
+  }
+
+  if(type==='pintura'){
+    state.service='Pintura / Chapa';
+    setTimeout(function(){
+      addMsg('Perfecto! Que zona del vehiculo necesitas pintar o reparar?');
+      setTimeout(function(){
+        addHtml('<div class="quick-btns" id="zonaBtns"><button class="quick-btn" onclick="pickZona(this)">Capo</button><button class="quick-btn" onclick="pickZona(this)">Aleta delantera izquierda</button><button class="quick-btn" onclick="pickZona(this)">Aleta delantera derecha</button><button class="quick-btn" onclick="pickZona(this)">Aleta trasera izquierda</button><button class="quick-btn" onclick="pickZona(this)">Aleta trasera derecha</button><button class="quick-btn" onclick="pickZona(this)">Paragolpes delantero</button><button class="quick-btn" onclick="pickZona(this)">Paragolpes trasero</button><button class="quick-btn" onclick="pickZona(this)">Puerta delantera</button><button class="quick-btn" onclick="pickZona(this)">Puerta trasera</button><button class="quick-btn" onclick="pickZona(this)">Techo</button><button class="quick-btn" onclick="pickZona(this)">Porton trasero</button><button class="quick-btn" onclick="pickZona(this)">Vehiculo completo</button><button class="quick-btn" onclick="pickZona(this)">Otra zona</button></div>');
+      },300);
+    },800);
+    return;
+  }
+
+  if(type==='itv'){state.service='Revision pre-ITV';askName();return}
+  if(type==='mantenimiento'){
+    state.service='Mantenimiento vehiculo';
+    setTimeout(function(){
+      addMsg('Perfecto! Que tipo de mantenimiento necesitas?');
+      setTimeout(function(){
+        addHtml('<div class="quick-btns" id="mantBtns"><button class="quick-btn" onclick="pickSubService(this,\'Cambio de aceite y filtros\')">Cambio aceite y filtros</button><button class="quick-btn" onclick="pickSubService(this,\'Revision general\')">Revision general</button><button class="quick-btn" onclick="pickSubService(this,\'Cambio de frenos\')">Cambio de frenos</button><button class="quick-btn" onclick="pickSubService(this,\'Distribucion\')">Distribucion</button><button class="quick-btn" onclick="pickSubService(this,\'Bateria\')">Bateria</button><button class="quick-btn" onclick="pickSubService(this,\'Aire acondicionado\')">Aire acondicionado</button><button class="quick-btn" onclick="pickSubService(this,\'Otro mantenimiento\')">Otro</button></div>');
+      },300);
+    },800);
+    return;
+  }
+  if(type==='mecanica'){state.service='Mecanica general';askName();return}
+  if(type==='neumaticos'){state.service='Neumaticos';askName();return}
+  if(type==='diagnosis'){state.service='Diagnosis electronica';askName();return}
+}
+
+function pickZona(el){
+  state.zona=el.textContent.trim();
+  addMsg(el.textContent,'user');
+  var btns=document.getElementById('zonaBtns');if(btns)btns.remove();
+  state.service='Pintura / Chapa - '+state.zona;
+  askName();
+}
+
+function pickSubService(el,nombre){
+  state.service='Mantenimiento - '+nombre;
+  addMsg(el.textContent,'user');
+  var btns=document.getElementById('mantBtns');if(btns)btns.remove();
+  askName();
+}
+
+function askName(){
+  state.step=1;
+  setTimeout(function(){addMsg('Genial! Para reservar tu cita de '+state.service+', necesito algunos datos.\n\nCual es tu nombre?')},800);
+}
+
+function send(){
+  var inp=document.getElementById('input');var m=inp.value.trim();if(!m)return;inp.value='';
+  addMsg(m,'user');
+  if(state.step===1){state.name=m;state.step=2;setTimeout(function(){addMsg('Encantado, '+state.name+'! Y tus apellidos?')},800)}
+  else if(state.step===2){state.apellidos=m;state.step=3;setTimeout(function(){addMsg('Perfecto, '+state.name+' '+state.apellidos+'. Me das un telefono movil para contactarte?')},800)}
+  else if(state.step===3){state.tel=m;state.step=4;setTimeout(function(){addMsg('Genial! Cual es la matricula del vehiculo?')},800)}
+  else if(state.step===4){state.matricula=m.toUpperCase();state.step=5;setTimeout(function(){addMsg('Y la marca y modelo del coche? (ej: Seat Leon, Ford Focus...)')},800)}
+  else if(state.step===5){state.modelo=m;state.step=6;setTimeout(function(){addMsg('Perfecto! Ahora elige el dia que prefieras.\n\nIMPORTANTE: La fecha y hora que selecciones es orientativa. El taller se pondra en contacto contigo para revisar la disponibilidad y confirmar la cita definitiva.');setTimeout(showCalendar,400)},800)}
+  else if(state.step===99){setTimeout(function(){addMsg('Tu solicitud ya esta registrada y pendiente de confirmacion. El taller te llamara para confirmar la cita. Gracias!')},800)}
+}
+
+function showCalendar(){
+  var today=new Date(),mo=today.getMonth(),yr=today.getFullYear();
+  var dim=new Date(yr,mo+1,0).getDate(),fd=new Date(yr,mo,1).getDay();
+  var off=fd===0?6:fd-1;
+  var mn=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  var dn=['L','M','X','J','V','S','D'];
+  var h='<div class="cal"><div class="cal-title">'+mn[mo]+' '+yr+'</div><div class="cal-grid">';
+  dn.forEach(function(d){h+='<div class="cal-day">'+d+'</div>'});
+  for(var i=0;i<off;i++)h+='<div></div>';
+  for(var d=1;d<=dim;d++){var dt=new Date(yr,mo,d),dw=dt.getDay();var past=dt<new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    if(past||dw===0||dw===6){h+='<div class="cal-off">'+d+'</div>'}
+    else{var ds=d+'/'+(mo+1)+'/'+yr;h+='<div class="cal-num" onclick="pickDate(this,\''+ds+'\')">'+d+'</div>'}}
+  h+='</div></div>';addHtml(h);
+}
+
+function pickDate(el,ds){
+  el.closest('.cal-grid').querySelectorAll('.cal-num').forEach(function(x){x.classList.remove('sel')});
+  el.classList.add('sel');state.date=ds;addMsg(ds,'user');
+  setTimeout(function(){addMsg('Dia '+ds+'. A que hora te viene mejor?\n\nRecuerda: el taller revisara la disponibilidad y te llamara para confirmar la cita.');setTimeout(showTimes,400)},600);
+}
+
+function showTimes(){
+  var ts=['08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','16:00','16:30','17:00','17:30','18:00','18:30'];
+  var h='<div class="times">';
+  ts.forEach(function(t){h+='<button class="time-btn" onclick="pickTime(this,\''+t+'\')">'+t+'</button>'});
+  h+='</div>';addHtml(h);
+}
+
+function pickTime(el,t){
+  el.parentElement.querySelectorAll('.time-btn').forEach(function(x){x.classList.remove('sel')});
+  el.classList.add('sel');state.time=t;state.step=99;
+  addMsg(state.date+' a las '+t,'user');
+  setTimeout(function(){
+    addMsg('Gracias '+state.name+'! He registrado tu SOLICITUD de cita (pendiente de confirmacion):\n\n- Nombre: '+state.name+' '+state.apellidos+'\n- Telefono: '+state.tel+'\n- Matricula: '+state.matricula+'\n- Vehiculo: '+state.modelo+'\n- Servicio: '+state.service+'\n- Fecha solicitada: '+state.date+'\n- Hora solicitada: '+state.time+'\n\nEnviando datos al taller...');
+    setTimeout(function(){
+      var clean=function(s){return s.replace(/[^\x20-\x7E\xA0-\xFF]/g,'').trim()};
+      var datos={nombre:clean(state.name),apellidos:clean(state.apellidos),telefono:clean(state.tel),matricula:clean(state.matricula),vehiculo:clean(state.modelo),servicio:clean(state.service),fecha:clean(state.date),hora:clean(state.time)};
+      if(WEBHOOK_URL){var ifr=document.createElement('iframe');ifr.style.display='none';ifr.src=WEBHOOK_URL+'?nombre='+encodeURIComponent(datos.nombre)+'&apellidos='+encodeURIComponent(datos.apellidos)+'&telefono='+encodeURIComponent(datos.telefono)+'&matricula='+encodeURIComponent(datos.matricula)+'&vehiculo='+encodeURIComponent(datos.vehiculo)+'&servicio='+encodeURIComponent(datos.servicio)+'&fecha='+encodeURIComponent(datos.fecha)+'&hora='+encodeURIComponent(datos.hora);document.body.appendChild(ifr);setTimeout(function(){ifr.remove()},5000)}
+      if(WA_NUMBER){var waMsg='Taller - NUEVA CITA\n\nNombre: '+state.name+' '+state.apellidos+'\nTelefono: '+state.tel+'\nMatricula: '+state.matricula+'\nVehiculo: '+state.modelo+'\nServicio: '+state.service+'\nFecha: '+state.date+'\nHora: '+state.time+'\n\nEnviado desde Chatbot IA WhiteMoon';var waUrl='https://api.whatsapp.com/send?phone='+WA_NUMBER+'&text='+encodeURIComponent(waMsg);window.open(waUrl,'_blank')}
+      addHtml('<div class="wa-confirm"><div class="wa-icon">&#x2705;</div><div class="wa-title">Solicitud recibida!</div><div class="wa-text"><strong>Tu cita aun NO esta confirmada.</strong><br><br>El taller revisara la disponibilidad del dia y hora que has elegido, y se pondra en contacto contigo por telefono para confirmar la cita definitiva o proponerte otra fecha cercana si fuera necesario.<br><br>Gracias por confiar en nosotros!</div></div>');
+      addMsg('Si necesitas algo mas, estoy aqui para ayudarte. El taller te llamara lo antes posible para confirmar tu cita. Que tengas un excelente dia!');
+    },1500);
+  },1000);
+}
+</script>
+</body>
+</html>
