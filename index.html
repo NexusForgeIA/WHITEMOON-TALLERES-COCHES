@@ -88,7 +88,7 @@ Soy tu asistente virtual. En que te puedo ayudar hoy?</div>
   <div class="chat-footer">Powered by <a href="https://whitemoon.es" target="_blank">WhiteMoon</a> - Agencia de IA</div>
 </div>
 <script>
-var WA_NUMBER='';
+var WA_NUMBER='34643199580';
 var WEBHOOK_URL='https://whitemoon.app.n8n.cloud/webhook/chatbot-taller';
 var state={step:0,service:'',zona:'',name:'',apellidos:'',tel:'',matricula:'',modelo:'',date:'',time:''};
 
@@ -207,7 +207,7 @@ function pickTime(el,t){
       var clean=function(s){return s.replace(/[^\x20-\x7E\xA0-\xFF]/g,'').trim()};
       var datos={nombre:clean(state.name),apellidos:clean(state.apellidos),telefono:clean(state.tel),matricula:clean(state.matricula),vehiculo:clean(state.modelo),servicio:clean(state.service),fecha:clean(state.date),hora:clean(state.time)};
       if(WEBHOOK_URL){var ifr=document.createElement('iframe');ifr.style.display='none';ifr.src=WEBHOOK_URL+'?nombre='+encodeURIComponent(datos.nombre)+'&apellidos='+encodeURIComponent(datos.apellidos)+'&telefono='+encodeURIComponent(datos.telefono)+'&matricula='+encodeURIComponent(datos.matricula)+'&vehiculo='+encodeURIComponent(datos.vehiculo)+'&servicio='+encodeURIComponent(datos.servicio)+'&fecha='+encodeURIComponent(datos.fecha)+'&hora='+encodeURIComponent(datos.hora);document.body.appendChild(ifr);setTimeout(function(){ifr.remove()},5000)}
-      if(WA_NUMBER){var waMsg='Taller - NUEVA CITA\n\nNombre: '+state.name+' '+state.apellidos+'\nTelefono: '+state.tel+'\nMatricula: '+state.matricula+'\nVehiculo: '+state.modelo+'\nServicio: '+state.service+'\nFecha: '+state.date+'\nHora: '+state.time+'\n\nEnviado desde Chatbot IA WhiteMoon';var waUrl='https://api.whatsapp.com/send?phone='+WA_NUMBER+'&text='+encodeURIComponent(waMsg);window.open(waUrl,'_blank')}
+      if(WA_NUMBER){var waMsg='*NUEVA SOLICITUD DE CITA - TALLER*\n\n*Cliente:* '+state.name+' '+state.apellidos+'\n*Telefono:* '+state.tel+'\n\n*Vehiculo*\nMatricula: '+state.matricula+'\nModelo: '+state.modelo+'\n\n*Servicio:* '+state.service+'\n*Fecha solicitada:* '+state.date+'\n*Hora solicitada:* '+state.time+'\n\nPor favor, confirmar disponibilidad.\n\n_Enviado desde Chatbot IA WhiteMoon_';var waUrl='https://api.whatsapp.com/send?phone='+WA_NUMBER+'&text='+encodeURIComponent(waMsg);window.open(waUrl,'_blank')}
       addHtml('<div class="wa-confirm"><div class="wa-icon">&#x2705;</div><div class="wa-title">Solicitud recibida!</div><div class="wa-text"><strong>Tu cita aun NO esta confirmada.</strong><br><br>El taller revisara la disponibilidad del dia y hora que has elegido, y se pondra en contacto contigo por telefono para confirmar la cita definitiva o proponerte otra fecha cercana si fuera necesario.<br><br>Gracias por confiar en nosotros!</div></div>');
       addMsg('Si necesitas algo mas, estoy aqui para ayudarte. El taller te llamara lo antes posible para confirmar tu cita. Que tengas un excelente dia!');
     },1500);
