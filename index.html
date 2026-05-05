@@ -42,8 +42,8 @@ img{max-width:100%;display:block}
 .burger{display:none;background:none;border:none;cursor:pointer;font-size:1.5rem;color:var(--ink)}
 
 /* ===== HERO ===== */
-.hero{padding:80px 22px 70px;background:linear-gradient(135deg,#1f2937 0%,#111827 100%);color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(234,88,12,.18),transparent 55%),radial-gradient(circle at 10% 80%,rgba(251,191,36,.08),transparent 50%);pointer-events:none}
+.hero{padding:80px 22px 70px;background:linear-gradient(135deg,rgba(31,41,55,.88) 0%,rgba(17,24,39,.92) 100%),url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1400&q=80') center/cover no-repeat;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(234,88,12,.22),transparent 55%),radial-gradient(circle at 10% 80%,rgba(251,191,36,.10),transparent 50%);pointer-events:none}
 .hero-inner{max-width:1180px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:var(--accent);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:600;margin-bottom:20px}
 .hero h1{font-size:3.1rem;font-weight:800;line-height:1.08;letter-spacing:-.025em;margin-bottom:18px}
@@ -75,10 +75,15 @@ img{max-width:100%;display:block}
 
 /* ===== SERVICES ===== */
 .services{background:var(--bg)}
-.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-.service-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all .25s;cursor:default}
-.service-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 14px 30px rgba(234,88,12,.12)}
-.service-icon{width:54px;height:54px;border-radius:12px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:1.65rem;margin-bottom:16px}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;cursor:default;display:flex;flex-direction:column}
+.service-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 14px 30px rgba(234,88,12,.18)}
+.service-media{position:relative;width:100%;height:180px;overflow:hidden;background:#f3f4f6}
+.service-media img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.service-card:hover .service-media img{transform:scale(1.07)}
+.service-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.18),transparent 55%);pointer-events:none}
+.service-body{padding:22px 24px 26px}
+.service-icon{width:48px;height:48px;border-radius:11px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:1.45rem;margin-bottom:14px;margin-top:-44px;position:relative;z-index:1;border:3px solid #fff;box-shadow:0 6px 16px rgba(234,88,12,.18)}
 .service-card h3{font-size:1.08rem;font-weight:700;color:var(--ink);margin-bottom:8px}
 .service-card p{color:var(--muted);font-size:.9rem;line-height:1.55}
 
@@ -86,10 +91,37 @@ img{max-width:100%;display:block}
 .team{background:var(--card)}
 .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
 .team-card{text-align:center;padding:32px 22px;border:1px solid var(--border);border-radius:18px;transition:all .25s;background:var(--bg)}
-.team-card:hover{border-color:var(--primary);transform:translateY(-4px)}
-.team-avatar{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;font-weight:700;margin:0 auto 18px;box-shadow:0 8px 20px rgba(234,88,12,.25)}
+.team-card:hover{border-color:var(--primary);transform:translateY(-4px);box-shadow:0 14px 30px rgba(234,88,12,.12)}
+.team-photo{width:120px;height:120px;border-radius:50%;margin:0 auto 18px;overflow:hidden;border:4px solid #fff;box-shadow:0 8px 24px rgba(234,88,12,.28);background:var(--primary-light);position:relative}
+.team-photo img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.team-card:hover .team-photo img{transform:scale(1.06)}
 .team-card h4{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:6px}
 .team-card p{color:var(--muted);font-size:.88rem}
+
+/* ===== GALLERY ===== */
+.gallery{background:var(--bg)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.gallery-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;cursor:pointer;background:#111}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
+.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.0),rgba(0,0,0,.0));transition:background .3s ease;pointer-events:none}
+.gallery-item:hover img{transform:scale(1.1)}
+.gallery-item:hover::after{background:linear-gradient(135deg,rgba(17,24,39,.55),rgba(234,88,12,.45))}
+.gallery-item .gallery-caption{position:absolute;left:16px;bottom:14px;color:#fff;font-weight:700;font-size:.95rem;letter-spacing:.01em;opacity:0;transform:translateY(8px);transition:all .3s ease;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.gallery-item:hover .gallery-caption{opacity:1;transform:translateY(0)}
+
+/* ===== ABOUT ===== */
+.about{background:var(--card)}
+.about-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-media{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 18px 40px rgba(31,41,55,.15)}
+.about-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
+.about-media::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(234,88,12,.0),rgba(234,88,12,.0));transition:background .35s ease;pointer-events:none}
+.about-media:hover img{transform:scale(1.06)}
+.about-media:hover::after{background:linear-gradient(135deg,rgba(234,88,12,.42),rgba(194,65,12,.32))}
+.about-text h2{font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-bottom:16px}
+.about-text p{color:var(--ink-soft);font-size:1rem;line-height:1.7;margin-bottom:14px}
+.about-text ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.about-text ul li{display:flex;align-items:center;gap:10px;color:var(--ink-soft);font-size:.95rem}
+.about-text ul li::before{content:'✓';width:24px;height:24px;border-radius:50%;background:var(--primary-light);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:.85rem}
 
 /* ===== CONTACT / FOOTER ===== */
 .contact{background:linear-gradient(135deg,#1f2937,#111827);color:#fff;padding:60px 22px}
@@ -176,12 +208,12 @@ img{max-width:100%;display:block}
 .info-block strong{color:var(--primary-dark)}
 
 /* ===== RESPONSIVE ===== */
-@media(max-width:880px){
+@media(max-width:900px){
   .nav-links{display:none}
   .burger{display:block}
   .nav-links.open{display:flex;position:absolute;top:100%;left:0;right:0;background:#fff;flex-direction:column;padding:14px;gap:4px;border-bottom:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.08)}
   .nav-links.open a{width:100%}
-  .hero{padding:50px 18px}
+  .hero{padding:50px 18px;background-position:center}
   .hero-inner{grid-template-columns:1fr;gap:36px;text-align:center}
   .hero h1{font-size:2.1rem}
   .hero-sub{font-size:.96rem;margin-left:auto;margin-right:auto}
@@ -189,12 +221,23 @@ img{max-width:100%;display:block}
   .stats-inner{grid-template-columns:1fr;gap:22px}
   .section{padding:54px 18px}
   .section-title h2{font-size:1.7rem}
-  .services-grid{grid-template-columns:1fr 1fr;gap:14px}
-  .service-card{padding:20px}
+  .services-grid{grid-template-columns:1fr 1fr;gap:18px}
+  .service-media{height:170px}
+  .service-body{padding:20px}
   .team-grid{grid-template-columns:1fr;gap:16px}
+  .gallery-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .about-inner{grid-template-columns:1fr;gap:30px}
+  .about-text h2{font-size:1.6rem;text-align:center}
+  .about-text p{text-align:center}
 }
-@media(max-width:560px){
+@media(max-width:600px){
   .services-grid{grid-template-columns:1fr}
+  .service-media{height:200px}
+  .gallery-grid{grid-template-columns:1fr;gap:12px}
+  .gallery-item{aspect-ratio:16/10}
+  .team-photo{width:104px;height:104px}
+  .about-media{aspect-ratio:16/11}
+  .about-text ul{justify-items:start}
   .fab{width:56px;height:56px;bottom:18px;right:18px;font-size:1.5rem}
   .teaser{bottom:84px;right:18px;max-width:230px;font-size:.82rem;padding:12px 36px 12px 14px}
   .widget{width:100vw;height:100vh;max-height:100vh;bottom:0;right:0;border-radius:0;border:none}
@@ -218,6 +261,8 @@ img{max-width:100%;display:block}
     <nav class="nav-links" id="navLinks">
       <a href="#servicios">Servicios</a>
       <a href="#equipo">Equipo</a>
+      <a href="#galeria">Taller</a>
+      <a href="#nosotros">Nosotros</a>
       <a href="#contacto">Contacto</a>
       <a href="#" class="nav-cta" onclick="event.preventDefault();toggleChat(true)">Pide tu cita</a>
     </nav>
@@ -275,24 +320,52 @@ img{max-width:100%;display:block}
     </div>
     <div class="services-grid">
       <div class="service-card">
-        <div class="service-icon">🔧</div>
-        <h3>Mecánica general</h3>
-        <p>Motor, embrague, distribución, frenos y suspensión. Reparaciones con garantía y mano de obra cualificada.</p>
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=500&q=80" alt="Revisión y mantenimiento de coche" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">🔧</div>
+          <h3>Revisión y mantenimiento</h3>
+          <p>Revisiones periódicas, pre-ITV y puesta a punto. Te aseguramos que tu coche esté siempre listo.</p>
+        </div>
       </div>
       <div class="service-card">
-        <div class="service-icon">💡</div>
-        <h3>Electrónica y diagnosis</h3>
-        <p>OBD, fallos eléctricos, testigos del cuadro, centralitas y multimedia. Diagnóstico desde 30€.</p>
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1635773054018-51f3e9a2b4e5?w=500&q=80" alt="Cambio de aceite" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">🛢️</div>
+          <h3>Cambio de aceite</h3>
+          <p>Aceite + filtro desde 50€. Pack 4 filtros completo desde 80€. Listo en 30 minutos.</p>
+        </div>
       </div>
       <div class="service-card">
-        <div class="service-icon">🎨</div>
-        <h3>Chapa y pintura</h3>
-        <p>Siniestros, retoques, abolladuras y pintado completo. Trabajamos con todas las aseguradoras.</p>
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1580893246395-52aead8960dc?w=500&q=80" alt="Frenos y suspensión" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">🛑</div>
+          <h3>Frenos y suspensión</h3>
+          <p>Pastillas, discos, amortiguadores y rótulas. Seguridad activa con piezas de primera marca.</p>
+        </div>
       </div>
       <div class="service-card">
-        <div class="service-icon">✅</div>
-        <h3>Pre-revisión ITV</h3>
-        <p>Te aseguramos pasar la ITV a la primera. Revisamos todos los puntos críticos por solo 35€.</p>
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&q=80" alt="Diagnosis electrónica" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">💡</div>
+          <h3>Diagnosis electrónica</h3>
+          <p>OBD, centralitas, fallos eléctricos y testigos del cuadro. Diagnóstico desde 30€.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Neumáticos" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">🛞</div>
+          <h3>Neumáticos</h3>
+          <p>Montaje, alineación y equilibrado. Primeras marcas y económicas, desde 60€/unidad.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-media"><img src="https://images.unsplash.com/photo-1567327613485-fbc7bf196198?w=500&q=80" alt="Chapa y pintura" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
+        <div class="service-body">
+          <div class="service-icon">🎨</div>
+          <h3>Chapa y pintura</h3>
+          <p>Siniestros, retoques, abolladuras y pintado completo. Trabajamos con todas las aseguradoras.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -307,19 +380,75 @@ img{max-width:100%;display:block}
     </div>
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-avatar">RG</div>
+        <div class="team-photo"><img src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=300&q=80" alt="Roberto Gil, mecánico" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
         <h4>D. Roberto Gil</h4>
         <p>Mecánica general · 25 años de experiencia</p>
       </div>
       <div class="team-card">
-        <div class="team-avatar">IL</div>
+        <div class="team-photo"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&q=80" alt="Iván López, especialista en electrónica" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
         <h4>D. Iván López</h4>
         <p>Electrónica y diagnosis · Especialista marcas alemanas</p>
       </div>
       <div class="team-card">
-        <div class="team-avatar">MT</div>
+        <div class="team-photo"><img src="https://images.unsplash.com/photo-1632823469850-2f77dd9c7f93?w=300&q=80" alt="Manuel Torres, chapa y pintura" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'"></div>
         <h4>D. Manuel Torres</h4>
         <p>Chapa y pintura · Siniestros con aseguradoras</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOBRE NOSOTROS ============ -->
+<section class="section about" id="nosotros">
+  <div class="about-inner">
+    <div class="about-media">
+      <img src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=800&q=80" alt="Interior del taller mecánico" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+    </div>
+    <div class="about-text">
+      <h2>Sobre nosotros</h2>
+      <p>Más de 30 años cuidando coches en Madrid. Lo que empezó como un taller familiar es hoy un equipo cualificado con la última tecnología en diagnosis, chapa y pintura.</p>
+      <p>Trabajamos con todas las marcas y aseguradoras, con presupuesto cerrado antes de tocar tu coche y garantía escrita en cada reparación.</p>
+      <ul>
+        <li>Mecánicos certificados con décadas de experiencia</li>
+        <li>Diagnóstico OBD y herramientas de última generación</li>
+        <li>Presupuesto sin compromiso y garantía por escrito</li>
+        <li>Servicio de grúa concertada 24h</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALERÍA ============ -->
+<section class="section gallery" id="galeria">
+  <div class="section-inner">
+    <div class="section-title">
+      <h2>Nuestro taller</h2>
+      <p>Un vistazo a nuestras instalaciones y al trabajo del día a día.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80" alt="Vista del taller" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Instalaciones</span>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=500&q=80" alt="Revisión mecánica" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Revisión y mantenimiento</span>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1580893246395-52aead8960dc?w=500&q=80" alt="Frenos y suspensión" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Frenos y suspensión</span>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Neumáticos" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Neumáticos</span>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1567327613485-fbc7bf196198?w=500&q=80" alt="Chapa y pintura" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Chapa y pintura</span>
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&q=80" alt="Diagnosis electrónica" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80'">
+        <span class="gallery-caption">Diagnosis electrónica</span>
       </div>
     </div>
   </div>
