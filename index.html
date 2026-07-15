@@ -123,6 +123,13 @@ header.nav.scrolled::after{border-bottom-color:var(--line)}
 .hero-bg .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 30%,transparent 78%);opacity:.5}
 .hero-bg .art{position:absolute;right:-4%;top:16%;width:min(60vw,760px);color:var(--p);opacity:.14;pointer-events:none}
 .hero-bg .art svg{width:100%;height:auto;display:block}
+/* Capa de vídeo: por encima del fondo animado (fallback) y por debajo de overlays/contenido */
+.hero-bg .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:transparent}
+/* Overlay oscuro + gradiente rojo sobre el vídeo para legibilidad del texto */
+.hero-bg .hero-tint{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+  linear-gradient(180deg,rgba(8,8,11,.74) 0%,rgba(8,8,11,.58) 42%,rgba(6,6,8,.92) 100%),
+  radial-gradient(1100px 600px at 78% 18%,rgba(225,29,42,.30),transparent 60%),
+  radial-gradient(900px 700px at 12% 88%,rgba(225,29,42,.14),transparent 62%)}
 .hero-bg .vignette{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(8,8,11,.5) 0%,transparent 32%,transparent 52%,rgba(8,8,11,.96) 100%),linear-gradient(90deg,rgba(8,8,11,.7) 0%,rgba(8,8,11,.2) 42%,transparent 68%)}
 .hero-content{position:relative;z-index:3;width:100%;padding-top:140px}
 .hero h1{font-size:clamp(2.2rem,5.6vw,4.6rem);margin-bottom:6px}
@@ -369,10 +376,16 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
   .fab{right:18px;bottom:18px}
   .foot-inner{flex-direction:column;text-align:center;gap:22px}
 }
+/* Rendimiento y datos móviles: sin vídeo en pantallas pequeñas (queda el fondo animado) */
+@media(max-width:768px){
+  .hero-bg .hero-video,.hero-bg .hero-tint{display:none!important}
+}
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .reveal{opacity:1!important;transform:none!important}
   .fab .ripple{display:none!important}
+  /* Sin movimiento: sin vídeo, se usa el fondo estático */
+  .hero-bg .hero-video,.hero-bg .hero-tint{display:none!important}
 }
 </style>
 </head>
@@ -429,6 +442,11 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
         <path d="M360 78l40 44"/>
       </svg>
     </div>
+    <video class="hero-video" autoplay muted loop playsinline preload="none" aria-hidden="true"
+      poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Cdefs%3E%3CradialGradient id='g' cx='78%25' cy='20%25' r='75%25'%3E%3Cstop offset='0' stop-color='%23e11d2a' stop-opacity='.28'/%3E%3Cstop offset='1' stop-color='%230a0a0d' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='16' height='9' fill='%230a0a0d'/%3E%3Crect width='16' height='9' fill='url(%23g)'/%3E%3C/svg%3E">
+      <source src="https://assets.mixkit.co/videos/65/65-720.mp4" type="video/mp4">
+    </video>
+    <div class="hero-tint"></div>
     <div class="vignette"></div>
   </div>
   <div class="wrap hero-content">
