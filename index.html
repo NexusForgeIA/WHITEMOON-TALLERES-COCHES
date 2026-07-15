@@ -1,1188 +1,989 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Taller Ejemplo · Mecánica Madrid desde 1995 · WhiteMoon</title>
-<meta name="description" content="Taller mecánico en Madrid. Revisión, cambio de aceite, frenos, diagnosis OBD, chapa y pintura. Presupuesto sin compromiso. Cita online 24h.">
-<link rel="canonical" href="https://nexusforgeia.github.io/WHITEMOON-AUTOMOVILES/">
-<meta property="og:title" content="Taller Ejemplo · Mecánica Madrid desde 1995">
-<meta property="og:description" content="Taller mecánico en Madrid. Revisión, cambio de aceite, frenos, diagnosis OBD, chapa y pintura. Presupuesto sin compromiso.">
-<meta property="og:image" content="https://nexusforgeia.github.io/WHITEMOON-AUTOMOVILES/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#08080d;
-  --bg2:#0e0e16;
-  --bg3:#13131e;
-  --card:#111118;
-  --p:#7c4dff;
-  --p2:#9d70ff;
-  --p-dark:#5c35cc;
-  --g:#00d4aa;
-  --g-dark:#009c80;
-  --text:#f0f0f5;
-  --muted:#8888a0;
-  --border:rgba(124,77,255,0.18);
-  --gold:#f5c842;
-  --accent:#ff6b35;
-  --accent2:#ff8c5a;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taller Ejemplo — Mecánica de confianza en Madrid desde 1995 · Cita online</title>
+<meta name="description" content="Taller Ejemplo, mecánica de confianza en Madrid desde 1995. Revisión y mantenimiento, cambio de aceite, frenos, diagnosis electrónica, neumáticos, chapa y pintura. Presupuesto cerrado antes de tocar. Reserva tu cita online en segundos." />
+<meta name="theme-color" content="#0a0a0d" />
+<link rel="canonical" href="https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Taller Ejemplo — Mecánica de confianza en Madrid desde 1995" />
+<meta property="og:description" content="Mantenimiento, frenos, diagnosis electrónica, neumáticos, chapa y pintura. Presupuesto cerrado antes de tocar. Reserva tu cita online en segundos." />
+<meta property="og:image" content="https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/og.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/og.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" /></noscript>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"AutoRepair",
+  "name":"Taller Ejemplo","url":"https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/","priceRange":"€€",
+  "image":"https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/og.jpg",
+  "telephone":"+34643199580","email":"comercial@whitemoon.es",
+  "foundingDate":"1995",
+  "address":{"@type":"PostalAddress","streetAddress":"Calle Mecánicos 45, Polígono Industrial","postalCode":"28010","addressLocality":"Madrid","addressCountry":"ES"},
+  "areaServed":"Madrid",
+  "openingHoursSpecification":[
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"19:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"14:00"}
+  ],
+  "makesOffer":[
+    {"@type":"Offer","name":"Revisión y mantenimiento","price":"35.00","priceCurrency":"EUR"},
+    {"@type":"Offer","name":"Cambio de aceite y filtros","price":"50.00","priceCurrency":"EUR"},
+    {"@type":"Offer","name":"Frenos y suspensión","price":"90.00","priceCurrency":"EUR"},
+    {"@type":"Offer","name":"Diagnóstico electrónico","price":"30.00","priceCurrency":"EUR"},
+    {"@type":"Offer","name":"Neumáticos y alineación","price":"60.00","priceCurrency":"EUR"},
+    {"@type":"Offer","name":"Chapa y pintura","description":"Presupuesto gratis"}
+  ]
 }
-html,body{scroll-behavior:smooth}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"¿Cómo reservo una cita en Taller Ejemplo?","acceptedAnswer":{"@type":"Answer","text":"Habla con Diego, nuestro asistente. Eliges el servicio, el día y la hora, dejas tu nombre y teléfono, y el taller te llama para confirmar la cita."}},
+    {"@type":"Question","name":"¿Dais presupuesto antes de reparar?","acceptedAnswer":{"@type":"Answer","text":"Sí. Presupuesto cerrado antes de tocar el coche. No hacemos nada sin tu visto bueno y no hay sorpresas al recoger."}},
+    {"@type":"Question","name":"¿Tenéis servicio de grúa?","acceptedAnswer":{"@type":"Answer","text":"Sí, disponemos de grúa concertada 24 horas para coches parados o averías en carretera."}},
+    {"@type":"Question","name":"¿Trabajáis con aseguradoras en chapa y pintura?","acceptedAnswer":{"@type":"Answer","text":"Sí. Gestionamos el siniestro directamente con tu aseguradora y el presupuesto de chapa y pintura es gratis."}},
+    {"@type":"Question","name":"¿Ofrecéis garantía en las reparaciones?","acceptedAnswer":{"@type":"Answer","text":"Sí, garantía por escrito en cada reparación y piezas de primera marca."}}
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#0a0a0d;
+  --bg2:#0f0f13;
+  --card:#15151b;
+  --p:#e11d2a;
+  --p2:#ff3b48;
+  --text:#e9eaef;
+  --muted:#868c9b;
+  --border:rgba(225,29,42,.24);
+  --line:rgba(255,255,255,.06);
+  --g:#00d4aa;
+  --display:"Barlow Condensed",system-ui,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --maxw:1240px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--p);color:#fff}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px}
-
-/* ===== HEADER ===== */
-.site-header{position:sticky;top:0;z-index:50;background:rgba(8,8,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nav{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:16px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:.98rem}
-.brand-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--p),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 0 18px rgba(124,77,255,.35)}
-.brand-name{color:var(--text);letter-spacing:-.01em}
-.brand-sub{display:block;font-size:.65rem;font-weight:400;color:var(--muted);margin-top:1px}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-links a{padding:8px 13px;color:var(--muted);font-size:.85rem;font-weight:500;border-radius:7px;transition:all .2s}
-.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
-.nav-cta{background:var(--p)!important;color:#fff!important;padding:10px 18px!important;border-radius:8px!important;font-weight:600!important;font-size:.85rem!important;box-shadow:0 0 16px rgba(124,77,255,.35)}
-.nav-cta:hover{background:var(--p2)!important;box-shadow:0 0 24px rgba(124,77,255,.5)!important;transform:translateY(-1px)}
-.burger{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:1.35rem;padding:4px}
-
-/* ===== HERO CON VÍDEO ===== */
-.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;background:var(--bg)}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18;z-index:0}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,8,13,.96) 0%,rgba(8,8,13,.75) 50%,rgba(8,8,13,.92) 100%);z-index:1}
-.hero-overlay2{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(255,107,53,.07),transparent 60%),radial-gradient(ellipse at 10% 70%,rgba(124,77,255,.09),transparent 55%);z-index:1;pointer-events:none}
-.hero-inner{max-width:1160px;margin:0 auto;padding:100px 24px 80px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:center;width:100%}
-
-/* TEXTO HERO */
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.28);color:var(--accent2);padding:6px 14px;border-radius:20px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
-.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:dotPulse 2s ease-in-out infinite}
-@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-
-.hero h1{font-size:3.6rem;font-weight:700;line-height:1.05;letter-spacing:-.035em;color:var(--text);margin-bottom:20px}
-.hero h1 .word-rotate-wrap{display:inline-block;overflow:hidden;vertical-align:bottom;height:1.1em}
-.hero h1 .word-rotate{display:block;animation:wordSlide 6s cubic-bezier(.77,0,.175,1) infinite}
-.word1{color:var(--accent)}
-.word2{color:var(--p2)}
-.word3{color:var(--g)}
-@keyframes wordSlide{
-  0%,26%{transform:translateY(0)}
-  33%,59%{transform:translateY(-100%)}
-  66%,92%{transform:translateY(-200%)}
-  100%{transform:translateY(-300%)}
-}
-.hero-sub{font-size:1.05rem;color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:36px;font-weight:300}
-.hero-sub strong{color:var(--text);font-weight:500}
-.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--p);color:#fff;padding:15px 28px;border-radius:10px;font-weight:600;font-size:.95rem;border:none;cursor:pointer;font-family:inherit;box-shadow:0 0 20px rgba(124,77,255,.35);transition:all .22s}
-.btn-primary:hover{background:var(--p2);box-shadow:0 0 30px rgba(124,77,255,.55);transform:translateY(-2px)}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);padding:15px 28px;border-radius:10px;font-weight:500;font-size:.95rem;border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:all .22s}
-.btn-secondary:hover{border-color:rgba(124,77,255,.45);background:rgba(124,77,255,.06);color:var(--p2)}
-
-/* HERO CARD */
-.hero-card{background:rgba(17,17,24,.85);border:1px solid var(--border);border-radius:18px;padding:28px;backdrop-filter:blur(12px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.hero-card-title{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.hero-service-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);transition:all .2s;cursor:default}
-.hero-service-row:last-child{border-bottom:none;padding-bottom:0}
-.hero-service-row:hover .hero-service-icon{transform:scale(1.08)}
-.hero-service-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:transform .2s}
-.ico-orange{background:rgba(255,107,53,.12);box-shadow:0 0 14px rgba(255,107,53,.2)}
-.ico-purple{background:rgba(124,77,255,.12);box-shadow:0 0 14px rgba(124,77,255,.2)}
-.ico-green{background:rgba(0,212,170,.12);box-shadow:0 0 14px rgba(0,212,170,.2)}
-.ico-gold{background:rgba(245,200,66,.12);box-shadow:0 0 14px rgba(245,200,66,.2)}
-.hero-service-info strong{display:block;font-size:.88rem;color:var(--text);font-weight:600;margin-bottom:2px}
-.hero-service-info small{font-size:.73rem;color:var(--muted)}
-.hero-service-price{font-size:.8rem;font-weight:700;color:var(--accent);margin-left:auto;white-space:nowrap}
-
-/* ===== MARQUEE ===== */
-.marquee-wrap{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;overflow:hidden}
-.marquee-track{display:flex;gap:0;animation:marquee 28s linear infinite;width:max-content}
-.marquee-item{display:inline-flex;align-items:center;gap:8px;padding:0 32px;font-size:.78rem;font-weight:500;color:var(--muted);white-space:nowrap}
-.marquee-item span{color:var(--accent);font-weight:600}
-.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
+h1,h2,h3,.display{font-family:var(--display);font-weight:800;line-height:.95;letter-spacing:-.01em;text-transform:uppercase}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.eyebrow{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.28em;font-size:.78rem;color:var(--p2);display:inline-flex;align-items:center;gap:.7em}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--p);display:inline-block;opacity:.7}
+/* NAV */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:900;transition:background .4s,border-color .4s,backdrop-filter .4s}
+header.nav::after{content:"";position:absolute;inset:0;border-bottom:1px solid transparent;transition:border-color .4s;pointer-events:none}
+header.nav.scrolled{background:rgba(8,8,11,.82);backdrop-filter:blur(14px)}
+header.nav.scrolled::after{border-bottom-color:var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:84px}
+.nav-logo{display:flex;align-items:center;gap:13px}
+.nav-logo .mark{width:46px;height:46px;border-radius:9px;background:linear-gradient(135deg,var(--p),#8f0d16);display:grid;place-items:center;box-shadow:0 8px 22px -8px rgba(225,29,42,.7)}
+.nav-logo .mark svg{width:26px;height:26px;color:#fff}
+.nav-logo .txt b{font-family:var(--display);font-weight:800;font-size:1.16rem;text-transform:uppercase;letter-spacing:.04em;line-height:1;display:block}
+.nav-logo .txt small{font-family:var(--display);font-weight:600;letter-spacing:.18em;font-size:.6rem;color:var(--muted);text-transform:uppercase;line-height:1.3;display:block;margin-top:3px}
+.nav-links{display:flex;align-items:center;gap:26px}
+.nav-links a{font-size:.83rem;font-weight:500;color:var(--muted);position:relative;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1.5px;background:var(--p);transition:width .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;padding:13px 26px;border-radius:4px;border:1px solid var(--p);color:#fff;background:var(--p);cursor:pointer;transition:transform .2s,box-shadow .3s,background .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(225,29,42,.6);background:var(--p2)}
+.btn.ghost{background:transparent;color:var(--p2)}
+.btn.ghost:hover{background:rgba(225,29,42,.08)}
+.nav-cta{display:flex;align-items:center;gap:18px}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.burger span{width:26px;height:2px;background:var(--text);transition:.3s}
+.mobile-menu{position:fixed;inset:0;background:rgba(8,8,11,.97);backdrop-filter:blur(10px);z-index:899;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:24px;opacity:0;pointer-events:none;transition:opacity .35s}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu a{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:1.7rem;color:var(--text);letter-spacing:.02em}
+.mobile-menu a:hover{color:var(--p2)}
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding-bottom:54px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg .grad{position:absolute;inset:0;background:
+  radial-gradient(1100px 600px at 78% 18%,rgba(225,29,42,.20),transparent 60%),
+  radial-gradient(900px 700px at 12% 88%,rgba(225,29,42,.08),transparent 62%),
+  linear-gradient(180deg,rgba(12,12,16,.25) 0%,rgba(10,10,13,.14) 48%,rgba(6,6,8,.85) 100%);
+  background-size:200% 200%,200% 200%,100% 100%;animation:gradShift 18s ease-in-out infinite}
+@keyframes gradShift{0%,100%{background-position:0% 0%,100% 100%,0 0}50%{background-position:60% 40%,30% 60%,0 0}}
+.hero-bg .beam{position:absolute;inset:-30%;background:conic-gradient(from 210deg at 72% 22%,transparent 0deg,rgba(225,29,42,.12) 22deg,transparent 48deg,transparent 360deg);mix-blend-mode:screen;animation:beam 22s linear infinite;filter:blur(8px)}
+@keyframes beam{to{transform:rotate(360deg)}}
+.hero-bg .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 30%,transparent 78%);opacity:.5}
+.hero-bg .art{position:absolute;right:-4%;top:16%;width:min(60vw,760px);color:var(--p);opacity:.14;pointer-events:none}
+.hero-bg .art svg{width:100%;height:auto;display:block}
+.hero-bg .vignette{position:absolute;inset:0;z-index:3;background:linear-gradient(180deg,rgba(8,8,11,.5) 0%,transparent 32%,transparent 52%,rgba(8,8,11,.96) 100%),linear-gradient(90deg,rgba(8,8,11,.7) 0%,rgba(8,8,11,.2) 42%,transparent 68%)}
+.hero-content{position:relative;z-index:3;width:100%;padding-top:140px}
+.hero h1{font-size:clamp(2.2rem,5.6vw,4.6rem);margin-bottom:6px}
+.hero h1 .accent{display:block;color:var(--p2);-webkit-text-fill-color:var(--p2)}
+.hero h1 .ml{display:inline-block}
+.hero-rot{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(1.1rem,3vw,1.9rem);color:var(--muted);margin-top:22px;display:flex;align-items:baseline;gap:.5em;flex-wrap:wrap}
+.hero-rot .rot{color:var(--text);position:relative;min-width:9ch;display:inline-block}
+.hero-rot .rot b{font-weight:800;color:var(--p2);display:inline-block;transition:opacity .45s,transform .45s}
+.hero-rot .rot b.out{opacity:0;transform:translateY(12px)}
+.hero-desc{max-width:560px;color:var(--muted);font-size:1.02rem;margin-top:26px}
+.hero-desc strong{color:var(--text);font-weight:600}
+.hero-actions{display:flex;align-items:center;gap:16px;margin-top:34px;flex-wrap:wrap}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:64px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--line)}
+.stat{background:rgba(18,18,24,.62);backdrop-filter:blur(10px);padding:26px 24px}
+.stat .v{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1;color:var(--text)}
+.stat .v .u{color:var(--p2)}
+.stat .l{font-size:.78rem;color:var(--muted);margin-top:9px;letter-spacing:.02em}
+.scroll-cue{position:absolute;left:32px;bottom:30px;z-index:4;display:flex;align-items:center;gap:12px;color:var(--muted);font-family:var(--display);font-weight:600;letter-spacing:.2em;font-size:.68rem;text-transform:uppercase}
+.scroll-cue .bar{width:1px;height:40px;background:var(--line);position:relative;overflow:hidden}
+.scroll-cue .bar::after{content:"";position:absolute;top:0;left:0;width:100%;height:40%;background:var(--p);animation:cue 2s ease-in-out infinite}
+@keyframes cue{0%{transform:translateY(-100%)}100%{transform:translateY(250%)}}
+/* MARQUEE */
+.marquee-wrap{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;overflow:hidden;position:relative;z-index:2}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee 30s linear infinite}
+.marquee-item{display:inline-flex;align-items:center;gap:9px;padding:0 30px;font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;color:var(--muted);white-space:nowrap}
+.marquee-item b{color:var(--p2);font-weight:800}
+.marquee-item .dot{width:5px;height:5px;border-radius:50%;background:var(--border)}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* ===== STATS ===== */
-.stats{padding:72px 24px;background:var(--bg)}
-.stats-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.stat-cell{background:var(--bg2);padding:36px 28px;text-align:center}
-.stat-num{font-size:2.6rem;font-weight:700;letter-spacing:-.04em;color:var(--text);line-height:1;margin-bottom:8px}
-.stat-num .accent{color:var(--accent)}
-.stat-num .purple{color:var(--p2)}
-.stat-num .green{color:var(--g)}
-.stat-label{font-size:.8rem;color:var(--muted);font-weight:400;line-height:1.4}
-
-/* ===== SECCIONES ===== */
-.section{padding:88px 24px}
-.section-inner{max-width:1160px;margin:0 auto}
-.section-header{margin-bottom:52px}
-.section-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.section-header h2{font-size:2.1rem;font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.15;margin-bottom:14px}
-.section-header p{font-size:.97rem;color:var(--muted);max-width:520px;font-weight:300;line-height:1.7}
-
-/* ===== SERVICIOS — grid editorial ===== */
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.service-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:all .25s;position:relative}
-.service-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;border-radius:14px}
-.service-card:hover::before{opacity:1}
-.sc-orange::before{background:linear-gradient(135deg,rgba(255,107,53,.06),transparent)}
-.sc-purple::before{background:linear-gradient(135deg,rgba(124,77,255,.06),transparent)}
-.sc-green::before{background:linear-gradient(135deg,rgba(0,212,170,.06),transparent)}
-.service-card:hover{transform:translateY(-3px)}
-.sc-orange:hover{border-color:rgba(255,107,53,.4);box-shadow:0 12px 32px rgba(255,107,53,.1)}
-.sc-purple:hover{border-color:rgba(124,77,255,.4);box-shadow:0 12px 32px rgba(124,77,255,.1)}
-.sc-green:hover{border-color:rgba(0,212,170,.4);box-shadow:0 12px 32px rgba(0,212,170,.1)}
-.service-img{width:100%;height:170px;object-fit:cover;opacity:.85;transition:opacity .35s,transform .45s}
-.service-card:hover .service-img{opacity:1;transform:scale(1.04)}
-.service-img-wrap{overflow:hidden;position:relative}
-.service-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,var(--card),transparent);pointer-events:none}
-.service-body{padding:20px 22px 24px;flex:1;display:flex;flex-direction:column}
-.service-tag{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:12px;width:fit-content}
-.tag-orange{background:rgba(255,107,53,.1);color:var(--accent2);border:1px solid rgba(255,107,53,.25)}
-.tag-purple{background:rgba(124,77,255,.1);color:var(--p2);border:1px solid rgba(124,77,255,.25)}
-.tag-green{background:rgba(0,212,170,.1);color:var(--g);border:1px solid rgba(0,212,170,.25)}
-.service-body h3{font-size:.98rem;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-.01em}
-.service-body p{font-size:.83rem;color:var(--muted);line-height:1.6;font-weight:300;flex:1}
-.service-price{margin-top:14px;font-size:.8rem;font-weight:700;color:var(--accent);padding-top:12px;border-top:1px solid var(--border)}
-
-/* ===== PROCESO ===== */
-.proceso{background:var(--bg2)}
-.proceso-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;counter-reset:proc}
-.proceso-step{padding:28px 24px;border:1px solid var(--border);border-radius:14px;background:var(--card);position:relative;counter-increment:proc}
-.proceso-step::before{content:counter(proc,decimal-leading-zero);position:absolute;top:20px;right:20px;font-size:1.6rem;font-weight:700;letter-spacing:-.04em;color:var(--border);line-height:1}
-.proc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:16px;box-shadow:0 0 16px rgba(124,77,255,.2)}
-.proc-icon-1{background:rgba(255,107,53,.1)}
-.proc-icon-2{background:rgba(124,77,255,.1)}
-.proc-icon-3{background:rgba(0,212,170,.1)}
-.proc-icon-4{background:rgba(245,200,66,.1)}
-.proceso-step h3{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:8px}
-.proceso-step p{font-size:.82rem;color:var(--muted);line-height:1.6;font-weight:300}
-
-/* ===== ABOUT ===== */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-.about-media{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3}
-.about-media img{width:100%;height:100%;object-fit:cover;opacity:.9;transition:opacity .4s,transform .5s}
-.about-media:hover img{opacity:1;transform:scale(1.03)}
-.about-media::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,77,255,.2),rgba(255,107,53,.15));opacity:0;transition:opacity .4s;pointer-events:none}
-.about-media:hover::after{opacity:1}
-.about-badge{position:absolute;bottom:20px;left:20px;background:rgba(8,8,13,.85);border:1px solid var(--border);border-radius:12px;padding:12px 16px;backdrop-filter:blur(8px)}
-.ab-num{font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.04em}
-.ab-label{font-size:.68rem;color:var(--muted);margin-top:2px;font-weight:400}
-.about-text .section-header{margin-bottom:28px}
-.about-list{list-style:none;display:grid;gap:12px;margin-top:24px}
-.about-list li{display:flex;align-items:center;gap:12px;font-size:.88rem;color:var(--muted);font-weight:300}
-.about-list li::before{content:'→';width:26px;height:26px;border-radius:7px;background:rgba(124,77,255,.1);border:1px solid rgba(124,77,255,.25);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--p2);flex-shrink:0;font-style:normal}
-
-/* ===== EQUIPO ===== */
-.equipo{background:var(--bg2)}
-.equipo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.team-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 22px;text-align:center;transition:all .25s}
-.team-card:hover{border-color:rgba(124,77,255,.4);transform:translateY(-3px);box-shadow:0 14px 32px rgba(124,77,255,.1)}
-.team-avatar{width:90px;height:90px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:2px solid rgba(124,77,255,.3);box-shadow:0 0 20px rgba(124,77,255,.2);background:var(--bg3)}
-.team-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .4s ease;display:block}
-.team-card:hover .team-avatar img{transform:scale(1.06)}
-.team-card h4{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:6px}
-.team-role{font-size:.78rem;color:var(--accent);font-weight:500;margin-bottom:8px}
-.team-card p{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.55}
-
-/* ===== PRECIOS RÁPIDOS ===== */
-.precios-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.precio-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;transition:border-color .25s}
-.precio-card:hover{border-color:rgba(124,77,255,.4)}
-.precio-titulo{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.precio-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03)}
-.precio-row:last-child{border-bottom:none}
-.precio-nombre{font-size:.8rem;color:var(--muted);font-weight:300}
-.precio-valor{font-size:.8rem;font-weight:600;color:var(--accent);white-space:nowrap}
-
-/* ===== CONTACTO ===== */
-.contact{background:var(--bg3);border-top:1px solid var(--border);padding:60px 24px}
-.contact-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.contact-info h3{font-size:1.5rem;font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:8px}
-.contact-info p{font-size:.9rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:20px}
-.contact-detail{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--muted);margin-bottom:10px}
-.contact-detail strong{color:var(--text);min-width:80px}
-.contact-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.cta-grua{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.3);color:var(--accent2);padding:10px 18px;border-radius:8px;font-size:.82rem;font-weight:600}
-
-/* ===== FOOTER ===== */
-.footer{background:#04040a;border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:.75rem;color:var(--muted)}
-.footer a{color:var(--p2);transition:color .2s}
-.footer a:hover{color:var(--p)}
-
-/* ===== TEASER ===== */
-.teaser{position:fixed;bottom:100px;right:24px;background:var(--bg3);border:1px solid rgba(124,77,255,.35);border-radius:14px;padding:14px 40px 14px 16px;box-shadow:0 12px 32px rgba(0,0,0,.5),0 0 20px rgba(124,77,255,.12);max-width:270px;z-index:998;font-size:.84rem;color:var(--text);font-weight:500;display:none;animation:teaserIn .3s ease-out}
-.teaser.show{display:block}
-.teaser-close{position:absolute;top:6px;right:8px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;line-height:1;padding:4px}
-.teaser-close:hover{color:var(--text)}
-.teaser::after{content:'';position:absolute;bottom:-6px;right:26px;width:12px;height:12px;background:var(--bg3);border-right:1px solid rgba(124,77,255,.35);border-bottom:1px solid rgba(124,77,255,.35);transform:rotate(45deg)}
-@keyframes teaserIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
-/* ===== FAB ===== */
-.fab{position:fixed;bottom:24px;right:24px;width:58px;height:58px;border-radius:50%;background:var(--p);border:none;cursor:pointer;color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(124,77,255,.45),0 0 40px rgba(124,77,255,.2);z-index:999;transition:transform .2s,background .2s}
-.fab:hover{transform:scale(1.08);background:var(--p2)}
-/* Aro 1 — energía rápida */
-.fab::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(124,77,255,.7);animation:fabRing1 2s ease-out infinite}
-/* Aro 2 — energía lenta */
-.fab::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(124,77,255,.35);animation:fabRing2 2s ease-out infinite .5s}
-@keyframes fabRing1{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.6);opacity:0}}
-@keyframes fabRing2{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.9);opacity:0}}
-
-/* ===== CHAT WIDGET ===== */
-.widget{position:fixed;bottom:96px;right:24px;width:370px;height:590px;max-height:calc(100vh - 112px);background:var(--bg);border:1px solid rgba(124,77,255,.25);border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.65),0 0 36px rgba(124,77,255,.08);z-index:1000;display:none;flex-direction:column;overflow:hidden;animation:slideUp .3s ease-out}
-.widget.open{display:flex}
-@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-
-.chat-head{background:var(--bg3);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.chat-head-info{display:flex;align-items:center;gap:10px}
-.chat-avatar{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--p),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:0 0 12px rgba(124,77,255,.3)}
-.chat-head-name{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:2px}
-.chat-head-sub{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:5px}
-.chat-head-sub::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--g);box-shadow:0 0 6px var(--g);flex-shrink:0}
-.chat-close{background:rgba(255,255,255,.06);border:none;color:var(--muted);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .18s}
-.chat-close:hover{background:rgba(124,77,255,.15);color:var(--text)}
-
-.chat-msgs{flex:1;overflow-y:auto;padding:14px;background:var(--bg2);scroll-behavior:smooth}
-.chat-msgs::-webkit-scrollbar{width:4px}
-.chat-msgs::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px}
-
-.msg{max-width:90%;margin-bottom:9px;padding:10px 14px;font-size:.83rem;line-height:1.55;animation:msgIn .28s ease-out;white-space:pre-line;border-radius:12px}
-@keyframes msgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.msg.bot{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:12px 12px 12px 3px}
-.msg.user{background:var(--p);color:#fff;margin-left:auto;border-radius:12px 12px 3px 12px;font-weight:500;box-shadow:0 0 14px rgba(124,77,255,.3)}
-.msg-typing{display:flex;gap:5px;align-items:center;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:12px 12px 12px 3px;width:fit-content;margin-bottom:9px}
-.msg-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);display:block;animation:typingDot 1.2s ease-in-out infinite}
-.msg-typing span:nth-child(2){animation-delay:.2s}
-.msg-typing span:nth-child(3){animation-delay:.4s}
-@keyframes typingDot{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1);opacity:1}}
-
-.quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
-.quick-btn{background:transparent;border:1px solid rgba(124,77,255,.35);color:var(--p2);border-radius:16px;padding:7px 12px;font-size:.76rem;cursor:pointer;font-family:inherit;font-weight:500;transition:all .18s;text-align:left}
-.quick-btn:hover{background:rgba(124,77,255,.12);border-color:var(--p);color:var(--text);transform:translateY(-1px)}
-.quick-btn.urgente{border-color:rgba(255,107,53,.4);color:var(--accent2)}
-.quick-btn.urgente:hover{background:rgba(255,107,53,.1);border-color:var(--accent)}
-
-/* Calendario */
-.cal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:9px;max-width:295px}
-.cal-title{text-align:center;font-weight:600;font-size:.82rem;color:var(--text);margin-bottom:10px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
-.cal-day{font-weight:600;color:var(--muted);font-size:.62rem;padding:4px 0}
-.cal-num{padding:7px 2px;border-radius:7px;font-size:.74rem;cursor:pointer;border:1px solid transparent;transition:all .18s;color:var(--muted)}
-.cal-num:hover{background:rgba(124,77,255,.12);border-color:rgba(124,77,255,.35);color:var(--p2)}
-.cal-num.sel{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 0 10px rgba(124,77,255,.4)}
-.cal-off{padding:7px 2px;color:rgba(136,136,160,.25);font-size:.74rem}
-
-/* Horarios */
-.times{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;max-width:295px}
-.time-btn{padding:6px 11px;border-radius:7px;font-size:.72rem;background:transparent;color:var(--p2);border:1px solid rgba(124,77,255,.3);cursor:pointer;font-family:inherit;transition:all .18s;font-weight:500}
-.time-btn:hover,.time-btn.sel{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 0 10px rgba(124,77,255,.35)}
-
-/* Confirmaciones */
-.wa-confirm{background:rgba(0,212,170,.06);border:1px solid rgba(0,212,170,.3);border-radius:12px;padding:14px;margin-bottom:9px;text-align:center}
-.wa-icon{font-size:1.6rem;margin-bottom:6px}
-.wa-title{font-weight:700;color:var(--g);font-size:.88rem;margin-bottom:6px}
-.wa-text{font-size:.77rem;color:var(--muted);line-height:1.55}
-.urgent-confirm{background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.3);border-radius:12px;padding:14px;margin-bottom:9px;text-align:center}
-.u-title{font-weight:700;color:var(--accent2);font-size:.88rem;margin-bottom:6px}
-.u-text{font-size:.77rem;color:var(--muted);line-height:1.55}
-
-/* Tabla precios */
-.price-table{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:9px;font-size:.79rem;max-width:295px}
-.pt-title{font-weight:600;color:var(--text);margin-bottom:9px;font-size:.82rem;text-align:center;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.pt-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);gap:8px}
-.pt-row:last-child{border-bottom:none}
-.pt-name{color:var(--muted);flex:1;font-weight:300}
-.pt-price{font-weight:600;color:var(--accent);white-space:nowrap;font-size:.76rem}
-
-.info-block{background:rgba(124,77,255,.06);border:1px solid rgba(124,77,255,.2);border-radius:10px;padding:11px 13px;margin-bottom:9px;font-size:.81rem;color:var(--muted);line-height:1.55}
-.info-block strong{color:var(--text)}
-
-/* Input */
-.chat-input{padding:11px;border-top:1px solid var(--border);display:flex;gap:7px;background:var(--bg);flex-shrink:0}
-.chat-input input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:10px 14px;font-size:.84rem;color:var(--text);font-family:inherit;outline:none;transition:border .2s;min-width:0}
-.chat-input input:focus{border-color:rgba(124,77,255,.5);box-shadow:0 0 0 3px rgba(124,77,255,.08)}
-.chat-input input::placeholder{color:var(--muted)}
-.send-btn{width:40px;height:40px;border-radius:50%;background:var(--p);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 0 12px rgba(124,77,255,.4);flex-shrink:0}
-.send-btn:hover{transform:scale(1.06);background:var(--p2)}
-.send-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5}
-.chat-foot{text-align:center;padding:6px;font-size:.6rem;color:var(--muted);background:var(--bg);border-top:1px solid var(--border)}
-.chat-foot a{color:var(--p2);font-weight:500}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
+/* SECTIONS */
+section{position:relative}
+section[id]{scroll-margin-top:80px}
+.sec{padding:130px 0;position:relative}
+.sec-head{margin-bottom:60px;max-width:760px}
+.sec-head h2{font-size:clamp(2.4rem,6vw,4.4rem);margin-top:18px}
+.sec-head p{color:var(--muted);margin-top:20px;font-size:1.05rem;max-width:640px}
+.bignum{position:absolute;font-family:var(--display);font-weight:800;font-size:clamp(8rem,18vw,20rem);color:#fff;opacity:.03;line-height:.8;pointer-events:none;z-index:0;letter-spacing:-.04em}
+/* EL TALLER */
+.about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;position:relative;z-index:2}
+.about-copy p{color:#aeb2bf;font-size:1.06rem;margin-top:22px}
+.about-copy p strong{color:var(--text);font-weight:600}
+.about-media{position:relative}
+.framed{position:relative;border:1px solid var(--border);border-radius:10px;padding:14px;background:linear-gradient(180deg,rgba(225,29,42,.05),transparent);overflow:hidden}
+.framed::before{content:"";position:absolute;top:-1px;left:-1px;width:46px;height:46px;border-top:2px solid var(--p);border-left:2px solid var(--p);border-top-left-radius:10px}
+.framed::after{content:"";position:absolute;bottom:-1px;right:-1px;width:46px;height:46px;border-bottom:2px solid var(--p);border-right:2px solid var(--p);border-bottom-right-radius:10px}
+.taller-panel{border-radius:6px;height:420px;background:radial-gradient(700px 400px at 30% 20%,rgba(225,29,42,.16),transparent 60%),linear-gradient(160deg,#141319,#0c0c10);display:grid;place-items:center;position:relative;overflow:hidden}
+.taller-panel .pgrid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;opacity:.5}
+.taller-panel .car{position:relative;width:78%;color:var(--p2);filter:drop-shadow(0 18px 40px rgba(225,29,42,.28))}
+.tag-badge{position:absolute;left:-22px;bottom:-22px;background:var(--p);color:#fff;font-family:var(--display);font-weight:800;font-size:1.2rem;padding:14px 22px;border-radius:6px;box-shadow:0 18px 40px -16px rgba(225,29,42,.7);text-transform:uppercase;letter-spacing:.04em}
+.tag-badge span{display:block;font-size:.62rem;font-weight:600;letter-spacing:.2em;opacity:.85}
+/* SERVICIOS */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:6px}
+.svc-card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .35s,transform .35s,box-shadow .35s}
+.svc-card:hover{transform:translateY(-6px);border-color:var(--p);box-shadow:0 24px 50px -26px rgba(225,29,42,.4)}
+.svc-media{height:150px;position:relative;background:radial-gradient(420px 220px at 78% 12%,rgba(225,29,42,.15),transparent 60%),linear-gradient(160deg,#111116,#0c0c10);overflow:hidden}
+.svc-media .mg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;opacity:.45;transition:transform .7s}
+.svc-card:hover .svc-media .mg{transform:scale(1.08)}
+.svc-media .big{position:absolute;right:16px;top:12px;color:var(--p);opacity:.13}
+.svc-media .big svg{width:96px;height:96px}
+.svc-badge{position:absolute;left:22px;bottom:-26px;z-index:2;width:70px;height:70px;border-radius:13px;background:var(--bg2);border:1.5px solid rgba(225,29,42,.5);display:grid;place-items:center;color:var(--p2);box-shadow:0 16px 34px -12px rgba(0,0,0,.75),0 0 0 3px rgba(225,29,42,.07)}
+.svc-badge svg{width:36px;height:36px;stroke-width:2.1}
+.svc-body{padding:40px 26px 26px;display:flex;flex-direction:column;flex:1}
+.svc-body h3{font-size:1.4rem;font-weight:700;letter-spacing:.01em}
+.svc-body p{color:var(--muted);font-size:.92rem;margin-top:11px;flex:1}
+.svc-foot{margin-top:22px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px}
+.svc-price{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--text)}
+.svc-price small{font-size:.72rem;color:var(--muted);font-family:var(--body);font-weight:500}
+.svc-price.free{font-size:1.15rem;color:var(--g)}
+.svc-cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--p2);cursor:pointer;transition:gap .3s}
+.svc-card:hover .svc-cta{gap:13px}
+/* PROCESO */
+.proc{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
+.proc-c{position:relative;padding:34px 26px 30px;border:1px solid var(--line);border-radius:12px;background:var(--card);transition:border-color .35s,transform .35s}
+.proc-c:hover{border-color:var(--border);transform:translateY(-5px)}
+.proc-c .n{position:absolute;top:20px;right:22px;font-family:var(--display);font-weight:800;font-size:2rem;color:#fff;opacity:.07;line-height:1}
+.proc-c .ic{width:52px;height:52px;border-radius:12px;background:rgba(225,29,42,.1);border:1px solid var(--border);display:grid;place-items:center;color:var(--p2);margin-bottom:20px}
+.proc-c .ic svg{width:26px;height:26px}
+.proc-c h4{font-family:var(--display);font-weight:700;font-size:1.28rem;text-transform:uppercase;letter-spacing:.02em}
+.proc-c p{color:var(--muted);font-size:.9rem;margin-top:10px}
+/* NOSOTROS / POR QUÉ */
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
+.why-c{padding:30px 26px;border:1px solid var(--line);border-radius:12px;background:var(--card);transition:border-color .35s,transform .35s}
+.why-c:hover{border-color:var(--border);transform:translateY(-5px)}
+.why-c .ic{width:50px;height:50px;border-radius:11px;background:rgba(225,29,42,.1);border:1px solid var(--border);display:grid;place-items:center;color:var(--p2);margin-bottom:18px}
+.why-c .ic svg{width:26px;height:26px}
+.why-c h4{font-family:var(--display);font-weight:700;font-size:1.2rem;text-transform:uppercase;letter-spacing:.02em}
+.why-c p{color:var(--muted);font-size:.9rem;margin-top:10px}
+.nos-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;margin-top:10px}
+.nos-copy p{color:#aeb2bf;font-size:1.06rem;margin-top:20px}
+.nos-copy p strong{color:var(--text);font-weight:600}
+.check-list{border:1px solid var(--border);border-radius:12px;background:linear-gradient(180deg,rgba(225,29,42,.04),transparent);overflow:hidden}
+.check-row{display:flex;align-items:center;gap:18px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.check-row:last-child{border-bottom:0}
+.check-row .ic{width:44px;height:44px;border-radius:11px;background:rgba(225,29,42,.1);border:1px solid var(--border);display:grid;place-items:center;color:var(--p2);flex-shrink:0}
+.check-row .ic svg{width:22px;height:22px}
+.check-row b{font-family:var(--display);font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.02em;display:block}
+.check-row span{color:var(--muted);font-size:.86rem}
+/* ÁREAS */
+.areas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:6px}
+.area-c{padding:38px 30px;border:1px solid var(--line);border-radius:14px;background:var(--card);transition:border-color .35s,transform .35s,box-shadow .35s}
+.area-c:hover{border-color:var(--p);transform:translateY(-6px);box-shadow:0 24px 50px -26px rgba(225,29,42,.4)}
+.area-c .ic{width:60px;height:60px;border-radius:14px;background:rgba(225,29,42,.1);border:1px solid var(--border);display:grid;place-items:center;color:var(--p2);margin-bottom:22px}
+.area-c .ic svg{width:32px;height:32px}
+.area-c h4{font-family:var(--display);font-weight:700;font-size:1.5rem;text-transform:uppercase;letter-spacing:.01em}
+.area-c p{color:var(--muted);font-size:.93rem;margin-top:12px}
+.area-c ul{list-style:none;margin-top:18px;display:grid;gap:9px}
+.area-c li{display:flex;align-items:center;gap:11px;font-size:.86rem;color:#aeb2bf}
+.area-c li svg{width:16px;height:16px;color:var(--p2);flex-shrink:0}
+/* PRECIOS */
+.precios{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.precios-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:6px}
+.precio-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px 28px 22px;transition:border-color .3s}
+.precio-card:hover{border-color:var(--border)}
+.precio-card .ph{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.precio-card .ph .ic{width:38px;height:38px;border-radius:9px;background:rgba(225,29,42,.1);border:1px solid var(--border);display:grid;place-items:center;color:var(--p2);flex-shrink:0}
+.precio-card .ph .ic svg{width:20px;height:20px}
+.precio-card .ph h4{font-family:var(--display);font-weight:700;font-size:1.24rem;text-transform:uppercase;letter-spacing:.02em}
+.precio-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.precio-row:last-child{border-bottom:0}
+.precio-row .k{color:var(--muted);font-size:.92rem;font-weight:300}
+.precio-row .v{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--p2);white-space:nowrap}
+.precios-note{color:var(--muted);font-size:.86rem;margin-top:26px;text-align:center}
+/* FAQ */
+.faq{max-width:840px;margin:0 auto}
+.faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;background:var(--card);overflow:hidden}
+.faq-q{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 26px;cursor:pointer;font-family:var(--display);font-weight:600;font-size:1.18rem;text-transform:uppercase;letter-spacing:.01em}
+.faq-q .pl{color:var(--p2);font-size:1.5rem;transition:transform .25s;flex-shrink:0;line-height:1}
+.faq-item.open .pl{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:.3s;padding:0 26px}
+.faq-item.open .faq-a{max-height:260px;padding:0 26px 24px}
+.faq-a p{color:var(--muted);font-size:.98rem}
+/* CONTACTO */
+.contacto{background:linear-gradient(180deg,var(--bg) 0%,#060608 100%);border-top:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:start}
+.contact-info{display:grid;grid-template-columns:1fr 1fr;gap:30px 40px;margin-top:40px}
+.cinfo .k{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:var(--p2);margin-bottom:8px}
+.cinfo .val{color:var(--text);font-size:1rem;line-height:1.5}
+.cinfo .val a:hover{color:var(--p2)}
+.contact-cta{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:42px 38px}
+.contact-cta h3{font-size:2rem;font-weight:700}
+.contact-cta p{color:var(--muted);margin:16px 0 28px;font-size:.98rem}
+.contact-cta .btn{width:100%;justify-content:center;margin-bottom:12px}
+.contact-cta .grua{display:flex;align-items:center;gap:10px;justify-content:center;background:rgba(225,29,42,.08);border:1px solid var(--border);border-radius:6px;padding:12px;color:var(--p2);font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.86rem;margin-top:4px}
+.contact-cta .grua svg{width:20px;height:20px}
+footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;color:var(--muted);font-size:.82rem}
+.foot-wm b{color:var(--p2)}
+.foot-wm a{color:var(--p2)}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(38px)}
+.reveal.is-in{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+/* CHATBOT */
+.fab{position:fixed;right:26px;bottom:26px;z-index:950;width:64px;height:64px;border-radius:50%;background:var(--p);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 40px -10px rgba(225,29,42,.65);transition:transform .3s}
+.fab:hover{transform:scale(1.08)}
+.fab svg{position:relative;z-index:1;width:30px;height:30px;color:#fff}
+.fab .ripple{position:absolute;inset:0;border-radius:50%;border:2px solid var(--p);opacity:0;pointer-events:none;animation:fabripple 2.8s ease-out infinite}
+.fab .ripple:nth-child(2){animation-delay:.93s}
+.fab .ripple:nth-child(3){animation-delay:1.86s}
+@keyframes fabripple{0%{transform:scale(1);opacity:.5}70%{opacity:.1}100%{transform:scale(2.1);opacity:0}}
+.chat{position:fixed;right:26px;bottom:26px;z-index:960;width:392px;max-width:calc(100vw - 32px);height:600px;max-height:calc(100vh - 40px);background:var(--bg2);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.9);transform:translateY(30px) scale(.96);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s}
+.chat.open{transform:none;opacity:1;pointer-events:auto}
+.chat-head{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border-bottom:1px solid var(--line)}
+.chat-ava{width:46px;height:46px;border-radius:11px;background:linear-gradient(135deg,var(--p),#8f0d16);display:grid;place-items:center;flex-shrink:0}
+.chat-ava svg{width:26px;height:26px;color:#fff}
+.chat-head .hi b{font-family:var(--display);font-weight:800;font-size:1.18rem;text-transform:uppercase;letter-spacing:.04em;display:block;line-height:1}
+.chat-head .hi small{color:var(--muted);font-size:.74rem;display:flex;align-items:center;gap:6px;margin-top:4px}
+.chat-head .hi small i{width:7px;height:7px;border-radius:50%;background:var(--g);display:inline-block}
+.chat-x{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.5rem;line-height:1;padding:4px 8px;transition:color .2s}
+.chat-x:hover{color:var(--text)}
+.chat-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--p) transparent}
+.chat-body::-webkit-scrollbar{width:6px}
+.chat-body::-webkit-scrollbar-thumb{background:rgba(225,29,42,.4);border-radius:3px}
+.msg{max-width:84%;padding:12px 15px;border-radius:13px;font-size:.92rem;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;animation:msgin .35s ease}
+@keyframes msgin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.bot{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:var(--p);color:#fff;font-weight:500;border-bottom-right-radius:4px}
+.typing{align-self:flex-start;display:flex;gap:5px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:13px;border-bottom-left-radius:4px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:typing 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.quicks{display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 14px}
+.quick{font-family:var(--body);font-size:.8rem;font-weight:500;border:1px solid var(--border);background:rgba(225,29,42,.05);color:var(--p2);border-radius:100px;padding:8px 13px;cursor:pointer;transition:background .25s,transform .2s}
+.quick:hover{background:rgba(225,29,42,.16);transform:translateY(-2px)}
+/* AGENDA */
+.cal{align-self:flex-start;width:290px;max-width:100%;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px;animation:msgin .35s ease}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-title{font-family:var(--display);font-weight:700;text-transform:capitalize;letter-spacing:.02em;font-size:1.04rem;color:var(--text)}
+.cal-nav{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);cursor:pointer;font-size:1.15rem;line-height:1;display:grid;place-items:center;transition:border-color .2s,color .2s}
+.cal-nav:hover:not(:disabled){border-color:var(--p);color:var(--p2)}
+.cal-nav:disabled{opacity:.3;cursor:default}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{margin-bottom:6px}
+.cal-dow span{text-align:center;font-size:.66rem;color:var(--muted);font-weight:600;padding:2px 0;text-transform:uppercase}
+.cal-day{aspect-ratio:1;border:none;background:transparent;color:var(--text);border-radius:7px;cursor:pointer;font-family:var(--body);font-size:.82rem;display:grid;place-items:center;transition:background .18s,color .18s}
+.cal-day:hover:not(:disabled){background:rgba(225,29,42,.15);color:var(--p2)}
+.cal-day.disabled{color:var(--muted);opacity:.32;cursor:default}
+.cal-day.empty{cursor:default}
+.cal-day.sel{background:var(--p);color:#fff}
+.cal.locked .cal-day:not(.sel){opacity:.4;cursor:default}
+.slots{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;max-width:100%;animation:msgin .35s ease}
+.slot{font-family:var(--body);font-size:.86rem;font-weight:500;border:1px solid var(--border);background:rgba(225,29,42,.05);color:var(--p2);border-radius:100px;padding:9px 15px;cursor:pointer;transition:background .2s,transform .18s}
+.slot:hover:not(:disabled){background:rgba(225,29,42,.18);transform:translateY(-2px)}
+.slot.sel{background:var(--p);color:#fff;border-color:var(--p)}
+.slots.locked .slot:not(.sel){opacity:.4;cursor:default}
+.chat-input{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--line);background:var(--card)}
+.chat-input input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:12px 14px;font-family:var(--body);font-size:.92rem;outline:none;transition:border-color .25s}
+.chat-input input:focus{border-color:var(--border)}
+.chat-input button{background:var(--p);border:none;border-radius:9px;width:46px;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:transform .2s,opacity .2s}
+.chat-input button:hover{transform:scale(1.06)}
+.chat-input button:disabled{opacity:.45;cursor:default}
+.chat-input button svg{width:20px;height:20px;color:#fff}
+.chat-foot{text-align:center;padding:7px;font-size:.62rem;color:var(--muted);background:var(--card);border-top:1px solid var(--line)}
+.chat-foot a{color:var(--p2)}
+/* RESPONSIVE */
+@media(max-width:1080px){
   .nav-links{display:none}
-  .burger{display:block}
-  .nav-links.open{display:flex;position:absolute;top:100%;left:0;right:0;background:var(--bg3);flex-direction:column;padding:12px;gap:3px;border-bottom:1px solid var(--border);z-index:100}
-  .nav-links.open a{padding:10px 12px}
-  .hero-inner{grid-template-columns:1fr;gap:40px;padding:80px 24px 60px}
-  .hero h1{font-size:2.4rem}
-  .hero-card{max-width:100%}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
-  .services-grid{grid-template-columns:repeat(2,1fr)}
-  .proceso-grid{grid-template-columns:repeat(2,1fr)}
-  .about-grid{grid-template-columns:1fr;gap:36px}
-  .equipo-grid{grid-template-columns:1fr}
+  .nav-cta .btn:not(.burger){display:none}
+  .burger{display:flex}
+}
+@media(max-width:900px){
+  .wrap{padding:0 22px}
+  .sec{padding:88px 0}
+  .about-grid,.nos-grid,.contact-grid{grid-template-columns:1fr;gap:46px}
+  .about-media{order:-1}
+  .taller-panel{height:320px}
+  .svc-grid{grid-template-columns:1fr 1fr}
+  .proc-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .areas-grid{grid-template-columns:1fr}
   .precios-grid{grid-template-columns:1fr}
-  .contact-inner{grid-template-columns:1fr;gap:32px}
-  .section{padding:60px 24px}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .contact-info{grid-template-columns:1fr 1fr}
+  .hero-content{padding-top:110px}
+  .scroll-cue{display:none}
+  .hero-bg .art{opacity:.09}
 }
 @media(max-width:600px){
-  .hero h1{font-size:1.9rem}
-  .hero-sub{font-size:.92rem}
-  .hero-actions{flex-direction:column;align-items:flex-start}
-  .services-grid{grid-template-columns:1fr}
-  .proceso-grid{grid-template-columns:1fr}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
-  .equipo-grid{grid-template-columns:1fr}
-  .fab{bottom:18px;right:18px;width:54px;height:54px}
-  .teaser{bottom:86px;right:18px;max-width:220px;font-size:.8rem}
-  .widget{width:100vw;height:100svh;max-height:100svh;bottom:0;right:0;border-radius:0;border:none}
+  .wrap{padding:0 18px}
+  .svc-grid,.proc-grid,.why-grid,.contact-info,.precios-grid{grid-template-columns:1fr}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hero-content{padding-top:90px}
+  .tag-badge{left:50%;transform:translateX(-50%);bottom:-20px}
+  .chat{right:0;bottom:0;width:100vw;height:100vh;max-height:100vh;border-radius:0}
+  .fab{right:18px;bottom:18px}
+  .foot-inner{flex-direction:column;text-align:center;gap:22px}
 }
 @media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .fab .ripple{display:none!important}
 }
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
-<header class="site-header">
-  <div class="nav">
-    <a href="#" class="brand">
-      <div class="brand-icon"></div>
-      <div>
-        <span class="brand-name">Taller Ejemplo</span>
-        <span class="brand-sub">Mecánica desde 1995 · Madrid</span>
-      </div>
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="nav-logo" aria-label="Taller Ejemplo inicio">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      </span>
+      <span class="txt"><b>Taller Ejemplo</b><small>Mecánica · Madrid</small></span>
     </a>
     <nav class="nav-links" id="navLinks">
+      <a href="#top" class="active">Inicio</a>
+      <a href="#taller">El taller</a>
       <a href="#servicios">Servicios</a>
       <a href="#proceso">Cómo trabajamos</a>
+      <a href="#areas">Áreas</a>
       <a href="#precios">Precios</a>
-      <a href="#nosotros">Nosotros</a>
-      <a href="#contacto">Contacto</a>
-      <a href="#" class="nav-cta" onclick="event.preventDefault();toggleChat(true)">Pide tu cita →</a>
+      <a href="#faq">Preguntas</a>
     </nav>
-    <button class="burger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menú">☰</button>
+    <div class="nav-cta">
+      <a class="btn" onclick="openChat()">Pedir cita</a>
+      <div class="burger" id="burger" aria-label="Menú"><span></span><span></span><span></span></div>
+    </div>
   </div>
 </header>
-
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#top">Inicio</a>
+  <a href="#taller">El taller</a>
+  <a href="#servicios">Servicios</a>
+  <a href="#proceso">Cómo trabajamos</a>
+  <a href="#areas">Áreas</a>
+  <a href="#precios">Precios</a>
+  <a href="#faq">Preguntas</a>
+  <a href="#contacto">Contacto</a>
+</div>
 <!-- HERO -->
-<section class="hero">
-  <video class="hero-video" autoplay muted loop playsinline preload="none" poster="">
-    <source src="assets/video/taller.mp4" type="video/mp4">
-  </video>
-  <div class="hero-overlay"></div>
-  <div class="hero-overlay2"></div>
-  <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow">Presupuesto sin compromiso · Madrid</div>
-      <h1>Tu coche,<br>en manos de un<br>
-        <span class="word-rotate-wrap">
-          <span class="word-rotate">
-            <span class="word1">mecánico.<br></span>
-            <span class="word2">especialista.<br></span>
-            <span class="word3">profesional.<br></span>
-            <span class="word1">mecánico.<br></span>
-          </span>
-        </span>
-      </h1>
-      <p class="hero-sub">Más de <strong>30 años</strong> reparando vehículos en Madrid. Mecánica, electrónica, chapa y pintura — todo en un solo taller. <strong>Garantía escrita en cada reparación.</strong></p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="toggleChat(true)"> Pide tu cita ahora</button>
-        <button class="btn-secondary" onclick="toggleChat(true)"> Avería urgente</button>
-      </div>
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="grad"></div>
+    <div class="beam"></div>
+    <div class="grid"></div>
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 640 260" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M40 190h560"/>
+        <path d="M92 190a34 34 0 1 0 68 0 34 34 0 1 0-68 0"/>
+        <path d="M470 190a34 34 0 1 0 68 0 34 34 0 1 0-68 0"/>
+        <path d="M126 190h318"/>
+        <path d="M92 190c-18 0-34-4-34-30v-26c0-14 10-24 26-26l70-42c10-6 22-10 34-10h96c14 0 27 6 36 16l40 44 88 14c22 4 36 18 36 40v20c0 24-14 30-32 30"/>
+        <path d="M160 66l16 60h122"/>
+        <path d="M300 60v66"/>
+        <path d="M360 78l40 44"/>
+      </svg>
     </div>
-    <div class="hero-card">
-      <div class="hero-card-title">Servicios más solicitados</div>
-      <div class="hero-service-row">
-        <div class="hero-service-icon ico-orange"></div>
-        <div class="hero-service-info">
-          <strong>Cambio aceite + filtro</strong>
-          <small>Listo en 30 minutos</small>
-        </div>
-        <span class="hero-service-price">desde 50€</span>
-      </div>
-      <div class="hero-service-row">
-        <div class="hero-service-icon ico-purple"></div>
-        <div class="hero-service-info">
-          <strong>Pre-revisión ITV</strong>
-          <small>Pasa a la primera</small>
-        </div>
-        <span class="hero-service-price">desde 35€</span>
-      </div>
-      <div class="hero-service-row">
-        <div class="hero-service-icon ico-green"></div>
-        <div class="hero-service-info">
-          <strong>Diagnóstico OBD</strong>
-          <small>Fallos eléctricos</small>
-        </div>
-        <span class="hero-service-price">desde 30€</span>
-      </div>
-      <div class="hero-service-row">
-        <div class="hero-service-icon ico-gold"></div>
-        <div class="hero-service-info">
-          <strong>Avería urgente</strong>
-          <small>Grúa concertada 24h</small>
-        </div>
-        <span class="hero-service-price">llamamos ya</span>
-      </div>
+    <div class="vignette"></div>
+  </div>
+  <div class="wrap hero-content">
+    <h1>
+      <span class="ml">Tu coche en manos</span><br>
+      <span class="accent">de confianza.</span>
+    </h1>
+    <div class="hero-rot">
+      <span>Especialistas en</span>
+      <span class="rot"><b id="rotWord">Mantenimiento</b></span>
+    </div>
+    <p class="hero-desc reveal">Más de <strong>30 años</strong> reparando vehículos en Madrid. Mecánica, electrónica, chapa y pintura en un solo taller, con <strong>presupuesto cerrado antes de tocar</strong> y garantía por escrito. Reserva tu cita online en segundos.</p>
+    <div class="hero-actions reveal">
+      <a class="btn" onclick="openChat()">Reservar mi cita</a>
+      <a class="btn ghost" href="#servicios">Ver servicios</a>
+    </div>
+    <div class="hero-stats reveal">
+      <div class="stat"><div class="v">30<span class="u">+</span></div><div class="l">Años en Madrid desde 1995</div></div>
+      <div class="stat"><div class="v">5.000<span class="u">+</span></div><div class="l">Vehículos atendidos</div></div>
+      <div class="stat"><div class="v">24h<span class="u">.</span></div><div class="l">Grúa concertada</div></div>
+      <div class="stat"><div class="v">100%<span class="u">.</span></div><div class="l">Presupuesto cerrado antes</div></div>
     </div>
   </div>
+  <div class="scroll-cue"><span class="bar"></span>Scroll</div>
 </section>
-
 <!-- MARQUEE -->
 <div class="marquee-wrap" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item"><span>30+</span> años de experiencia<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>5.000+</span> vehículos atendidos<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Grúa 24h</span> concertada<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Garantía</span> por escrito<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Presupuesto</span> sin compromiso<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Homologado</span> ITV<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Todas</span> las aseguradoras<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>30+</span> años de experiencia<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>5.000+</span> vehículos atendidos<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Grúa 24h</span> concertada<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Garantía</span> por escrito<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Presupuesto</span> sin compromiso<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Homologado</span> ITV<span class="marquee-dot"></span></span>
-    <span class="marquee-item"><span>Todas</span> las aseguradoras<span class="marquee-dot"></span></span>
+  <div class="marquee-track" id="marquee">
+    <span class="marquee-item"><b>30+</b> años de experiencia<span class="dot"></span></span>
+    <span class="marquee-item"><b>5.000+</b> vehículos atendidos<span class="dot"></span></span>
+    <span class="marquee-item"><b>Grúa 24h</b> concertada<span class="dot"></span></span>
+    <span class="marquee-item"><b>Garantía</b> por escrito<span class="dot"></span></span>
+    <span class="marquee-item"><b>Presupuesto</b> sin compromiso<span class="dot"></span></span>
+    <span class="marquee-item"><b>Homologado</b> pre-ITV<span class="dot"></span></span>
+    <span class="marquee-item"><b>Todas</b> las aseguradoras<span class="dot"></span></span>
   </div>
 </div>
-
-<!-- STATS -->
-<section class="stats">
-  <div class="stats-inner">
-    <div class="stat-cell">
-      <div class="stat-num"><span class="accent">30</span>+</div>
-      <div class="stat-label">Años de experiencia<br>en Madrid</div>
+<!-- EL TALLER -->
+<section class="sec" id="taller">
+  <span class="bignum" style="left:-2vw;top:30px">01</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">El taller</span>
+      <h2>Mecánica bien hecha,<br>explicada de verdad</h2>
     </div>
-    <div class="stat-cell">
-      <div class="stat-num"><span class="accent">5K</span>+</div>
-      <div class="stat-label">Vehículos atendidos<br>con garantía</div>
-    </div>
-    <div class="stat-cell">
-      <div class="stat-num"><span class="purple">24h</span></div>
-      <div class="stat-label">Servicio grúa<br>concertada</div>
-    </div>
-    <div class="stat-cell">
-      <div class="stat-num"><span class="green">100%</span></div>
-      <div class="stat-label">Presupuesto cerrado<br>antes de tocar</div>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>Lo que empezó como un <strong>taller de barrio en 1995</strong> es hoy un equipo especializado con la última tecnología en diagnosis, chapa y pintura. Sin perder lo que somos: cercanos, honestos y con conocimiento de causa.</p>
+        <p>Cada reparación parte de un <strong>diagnóstico claro</strong> y un presupuesto cerrado antes de tocar nada. No hacemos nada sin tu visto bueno, así que no hay sorpresas al recoger.</p>
+        <p>Mecánicos certificados con décadas de experiencia real, piezas de primera marca y <strong>garantía por escrito</strong> en cada intervención. Trabajamos con todas las aseguradoras y disponemos de grúa concertada 24 horas.</p>
+      </div>
+      <div class="about-media reveal">
+        <div class="framed">
+          <div class="taller-panel">
+            <div class="pgrid"></div>
+            <svg class="car" viewBox="0 0 640 240" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M60 168h520"/>
+              <circle cx="164" cy="168" r="30"/>
+              <circle cx="476" cy="168" r="30"/>
+              <path d="M194 168h252"/>
+              <path d="M134 168c-16 0-30-4-30-28v-22c0-12 9-21 23-23l64-38c9-5 20-9 31-9h88c13 0 25 5 33 14l36 40 80 13c20 3 33 16 33 37v16c0 22-13 28-29 28"/>
+              <path d="M196 48l14 54h112"/>
+              <path d="M322 44v58"/>
+            </svg>
+          </div>
+        </div>
+        <div class="tag-badge"><span>Taller</span>DESDE 1995</div>
+      </div>
     </div>
   </div>
 </section>
-
 <!-- SERVICIOS -->
-<section class="section services" id="servicios">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">Servicios</div>
-      <h2>Todo lo que tu coche necesita</h2>
-      <p>Mecánicos especializados, herramientas de última generación y piezas de primera marca. Garantía por escrito en todo.</p>
+<section class="sec" id="servicios" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <span class="bignum" style="right:-2vw;top:20px">02</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Servicios</span>
+      <h2>Todo lo que tu<br>coche necesita</h2>
+      <p>Reserva cualquier servicio con día y hora a través de Diego. El taller confirma tu cita por teléfono.</p>
     </div>
-    <div class="services-grid">
-      <div class="service-card sc-orange">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80&auto=format&fit=crop" alt="Revisión y mantenimiento de vehículo" width="600" height="170" loading="lazy">
+    <div class="svc-grid">
+      <!-- 1 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-orange">Mantenimiento</div>
+        <div class="svc-body">
           <h3>Revisión y mantenimiento</h3>
           <p>Revisiones periódicas, pre-ITV y puesta a punto completa. Te decimos exactamente qué necesita tu coche antes de hacer nada.</p>
-          <div class="service-price">Desde 35€</div>
+          <div class="svc-foot"><div class="svc-price">35€ <small>desde</small></div><span class="svc-cta" onclick="openChat('Revisión y mantenimiento')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
-      <div class="service-card sc-purple">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?w=600&q=80&auto=format&fit=crop" alt="Cambio de aceite y filtros" width="600" height="170" loading="lazy">
+      <!-- 2 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 8V6a2 2 0 0 1 2-2h2"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 8V6a2 2 0 0 1 2-2h2"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-purple">Motor</div>
+        <div class="svc-body">
           <h3>Cambio de aceite y filtros</h3>
           <p>Aceite + filtro desde 50€. Pack 4 filtros completo desde 80€. En 30 minutos tu motor está como nuevo.</p>
-          <div class="service-price">Desde 50€</div>
+          <div class="svc-foot"><div class="svc-price">50€ <small>desde</small></div><span class="svc-cta" onclick="openChat('Cambio de aceite y filtros')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
-      <div class="service-card sc-green">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&auto=format&fit=crop" alt="Frenos y suspensión del coche" width="600" height="170" loading="lazy">
+      <!-- 3 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-green">Seguridad</div>
+        <div class="svc-body">
           <h3>Frenos y suspensión</h3>
           <p>Pastillas, discos, amortiguadores y rótulas. Piezas de primera marca con garantía de dos años.</p>
-          <div class="service-price">Desde 90€</div>
+          <div class="svc-foot"><div class="svc-price">90€ <small>desde</small></div><span class="svc-cta" onclick="openChat('Frenos y suspensión')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
-      <div class="service-card sc-orange">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80&auto=format&fit=crop&crop=center" alt="Cuadro de instrumentos diagnóstico electrónico" width="600" height="170" loading="lazy">
+      <!-- 4 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M6 9l2 3-2 3M11 9v6"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M6 9l2 3-2 3M11 9v6"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-orange">Electrónica</div>
+        <div class="svc-body">
           <h3>Diagnóstico electrónico</h3>
           <p>OBD, centralitas, testigos del cuadro y fallos eléctricos. El importe del diagnóstico se descuenta si reparamos.</p>
-          <div class="service-price">Desde 30€</div>
+          <div class="svc-foot"><div class="svc-price">30€ <small>desde</small></div><span class="svc-cta" onclick="openChat('Diagnóstico electrónico')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
-      <div class="service-card sc-purple">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop" alt="Neumáticos y alineación" width="600" height="170" loading="lazy">
+      <!-- 5 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-purple">Neumáticos</div>
+        <div class="svc-body">
           <h3>Neumáticos y alineación</h3>
           <p>Montaje, equilibrado y alineación. Primeras marcas y económicas. Asesoramiento sin presión.</p>
-          <div class="service-price">Desde 60€/ud</div>
+          <div class="svc-foot"><div class="svc-price">60€ <small>/ud</small></div><span class="svc-cta" onclick="openChat('Neumáticos y alineación')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
-      <div class="service-card sc-green">
-        <div class="service-img-wrap">
-          <img class="service-img" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&auto=format&fit=crop" alt="Chapa y pintura con aseguradoras" width="600" height="170" loading="lazy">
+      <!-- 6 -->
+      <div class="svc-card reveal">
+        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3-3a4 4 0 0 1 3 6l-4 1-1 4a4 4 0 0 1-6-3l3-3"/><path d="m9 12-6 6a2 2 0 0 0 3 3l6-6"/></svg></span>
+          <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3-3a4 4 0 0 1 3 6l-4 1-1 4a4 4 0 0 1-6-3l3-3"/><path d="m9 12-6 6a2 2 0 0 0 3 3l6-6"/></svg></span>
         </div>
-        <div class="service-body">
-          <div class="service-tag tag-green">Carrocería</div>
+        <div class="svc-body">
           <h3>Chapa y pintura</h3>
           <p>Siniestros, abolladuras, retoques y pintado completo. Gestionamos directamente con tu aseguradora.</p>
-          <div class="service-price">Presupuesto gratis</div>
+          <div class="svc-foot"><div class="svc-price free">Presupuesto gratis</div><span class="svc-cta" onclick="openChat('Chapa y pintura')">Reservar<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- PROCESO -->
-<section class="section proceso" id="proceso">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">Cómo trabajamos</div>
-      <h2>Sin sorpresas en la factura</h2>
+<section class="sec proc" id="proceso">
+  <span class="bignum" style="left:-2vw;top:30px">03</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Cómo trabajamos</span>
+      <h2>Sin sorpresas<br>en la factura</h2>
       <p>Presupuesto cerrado antes de tocar tu coche. Así de claro.</p>
     </div>
-    <div class="proceso-grid">
-      <div class="proceso-step">
-        <div class="proc-icon proc-icon-1"></div>
-        <h3>Traes el coche</h3>
-        <p>O pedimos la grúa si está parado. Sin esperas: con cita previa tienes hueco garantizado.</p>
+    <div class="proc-grid">
+      <div class="proc-c reveal"><span class="n">01</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-6.5a2 2 0 0 0-2-1.5H8.5a2 2 0 0 0-2 1.5z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></div><h4>Traes el coche</h4><p>O pedimos la grúa si está parado. Con cita previa tienes hueco garantizado, sin esperas.</p></div>
+      <div class="proc-c reveal"><span class="n">02</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div><h4>Diagnóstico</h4><p>Revisamos el vehículo y detectamos qué necesita. Te lo explicamos en lenguaje normal, sin tecnicismos.</p></div>
+      <div class="proc-c reveal"><span class="n">03</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg></div><h4>Presupuesto cerrado</h4><p>Precio final antes de empezar. Nada de sorpresas al recoger. No tocamos nada sin tu visto bueno.</p></div>
+      <div class="proc-c reveal"><span class="n">04</span><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div><h4>Recogida con garantía</h4><p>Te avisamos cuando esté listo. Garantía por escrito en cada reparación. Pago al recoger.</p></div>
+    </div>
+  </div>
+</section>
+<!-- NOSOTROS / POR QUÉ -->
+<section class="sec" id="nosotros">
+  <span class="bignum" style="right:-2vw;top:20px">04</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Por qué el taller</span>
+      <h2>Un taller familiar<br>con tecnología de hoy</h2>
+    </div>
+    <div class="why-grid" style="margin-bottom:60px">
+      <div class="why-c reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h4>Presupuesto cerrado</h4><p>Precio claro antes de tocar nada. Sin cargos ocultos ni piezas innecesarias.</p></div>
+      <div class="why-c reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg></div><h4>Garantía por escrito</h4><p>Cada reparación con garantía documentada y piezas de primera marca.</p></div>
+      <div class="why-c reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2M6 9l2 3-2 3"/></svg></div><h4>Diagnosis avanzada</h4><p>Equipo OBD y herramientas de última generación para localizar la avería a la primera.</p></div>
+      <div class="why-c reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg></div><h4>Grúa 24h y cita rápida</h4><p>Grúa concertada disponible y reserva online eligiendo día y hora, sin llamadas eternas.</p></div>
+    </div>
+    <div class="nos-grid">
+      <div class="nos-copy reveal">
+        <span class="eyebrow">Nuestro compromiso</span>
+        <p style="margin-top:18px">No hay un mecánico para todo. Cada coche pasa por quien mejor domina su área, con el mismo criterio de siempre: <strong>solo se sustituye lo necesario</strong>.</p>
+        <p>Cercanos, honestos y con conocimiento de causa. Ese es el trato de barrio de 1995, ahora con la tecnología de hoy.</p>
       </div>
-      <div class="proceso-step">
-        <div class="proc-icon proc-icon-2"></div>
-        <h3>Diagnóstico</h3>
-        <p>Revisamos el vehículo y detectamos qué necesita. Te lo explicamos en lenguaje normal, sin tecnicismos.</p>
-      </div>
-      <div class="proceso-step">
-        <div class="proc-icon proc-icon-3"></div>
-        <h3>Presupuesto cerrado</h3>
-        <p>Precio final antes de empezar. Nada de sorpresas al recoger. Lo aprobas tú, no hacemos nada sin tu visto bueno.</p>
-      </div>
-      <div class="proceso-step">
-        <div class="proc-icon proc-icon-4"></div>
-        <h3>Recogida con garantía</h3>
-        <p>Te avisamos cuando esté listo. Garantía por escrito en cada reparación. Pago al recoger.</p>
+      <div class="check-list reveal">
+        <div class="check-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><div><b>Presupuesto antes de tocar</b><span>Lo apruebas tú; no hacemos nada sin tu visto bueno.</span></div></div>
+        <div class="check-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div><div><b>Garantía en cada reparación</b><span>Piezas de primera marca y garantía por escrito.</span></div></div>
+        <div class="check-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><div><b>Todas las aseguradoras</b><span>Gestión directa del siniestro en chapa y pintura.</span></div></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- NOSOTROS -->
-<section class="section" id="nosotros">
-  <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-media">
-        <img src="https://images.unsplash.com/photo-1493238792000-8113da705763?w=800&q=80&auto=format&fit=crop" alt="Interior del taller mecánico en Madrid" width="800" height="600" loading="lazy">
-        <div class="about-badge">
-          <div class="ab-num">1995</div>
-          <div class="ab-label">Desde siempre en Madrid</div>
-        </div>
+<!-- ÁREAS / ESPECIALIDADES -->
+<section class="sec" id="areas" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <span class="bignum" style="left:-2vw;top:20px">05</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Áreas del taller</span>
+      <h2>Cada coche,<br>con su especialidad</h2>
+      <p>Tres áreas de trabajo, cada una con su equipo y su equipación específica.</p>
+    </div>
+    <div class="areas-grid">
+      <div class="area-c reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h4>Mecánica general</h4>
+        <p>Motor, distribución, embrague, frenos y suspensión. Averías complejas con presupuesto cerrado.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Distribuciones y embragues</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Frenos, suspensión y dirección</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Revisión y mantenimiento pre-ITV</li>
+        </ul>
       </div>
-      <div class="about-text">
-        <div class="section-header">
-          <div class="section-eyebrow">Sobre nosotros</div>
-          <h2>Un taller familiar.<br>Con tecnología de hoy.</h2>
-          <p>Lo que empezó como un taller de barrio en 1995 es hoy un equipo especializado con la última tecnología en diagnosis, chapa y pintura. Sin perder lo que somos: cercanos, honestos y con conocimiento de causa.</p>
-        </div>
-        <ul class="about-list">
-          <li>Mecánicos certificados con décadas de experiencia real</li>
-          <li>Diagnóstico OBD y herramientas de última generación</li>
-          <li>Presupuesto cerrado antes de tocar el vehículo</li>
-          <li>Garantía por escrito en cada reparación</li>
-          <li>Grúa concertada disponible 24 horas</li>
-          <li>Trabajamos con todas las aseguradoras</li>
+      <div class="area-c reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2M6 9l2 3-2 3M11 9v6"/></svg></div>
+        <h4>Electrónica y diagnosis</h4>
+        <p>Centralitas, fallos eléctricos y sistemas de asistencia. Diagnosis OBD de última generación.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Lectura y borrado de errores OBD</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Codificación de centralitas</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Testigos del cuadro y sistemas ADAS</li>
+        </ul>
+      </div>
+      <div class="area-c reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3-3a4 4 0 0 1 3 6l-4 1-1 4a4 4 0 0 1-6-3l3-3"/><path d="m9 12-6 6a2 2 0 0 0 3 3l6-6"/></svg></div>
+        <h4>Chapa y pintura</h4>
+        <p>Siniestros y carrocería con cabina de pintura propia y gestión directa con aseguradoras.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Abolladuras, retoques y pintado</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Siniestros con todas las aseguradoras</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Presupuesto de carrocería gratis</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
-
-<!-- EQUIPO -->
-<section class="section equipo">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">El equipo</div>
-      <h2>Cada coche, con su especialista</h2>
-      <p>No hay un mecánico para todo. Cada área tiene quien mejor la domina.</p>
-    </div>
-    <div class="equipo-grid">
-      <div class="team-card">
-        <div class="team-avatar">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&fit=crop&crop=face" alt="Roberto Gil, mecánico general" width="200" height="200" loading="lazy">
-        </div>
-        <h4>D. Roberto Gil</h4>
-        <div class="team-role">Mecánica general</div>
-        <p>25 años reparando motores. Especialista en distribuciones, embragues y averías complejas.</p>
-      </div>
-      <div class="team-card">
-        <div class="team-avatar">
-          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80&fit=crop&crop=face" alt="Iván López, especialista electrónica" width="200" height="200" loading="lazy">
-        </div>
-        <h4>D. Iván López</h4>
-        <div class="team-role">Electrónica y diagnosis</div>
-        <p>Especialista en marcas alemanas. Centralitas, fallos eléctricos y sistemas ADAS.</p>
-      </div>
-      <div class="team-card">
-        <div class="team-avatar">
-          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&fit=crop&crop=face" alt="Manuel Torres, chapa y pintura" width="200" height="200" loading="lazy">
-        </div>
-        <h4>D. Manuel Torres</h4>
-        <div class="team-role">Chapa y pintura</div>
-        <p>Siniestros y carrocería. Gestión directa con aseguradoras y cabina de pintura propia.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- PRECIOS -->
-<section class="section" id="precios" style="background:var(--bg2)">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-eyebrow">Precios</div>
-      <h2>Precios orientativos 2026</h2>
-      <p>IVA incluido. Precio final confirmado siempre antes de empezar. Sin letra pequeña.</p>
+<section class="sec precios" id="precios">
+  <span class="bignum" style="right:-2vw;top:20px">06</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Precios orientativos 2026</span>
+      <h2>Tarifas claras,<br>sin letra pequeña</h2>
+      <p>IVA incluido. Precio final confirmado siempre antes de empezar.</p>
     </div>
     <div class="precios-grid">
-      <div class="precio-card">
-        <div class="precio-titulo"> Mantenimiento y motor</div>
-        <div class="precio-row"><span class="precio-nombre">Cambio aceite + filtro</span><span class="precio-valor">desde 50€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Pack 4 filtros completo</span><span class="precio-valor">desde 80€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Pre-revisión ITV</span><span class="precio-valor">desde 35€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Revisión completa pre-viaje</span><span class="precio-valor">desde 120€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Cambio batería (+ batería)</span><span class="precio-valor">desde 90€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Aire acondicionado (recarga)</span><span class="precio-valor">desde 60€</span></div>
+      <div class="precio-card reveal">
+        <div class="ph"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><h4>Mantenimiento y motor</h4></div>
+        <div class="precio-row"><span class="k">Cambio aceite + filtro</span><span class="v">desde 50€</span></div>
+        <div class="precio-row"><span class="k">Pack 4 filtros completo</span><span class="v">desde 80€</span></div>
+        <div class="precio-row"><span class="k">Pre-revisión ITV</span><span class="v">desde 35€</span></div>
+        <div class="precio-row"><span class="k">Revisión completa pre-viaje</span><span class="v">desde 120€</span></div>
+        <div class="precio-row"><span class="k">Cambio batería (+ batería)</span><span class="v">desde 90€</span></div>
+        <div class="precio-row"><span class="k">Aire acondicionado (recarga)</span><span class="v">desde 60€</span></div>
       </div>
-      <div class="precio-card">
-        <div class="precio-titulo"> Frenos y seguridad</div>
-        <div class="precio-row"><span class="precio-nombre">Pastillas freno (eje)</span><span class="precio-valor">desde 90€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Discos + pastillas (eje)</span><span class="precio-valor">desde 180€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Amortiguador (unidad)</span><span class="precio-valor">desde 120€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Distribución</span><span class="precio-valor">desde 350€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Embrague (mano de obra)</span><span class="precio-valor">desde 350€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Mecánica general</span><span class="precio-valor">desde 50€/h</span></div>
+      <div class="precio-card reveal">
+        <div class="ph"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></span><h4>Frenos y seguridad</h4></div>
+        <div class="precio-row"><span class="k">Pastillas freno (eje)</span><span class="v">desde 90€</span></div>
+        <div class="precio-row"><span class="k">Discos + pastillas (eje)</span><span class="v">desde 180€</span></div>
+        <div class="precio-row"><span class="k">Amortiguador (unidad)</span><span class="v">desde 120€</span></div>
+        <div class="precio-row"><span class="k">Distribución</span><span class="v">desde 350€</span></div>
+        <div class="precio-row"><span class="k">Embrague (mano de obra)</span><span class="v">desde 350€</span></div>
+        <div class="precio-row"><span class="k">Mecánica general</span><span class="v">desde 50€/h</span></div>
       </div>
-      <div class="precio-card">
-        <div class="precio-titulo"> Electrónica</div>
-        <div class="precio-row"><span class="precio-nombre">Diagnóstico OBD</span><span class="precio-valor">desde 30€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Codificación centralita</span><span class="precio-valor">desde 60€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Sistema eléctrico general</span><span class="precio-valor">desde 50€/h</span></div>
+      <div class="precio-card reveal">
+        <div class="ph"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></span><h4>Electrónica</h4></div>
+        <div class="precio-row"><span class="k">Diagnóstico OBD</span><span class="v">desde 30€</span></div>
+        <div class="precio-row"><span class="k">Codificación centralita</span><span class="v">desde 60€</span></div>
+        <div class="precio-row"><span class="k">Sistema eléctrico general</span><span class="v">desde 50€/h</span></div>
       </div>
-      <div class="precio-card">
-        <div class="precio-titulo"> Neumáticos</div>
-        <div class="precio-row"><span class="precio-nombre">Neumático turismo (montaje incl.)</span><span class="precio-valor">desde 60€/ud</span></div>
-        <div class="precio-row"><span class="precio-nombre">Alineación + equilibrado</span><span class="precio-valor">desde 50€</span></div>
-        <div class="precio-row"><span class="precio-nombre">Cambio de ruedas (4 ud)</span><span class="precio-valor">desde 20€</span></div>
+      <div class="precio-card reveal">
+        <div class="ph"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><h4>Neumáticos</h4></div>
+        <div class="precio-row"><span class="k">Neumático turismo (montaje incl.)</span><span class="v">desde 60€/ud</span></div>
+        <div class="precio-row"><span class="k">Alineación + equilibrado</span><span class="v">desde 50€</span></div>
+        <div class="precio-row"><span class="k">Cambio de ruedas (4 ud)</span><span class="v">desde 20€</span></div>
       </div>
+    </div>
+    <p class="precios-note reveal">Chapa y pintura: presupuesto gratis, gestionado directamente con tu aseguradora.</p>
+  </div>
+</section>
+<!-- FAQ -->
+<section class="sec" id="faq" style="background:var(--bg2);border-top:1px solid var(--line)">
+  <span class="bignum" style="left:-2vw;top:20px">07</span>
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin:0 auto 56px;text-align:center">
+      <span class="eyebrow" style="justify-content:center">Preguntas frecuentes</span>
+      <h2>Lo que más nos preguntan</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item reveal"><div class="faq-q">¿Cómo reservo una cita?<span class="pl">+</span></div><div class="faq-a"><p>Habla con Diego, nuestro asistente. Eliges el servicio, el día y la hora, dejas tu nombre y teléfono, y el taller te llama para confirmar la cita.</p></div></div>
+      <div class="faq-item reveal"><div class="faq-q">¿Dais presupuesto antes de reparar?<span class="pl">+</span></div><div class="faq-a"><p>Sí. Presupuesto cerrado antes de tocar el coche. No hacemos nada sin tu visto bueno y no hay sorpresas al recoger.</p></div></div>
+      <div class="faq-item reveal"><div class="faq-q">¿Tenéis servicio de grúa?<span class="pl">+</span></div><div class="faq-a"><p>Sí, disponemos de grúa concertada 24 horas para coches parados o averías en carretera.</p></div></div>
+      <div class="faq-item reveal"><div class="faq-q">¿Trabajáis con aseguradoras en chapa y pintura?<span class="pl">+</span></div><div class="faq-a"><p>Sí. Gestionamos el siniestro directamente con tu aseguradora y el presupuesto de chapa y pintura es gratis.</p></div></div>
+      <div class="faq-item reveal"><div class="faq-q">¿Ofrecéis garantía en las reparaciones?<span class="pl">+</span></div><div class="faq-a"><p>Sí, garantía por escrito en cada reparación y piezas de primera marca.</p></div></div>
     </div>
   </div>
 </section>
-
 <!-- CONTACTO -->
-<section class="contact" id="contacto">
-  <div class="contact-inner">
-    <div class="contact-info">
-      <h3>Estamos en Madrid</h3>
-      <p>Taller en el polígono industrial, fácil acceso con parking. Cita previa garantiza tu hueco.</p>
-      <div class="contact-detail"><strong>Dirección</strong> Calle Mecánicos 45 · Polígono Industrial · 28010 Madrid</div>
-      <div class="contact-detail"><strong>Teléfono</strong> <a href="tel:643199580">643 199 580</a></div>
-      <div class="contact-detail"><strong>Horario</strong> L–V 8:00–19:00 · S 9:00–14:00</div>
-      <div class="contact-detail"><strong>Email</strong> <a href="mailto:comercial@whitemoon.es">comercial@whitemoon.es</a></div>
-      <div class="contact-cta">
-        <div class="cta-grua"> Grúa concertada disponible 24h</div>
+<section class="sec contacto" id="contacto">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="sec-head reveal" style="margin-bottom:10px">
+          <span class="eyebrow">Contacto</span>
+          <h2>Estamos<br>en Madrid</h2>
+        </div>
+        <div class="contact-info reveal">
+          <div class="cinfo"><div class="k">Dirección</div><div class="val">Calle Mecánicos 45<br>Polígono Industrial · 28010 Madrid</div></div>
+          <div class="cinfo"><div class="k">Teléfono</div><div class="val"><a href="tel:643199580">643 199 580</a></div></div>
+          <div class="cinfo"><div class="k">Horario</div><div class="val">L–V 8:00–19:00<br>Sábado 9:00–14:00 · Domingo cerrado</div></div>
+          <div class="cinfo"><div class="k">Email</div><div class="val"><a href="mailto:comercial@whitemoon.es">comercial@whitemoon.es</a></div></div>
+        </div>
+      </div>
+      <div class="contact-cta reveal">
+        <h3>Reserva tu cita</h3>
+        <p>Cuéntale a Diego qué necesita tu coche. Recoge tus datos y el taller te contacta para confirmar la cita.</p>
+        <button class="btn" onclick="openChat()">Hablar con Diego</button>
+        <div class="grua"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h9M3 12h11l4 4h2v1M18 17a2 2 0 1 0 4 0 2 2 0 1 0-4 0M9 17a2 2 0 1 0-4 0 2 2 0 1 0 4 0M14 12V7h3l3 4"/></svg>Grúa concertada disponible 24h</div>
       </div>
     </div>
-    <div>
-      <button class="btn-primary" style="width:100%;justify-content:center;margin-bottom:12px" onclick="toggleChat(true)"> Pedir cita online</button>
-      <button class="btn-secondary" style="width:100%;justify-content:center" onclick="toggleChat(true)"> Tengo una avería urgente</button>
-    </div>
+    <footer class="foot">
+      <div class="foot-inner">
+        <span>© 2026 Taller Ejemplo · Mecánica en Madrid desde 1995 · Demo</span>
+        <span class="foot-wm">Demo IA por <a href="https://whitemoon.es" target="_blank" rel="noopener"><b>WhiteMoon</b></a></span>
+      </div>
+    </footer>
   </div>
 </section>
-
-<div class="footer">
-  © 2026 Taller Ejemplo · Demo · Powered by <a href="https://whitemoon.es" target="_blank">WhiteMoon Agencia IA</a>
-</div>
-
-<!-- TEASER -->
-<div class="teaser" id="teaser">
-  <button class="teaser-close" onclick="dismissTeaser()" aria-label="Cerrar">✕</button>
-  <span id="teaserText">¿Coche parado o testigo encendido? Respuesta inmediata </span>
-</div>
-
-<!-- FAB — llave inglesa + 2 aros de energía via ::before/::after -->
-<button class="fab" id="fab" onclick="toggleChat()" aria-label="Abrir chat DIEGO">🔧</button>
-
-<!-- CHAT WIDGET -->
-<div class="widget" id="widget">
+<!-- CHATBOT DIEGO -->
+<button class="fab" id="fab" aria-label="Abrir asistente Diego" onclick="toggleChat()">
+  <span class="ripple" aria-hidden="true"></span>
+  <span class="ripple" aria-hidden="true"></span>
+  <span class="ripple" aria-hidden="true"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+</button>
+<div class="chat" id="chat" aria-live="polite">
   <div class="chat-head">
-    <div class="chat-head-info">
-      <div class="chat-avatar"></div>
-      <div>
-        <div class="chat-head-name">DIEGO · Asistente del taller</div>
-        <div class="chat-head-sub">En línea · Respuesta inmediata</div>
-      </div>
-    </div>
-    <button class="chat-close" onclick="toggleChat(false)" aria-label="Cerrar chat">✕</button>
+    <div class="chat-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+    <div class="hi"><b>Diego</b><small><i></i>Asistente · Taller Ejemplo</small></div>
+    <button class="chat-x" aria-label="Cerrar" onclick="toggleChat()">×</button>
   </div>
-
-  <div class="chat-msgs" id="msgs">
-    <div class="msg bot">¡Ey! Soy Diego  — asistente del taller. Te ayudo con citas, precios y averías. ¿Qué le pasa al coche?</div>
-    <div class="quick-btns" id="initBtns">
-      <button class="quick-btn urgente" onclick="pickMain(this,'averia')"> Avería / coche parado</button>
-      <button class="quick-btn" onclick="pickMain(this,'aceite')"> Cambio aceite + filtros</button>
-      <button class="quick-btn" onclick="pickMain(this,'mecanica')"> Mecánica general</button>
-      <button class="quick-btn" onclick="pickMain(this,'pintura')"> Chapa y pintura</button>
-      <button class="quick-btn" onclick="pickMain(this,'diagnosis')"> Diagnóstico electrónico</button>
-      <button class="quick-btn" onclick="pickMain(this,'itv')"> Pre-revisión ITV</button>
-      <button class="quick-btn" onclick="pickMain(this,'neumaticos')"> Neumáticos</button>
-      <button class="quick-btn" onclick="pickMain(this,'precios')"> Ver precios</button>
-    </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="quicks" id="quicks">
+    <button class="quick" onclick="quickSend('Revisión y mantenimiento')">Mantenimiento</button>
+    <button class="quick" onclick="quickSend('Cambio de aceite y filtros')">Aceite y filtros</button>
+    <button class="quick" onclick="quickSend('Frenos y suspensión')">Frenos</button>
+    <button class="quick" onclick="quickSend('Diagnóstico electrónico')">Diagnosis</button>
+    <button class="quick" onclick="quickSend('Neumáticos y alineación')">Neumáticos</button>
+    <button class="quick" onclick="quickSend('Chapa y pintura')">Chapa y pintura</button>
   </div>
-
-  <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')sendMsg()" autocomplete="off">
-    <button class="send-btn" onclick="sendMsg()" aria-label="Enviar">
-      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+  <form class="chat-input" id="chatForm" autocomplete="off">
+    <input id="chatInput" type="text" placeholder="Escribe tu consulta…" aria-label="Mensaje" />
+    <button type="submit" id="chatSend" aria-label="Enviar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
     </button>
-  </div>
-  <div class="chat-foot">Powered by <a href="https://whitemoon.es" target="_blank">WhiteMoon</a></div>
+  </form>
+  <div class="chat-foot">Powered by <a href="https://whitemoon.es" target="_blank" rel="noopener">WhiteMoon</a></div>
 </div>
-
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-// ====================================================
-// CONFIGURACIÓN — CAMBIAR POR DATOS REALES DEL CLIENTE
-// ====================================================
-var SUPABASE_URL = 'https://mlaqtniujnvfxcvcourm.supabase.co';
-var EDGE_FN     = SUPABASE_URL + '/functions/v1/taller-notify';
-// ====================================================
-
-var state = {
-  step:0, mode:'normal',
-  service:'', zona:'', sintoma:'',
-  name:'', apellidos:'', tel:'', matricula:'', modelo:'',
-  date:'', time:''
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* NAV */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => { burger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mobileMenu.classList.remove('open'); burger.classList.remove('open'); }));
+/* scroll-spy */
+const spy=[...document.querySelectorAll('#navLinks a')];
+addEventListener('scroll',()=>{let cur='';document.querySelectorAll('section[id]').forEach(s=>{if(scrollY>=s.offsetTop-140)cur=s.id});spy.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))},{passive:true});
+/* MARQUEE duplicado para loop continuo */
+(function(){const m=document.getElementById('marquee');if(m)m.innerHTML+=m.innerHTML;})();
+/* ROTATING WORD */
+const words = ['Mantenimiento','Diagnosis','Frenos','Chapa y pintura'];
+let wi = 0; const rotEl = document.getElementById('rotWord');
+if (!REDUCED) setInterval(() => { rotEl.classList.add('out'); setTimeout(() => { wi=(wi+1)%words.length; rotEl.textContent=words[wi]; rotEl.classList.remove('out'); }, 450); }, 2400);
+/* FAQ */
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+/* REVEAL */
+function showAll(){document.querySelectorAll('.reveal').forEach(e=>e.classList.add('is-in'))}
+window.addEventListener('DOMContentLoaded', function(){
+  if (REDUCED || typeof gsap === 'undefined'){ showAll(); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.batch('.reveal', {start:'top 88%', onEnter: b => b.forEach(x=>x.classList.add('is-in'))});
+  gsap.from('.hero h1 .ml, .hero h1 .accent', {y:60, opacity:0, duration:1, stagger:.12, ease:'power4.out', delay:.15});
+  gsap.utils.toArray('.bignum').forEach(n => gsap.to(n, {yPercent:-14, ease:'none', scrollTrigger:{trigger:n.closest('section'), start:'top bottom', end:'bottom top', scrub:true}}));
+});
+/* ===== CHATBOT DIEGO — 100% cliente, lead + agenda (Supabase + CallMeBot) ===== */
+const SUPABASE_URL = 'https://mlaqtniujnvfxcvcourm.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_6no6BuOgiA_2nonTJntAuQ_DTqEgrcV';
+const NOTIFY_FN = SUPABASE_URL + '/functions/v1/talleres-notify';
+const TALLER = 'Taller Ejemplo';
+const chat = document.getElementById('chat');
+const fab = document.getElementById('fab');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const quicks = document.getElementById('quicks');
+let greeted=false, estado='inicio', leadNombre='', leadTelefono='', leadServicio='', leadDiaISO='', leadDiaLegible='', leadHora='';
+let calY, calM, leadDiaEsSabado=false;
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+/* Horario taller: L-V 08:00-19:00 (mañana y tarde) · Sábado 09:00-14:00 (solo mañana) · Domingo cerrado */
+const SLOTS_LV=['08:30','09:30','10:30','11:30','12:30','16:00','17:00','18:00'];
+const SLOTS_SAB=['09:00','10:00','11:00','12:00','13:00'];
+/* Qué incluye cada servicio (descripciones reales de la demo). Las claves deben coincidir
+   con los nombres que usan los chips/openChat y detectarServicio(). */
+const SERVICE_INFO={
+  'Revisión y mantenimiento':'Revisiones periódicas, pre-ITV y puesta a punto completa desde 35€. Revisamos frenos, filtros, líquidos, neumáticos y el estado general del vehículo, y te decimos exactamente qué necesita tu coche antes de hacer nada. La pre-revisión ITV comprueba todos los puntos de inspección para que pases a la primera.',
+  'Cambio de aceite y filtros':'Aceite + filtro desde 50€ y pack de 4 filtros completo (aceite, aire, polen y combustible) desde 80€. Listo en unos 30 minutos con aceite y recambios de primera marca. Ideal para el mantenimiento periódico del motor.',
+  'Frenos y suspensión':'Pastillas, discos, amortiguadores y rótulas desde 90€, con piezas de primera marca y dos años de garantía. Pastillas por eje desde 90€ y discos + pastillas por eje desde 180€. Revisamos todo el sistema de seguridad y te presupuestamos en cerrado antes de empezar.',
+  'Diagnóstico electrónico':'Diagnosis OBD desde 30€: leemos centralitas, testigos del cuadro y fallos eléctricos con equipo de última generación. Si luego reparamos con nosotros, el importe del diagnóstico se descuenta de la factura. También hacemos codificación de centralitas desde 60€.',
+  'Neumáticos y alineación':'Neumático de turismo con montaje incluido desde 60€/ud, y alineación + equilibrado desde 50€. Trabajamos primeras marcas y opciones económicas, con asesoramiento sin presión para que elijas lo que mejor encaja con tu coche y tu uso.',
+  'Chapa y pintura':'Siniestros, abolladuras, retoques y pintado completo con cabina de pintura propia. El presupuesto es gratis y gestionamos el parte directamente con tu aseguradora, así que solo tienes que traernos el coche.'
 };
-
-/* ===== WIDGET / TEASER ===== */
-function toggleChat(force){
-  var w = document.getElementById('widget');
-  var open = typeof force === 'boolean' ? force : !w.classList.contains('open');
-  w.classList.toggle('open', open);
-  if(open){
-    dismissTeaser();
-    var nav = document.getElementById('navLinks');
-    if(nav) nav.classList.remove('open');
-    setTimeout(function(){
-      var inp = document.getElementById('chatInput');
-      if(inp && window.innerWidth > 560) inp.focus();
-    }, 350);
+function toggleChat(){
+  const open = chat.classList.toggle('open');
+  fab.style.display = open ? 'none' : 'flex';
+  if (open && !greeted){ greeted=true; setTimeout(()=>botSay('Hola, soy Diego, el asistente de Taller Ejemplo. Puedo ayudarte con mantenimiento, aceite y filtros, frenos, diagnosis electrónica, neumáticos o chapa y pintura, y reservar tu cita. ¿Qué necesita tu coche?'), 280); }
+  if (open) setTimeout(()=>chatInput.focus(), 350);
+}
+function openChat(servicio){
+  if (!chat.classList.contains('open')) toggleChat();
+  if (servicio){ if(!greeted){greeted=true;} setTimeout(()=>{ addMsg(servicio,'me'); presentarServicio(servicio); },320); }
+}
+/* Detecta el servicio por intención de palabras -> nombre canónico (o null). */
+function detectarServicio(t){
+  t=(t||'').toLowerCase();
+  if (t.includes('aceite')||t.includes('filtro')) return 'Cambio de aceite y filtros';
+  if (t.includes('freno')||t.includes('suspension')||t.includes('suspensión')||t.includes('amortigua')||t.includes('pastilla')||t.includes('disco')) return 'Frenos y suspensión';
+  if (t.includes('diagnos')||t.includes('obd')||t.includes('electr')||t.includes('centralita')||t.includes('testigo')||t.includes('averia')||t.includes('avería')||t.includes('fallo')) return 'Diagnóstico electrónico';
+  if (t.includes('neumat')||t.includes('neumát')||t.includes('rueda')||t.includes('alinea')||t.includes('equilibr')) return 'Neumáticos y alineación';
+  if (t.includes('chapa')||t.includes('pintura')||t.includes('carroceria')||t.includes('carrocería')||t.includes('golpe')||t.includes('abolla')||t.includes('siniestro')) return 'Chapa y pintura';
+  if (t.includes('mantenim')||t.includes('revision')||t.includes('revisión')||t.includes('itv')||t.includes('puesta a punto')) return 'Revisión y mantenimiento';
+  return null;
+}
+/* Al elegir servicio: primero informa qué incluye y LUEGO enlaza con la reserva. */
+function presentarServicio(servicio){
+  leadServicio=servicio;
+  if(quicks)quicks.style.display='none';
+  showTyping();
+  setTimeout(()=>{
+    hideTyping();
+    const info=SERVICE_INFO[servicio];
+    if(info) botSay(info);
+    showTyping();
+    setTimeout(()=>{
+      hideTyping();
+      estado='esperando_dia';
+      botSay('¿Te reservo cita? Dime, ¿para qué día? Elígelo en el calendario (L-V 8:00-19:00 · sábado 9:00-14:00):');
+      showCalendar();
+    },760);
+  },540);
+}
+function addMsg(text,who){const el=document.createElement('div');el.className='msg '+who;el.textContent=text;chatBody.appendChild(el);chatBody.scrollTop=chatBody.scrollHeight}
+function botSay(text){addMsg(text,'bot')}
+function showTyping(){const t=document.createElement('div');t.className='typing';t.id='typing';t.innerHTML='<span></span><span></span><span></span>';chatBody.appendChild(t);chatBody.scrollTop=chatBody.scrollHeight}
+function hideTyping(){const t=document.getElementById('typing');if(t)t.remove()}
+/* ===== Agenda: calendario (día) + franjas (hora) ===== */
+function showCalendar(){ const n=new Date(); calY=n.getFullYear(); calM=n.getMonth(); renderCalendar(); }
+function renderCalendar(){
+  let w=document.getElementById('calWidget');
+  if(!w){ w=document.createElement('div'); w.id='calWidget'; chatBody.appendChild(w); }
+  w.className='cal'; w.innerHTML='';
+  const n=new Date(); const today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  const atCur=(calY===n.getFullYear()&&calM===n.getMonth());
+  const head=document.createElement('div'); head.className='cal-head';
+  const prev=document.createElement('button'); prev.type='button'; prev.className='cal-nav'; prev.textContent='‹'; prev.setAttribute('aria-label','Mes anterior'); prev.disabled=atCur;
+  prev.onclick=()=>{ if(prev.disabled)return; calM--; if(calM<0){calM=11;calY--;} renderCalendar(); };
+  const title=document.createElement('span'); title.className='cal-title'; title.textContent=MESES[calM]+' '+calY;
+  const next=document.createElement('button'); next.type='button'; next.className='cal-nav'; next.textContent='›'; next.setAttribute('aria-label','Mes siguiente');
+  next.onclick=()=>{ calM++; if(calM>11){calM=0;calY++;} renderCalendar(); };
+  head.append(prev,title,next); w.appendChild(head);
+  const dow=document.createElement('div'); dow.className='cal-grid cal-dow';
+  ['L','M','X','J','V','S','D'].forEach(x=>{ const s=document.createElement('span'); s.textContent=x; dow.appendChild(s); });
+  w.appendChild(dow);
+  const grid=document.createElement('div'); grid.className='cal-grid';
+  const start=(new Date(calY,calM,1).getDay()+6)%7;
+  for(let i=0;i<start;i++){ const e=document.createElement('span'); e.className='cal-day empty'; grid.appendChild(e); }
+  const dim=new Date(calY,calM+1,0).getDate();
+  for(let d=1;d<=dim;d++){
+    const cell=document.createElement('button'); cell.type='button'; cell.className='cal-day'; cell.textContent=d;
+    const dt=new Date(calY,calM,d);
+    if(dt<today || dt.getDay()===0){ cell.disabled=true; cell.classList.add('disabled'); } /* domingo (0) cerrado */
+    else { cell.onclick=()=>pickDay(calY,calM,d,cell); }
+    grid.appendChild(cell);
   }
+  w.appendChild(grid); chatBody.scrollTop=chatBody.scrollHeight;
 }
-
-function dismissTeaser(){
-  var t = document.getElementById('teaser');
-  if(t) t.classList.remove('show');
-  try{ sessionStorage.setItem('wm_teaser_ok','1'); }catch(e){}
+function pickDay(y,m,d,cell){
+  const dow=new Date(y,m,d).getDay();
+  leadDiaEsSabado=(dow===6);
+  leadDiaISO=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  leadDiaLegible=DIAS[dow]+' '+d+' de '+MESES[m];
+  const w=document.getElementById('calWidget');
+  if(w){ w.classList.add('locked'); w.querySelectorAll('.cal-day,.cal-nav').forEach(b=>b.disabled=true); cell.classList.add('sel'); }
+  estado='esperando_hora'; showTyping();
+  setTimeout(()=>{ hideTyping(); botSay('Genial, el '+leadDiaLegible+(leadDiaEsSabado?' (sábado, solo mañanas)':'')+'. ¿A qué hora te viene mejor?'); showSlots(); },450);
 }
-
-setTimeout(function(){
-  try{ if(sessionStorage.getItem('wm_teaser_ok')) return; }catch(e){}
-  if(document.getElementById('widget').classList.contains('open')) return;
-  var t = document.getElementById('teaser');
-  if(t) t.classList.add('show');
-}, 5500);
-
-window.addEventListener('scroll', function(){
-  if(window.scrollY > 700) dismissTeaser();
-}, {passive:true});
-
-/* ===== HELPERS CHAT ===== */
-function addMsg(text, type){
-  var c = document.getElementById('msgs');
-  var d = document.createElement('div');
-  d.className = 'msg ' + (type || 'bot');
-  d.textContent = text;
-  c.appendChild(d);
-  c.scrollTop = c.scrollHeight;
+function showSlots(){
+  const w=document.createElement('div'); w.className='slots'; w.id='slotWidget';
+  const franjas=leadDiaEsSabado?SLOTS_SAB:SLOTS_LV;
+  franjas.forEach(h=>{ const b=document.createElement('button'); b.type='button'; b.className='slot'; b.textContent=h; b.onclick=()=>pickHora(h,b); w.appendChild(b); });
+  chatBody.appendChild(w); chatBody.scrollTop=chatBody.scrollHeight;
 }
-
-function addHtml(html){
-  var c = document.getElementById('msgs');
-  var d = document.createElement('div');
-  d.innerHTML = html;
-  c.appendChild(d);
-  c.scrollTop = c.scrollHeight;
+function pickHora(h,btn){
+  leadHora=h;
+  const w=document.getElementById('slotWidget');
+  if(w){ w.classList.add('locked'); w.querySelectorAll('.slot').forEach(b=>b.disabled=true); btn.classList.add('sel'); }
+  estado='esperando_nombre'; showTyping();
+  setTimeout(()=>{ hideTyping(); botSay('Perfecto. ¿A nombre de quién pongo la cita?'); },450);
 }
-
-function removeEl(id){
-  var e = document.getElementById(id);
-  if(e) e.remove();
+/* Guarda el lead con cita en Supabase (leads_web) y notifica al taller por WhatsApp
+   (edge function talleres-notify -> CallMeBot). Sin abrir WhatsApp en el cliente. */
+function saveLead(nombre,telefono,servicio,citaDia,citaHora){
+  fetch(SUPABASE_URL+'/rest/v1/leads_web',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},
+    body:JSON.stringify({nombre,telefono,sector:'automocion',interes:servicio,mensaje:'Servicio: '+servicio,origen:'demo-talleres',cita_dia:citaDia,cita_hora:citaHora})
+  }).catch(()=>{});
 }
-
-function typing(cb, ms){
-  var c = document.getElementById('msgs');
-  var d = document.createElement('div');
-  d.className = 'msg-typing';
-  d.id = 'typing';
-  d.innerHTML = '<span></span><span></span><span></span>';
-  c.appendChild(d);
-  c.scrollTop = c.scrollHeight;
-  setTimeout(function(){
-    removeEl('typing');
-    cb();
-  }, ms || 750);
+function notifyLead(nombre,telefono,servicio,citaDia,citaHora){
+  fetch(NOTIFY_FN,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON},
+    body:JSON.stringify({taller:TALLER,nombre,telefono,servicio,cita_dia:citaDia,cita_hora:citaHora,origen:'demo-talleres'})
+  }).catch(()=>{});
 }
-
-function resetState(){
-  state = {step:0,mode:'normal',service:'',zona:'',sintoma:'',name:'',apellidos:'',tel:'',matricula:'',modelo:'',date:'',time:''};
+function procesarMensaje(texto){
+  const t=texto.toLowerCase().trim();
+  if (estado==='esperando_nombre'){ leadNombre=texto.trim(); estado='esperando_telefono'; return `Gracias, ${leadNombre}. ¿Un teléfono de contacto para confirmarte la cita?`; }
+  if (estado==='esperando_telefono'){ leadTelefono=texto.trim(); estado='inicio'; const servicioLead=leadServicio||'Consulta general'; saveLead(leadNombre,leadTelefono,servicioLead,leadDiaISO,leadHora); notifyLead(leadNombre,leadTelefono,servicioLead,leadDiaLegible,leadHora); const cierre=`Gracias, ${leadNombre}. Hemos anotado tu cita de ${servicioLead.toLowerCase()} para el ${leadDiaLegible} a las ${leadHora}. Un compañero de Taller Ejemplo te llamará al ${leadTelefono} para confirmarla. Recuerda: la cita queda pendiente de confirmación por teléfono.`; leadServicio=''; leadDiaISO=''; leadDiaLegible=''; leadHora=''; return cierre; }
+  if (estado==='esperando_dia'){ return 'Elige el día que prefieras en el calendario para continuar.'; }
+  if (estado==='esperando_hora'){ return 'Elige una de las horas disponibles para continuar.'; }
+  if (t.includes('cita') || t.includes('reserv') || t.includes('presupuest') || t.includes('precio') || t.includes('agenda') || t.includes('contact')){ estado='esperando_dia'; return 'Con gusto reservo tu cita. ¿Qué día te viene bien? Elígelo en el calendario (L-V 8:00-19:00 · sábado 9:00-14:00):'; }
+  if (t.includes('hola') || t.includes('buenas') || t.includes('buenos')){ return 'Hola, soy Diego, el asistente de Taller Ejemplo. ¿Con qué servicio te ayudo: mantenimiento, aceite y filtros, frenos, diagnosis electrónica, neumáticos o chapa y pintura?'; }
+  if (t.includes('grua') || t.includes('grúa') || t.includes('parado') || t.includes('carretera')){ return 'Tenemos grúa concertada 24 horas. Escribe "cita" y te reservo la visita, o llama al 643 199 580 si el coche está parado ahora mismo.'; }
+  return 'Puedo ayudarte con mantenimiento, aceite y filtros, frenos, diagnosis electrónica, neumáticos o chapa y pintura. Escribe "cita" y reservamos tu visita al taller.';
 }
-
-function showInitBtns(){
-  addHtml('<div class="quick-btns" id="initBtns">'+
-    '<button class="quick-btn urgente" onclick="pickMain(this,\'averia\')"> Avería / coche parado</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'aceite\')"> Cambio aceite + filtros</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'mecanica\')"> Mecánica general</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'pintura\')"> Chapa y pintura</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'diagnosis\')"> Diagnóstico electrónico</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'itv\')"> Pre-revisión ITV</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'neumaticos\')"> Neumáticos</button>'+
-    '<button class="quick-btn" onclick="pickMain(this,\'precios\')"> Ver precios</button>'+
-  '</div>');
+function send(text){
+  if(!text||!text.trim())return;
+  if(quicks)quicks.style.display='none';
+  addMsg(text,'me'); chatInput.value='';
+  /* Si nombra un servicio al inicio: informa qué incluye y luego lleva a la reserva. */
+  if(estado==='inicio'){ const svc=detectarServicio(text); if(svc){ chatInput.focus(); presentarServicio(svc); return; } }
+  chatSend.disabled=true; showTyping();
+  const reply=procesarMensaje(text);
+  setTimeout(()=>{hideTyping();if(reply)botSay(reply);chatSend.disabled=false;if(estado==='esperando_dia'&&!document.getElementById('calWidget'))showCalendar();chatInput.focus()},520);
 }
-
-/* ===== INFO BLOCKS ===== */
-var INFO = {
-  aceite:    '<div class="info-block"> <strong>Aceite + filtro: desde 50€.</strong> Pack 4 filtros (aceite, aire, polen, combustible): desde 80€. Listo en 30 min.</div>',
-  mecanica:  '<div class="info-block"> <strong>Mano de obra desde 50€/h.</strong> Presupuesto cerrado siempre antes de empezar.</div>',
-  diagnosis: '<div class="info-block"> <strong>Diagnóstico OBD: desde 30€.</strong> Si luego reparamos, el diagnóstico se descuenta de la factura.</div>',
-  itv:       '<div class="info-block"> <strong>Pre-revisión ITV: desde 35€.</strong> Revisamos todos los puntos de inspección. Si necesitas ajustes, te los presupuestamos al momento.</div>',
-  neumaticos:'<div class="info-block"> <strong>Neumático turismo: desde 60€/ud (montaje incluido).</strong> Alineación + equilibrado desde 50€. Primeras marcas y económicas.</div>'
-};
-
-/* ===== FLUJO PRINCIPAL ===== */
-function pickMain(el, type){
-  addMsg(el.textContent.trim(), 'user');
-  removeEl('initBtns');
-
-  if(type === 'averia'){
-    state.mode = 'urgente';
-    typing(function(){
-      addMsg('Va, vamos rápido. ¿Qué le pasa exactamente?');
-      addHtml('<div class="quick-btns" id="averiaBtns">'+
-        '<button class="quick-btn urgente" onclick="pickAveria(this,\'No arranca\')">No arranca</button>'+
-        '<button class="quick-btn urgente" onclick="pickAveria(this,\'Ruido raro\')">Hay un ruido raro</button>'+
-        '<button class="quick-btn urgente" onclick="pickAveria(this,\'Testigo encendido\')">Testigo encendido</button>'+
-        '<button class="quick-btn urgente" onclick="pickAveria(this,\'Golpe o accidente\')">Golpe / accidente</button>'+
-        '<button class="quick-btn urgente" onclick="pickAveria(this,\'Humo o liquido\')">Sale humo o líquido</button>'+
-      '</div>');
-    });
-    return;
-  }
-
-  if(type === 'precios'){
-    typing(function(){
-      addMsg('Aquí tienes los precios orientativos (IVA incluido):');
-      addHtml('<div class="price-table">'+
-        '<div class="pt-title">Precios orientativos · 2026</div>'+
-        '<div class="pt-row"><span class="pt-name">Cambio aceite + filtro</span><span class="pt-price">desde 50€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Pack 4 filtros completo</span><span class="pt-price">desde 80€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Pre-revisión ITV</span><span class="pt-price">desde 35€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Pastillas freno (eje)</span><span class="pt-price">desde 90€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Discos + pastillas (eje)</span><span class="pt-price">desde 180€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Diagnóstico OBD</span><span class="pt-price">desde 30€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Mecánica general</span><span class="pt-price">desde 50€/h</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Neumático turismo (montaje)</span><span class="pt-price">desde 60€/ud</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Alineación + equilibrado</span><span class="pt-price">desde 50€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">A/C recarga + revisión</span><span class="pt-price">desde 60€</span></div>'+
-        '<div class="pt-row"><span class="pt-name">Cambio embrague (m.o.)</span><span class="pt-price">desde 350€</span></div>'+
-      '</div>');
-      setTimeout(function(){
-        addMsg('¿Quieres cita para alguno de estos servicios?');
-        addHtml('<div class="quick-btns"><button class="quick-btn" onclick="backToMenu(this)"> Sí, pedir cita</button></div>');
-      }, 400);
-    });
-    return;
-  }
-
-  if(type === 'menu'){
-    resetState();
-    typing(function(){
-      addMsg('Perfecto, ¿para qué servicio quieres cita?');
-      showInitBtns();
-    }, 400);
-    return;
-  }
-
-  if(type === 'pintura'){
-    state.service = 'Chapa y pintura';
-    typing(function(){
-      addMsg('¿Qué zona del coche necesita trabajo?');
-      addHtml('<div class="quick-btns" id="zonaBtns">'+
-        '<button class="quick-btn" onclick="pickZona(this)">Capó</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Aleta delantera izquierda</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Aleta delantera derecha</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Aleta trasera izquierda</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Aleta trasera derecha</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Paragolpes delantero</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Paragolpes trasero</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Puerta delantera</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Puerta trasera</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Techo</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Portón trasero</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Vehículo completo</button>'+
-        '<button class="quick-btn" onclick="pickZona(this)">Otra zona</button>'+
-      '</div>');
-    });
-    return;
-  }
-
-  if(type === 'aceite'){
-    state.service = 'Cambio de aceite y filtros';
-    typing(function(){ addHtml(INFO.aceite); setTimeout(askName, 400); });
-    return;
-  }
-  if(type === 'mecanica'){
-    state.service = 'Mecánica general';
-    typing(function(){
-      addMsg('¿Qué tipo de trabajo necesitas?');
-      addHtml('<div class="quick-btns" id="mecBtns">'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Cambio de frenos\')">Cambio de frenos</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Distribución\')">Distribución</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Embrague\')">Embrague</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Suspensión / amortiguadores\')">Suspensión</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Batería\')">Batería</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Aire acondicionado\')">Aire acondicionado</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Revisión general\')">Revisión general</button>'+
-        '<button class="quick-btn" onclick="pickSub(this,\'Otro trabajo mecánico\')">Otro</button>'+
-      '</div>');
-    });
-    return;
-  }
-  if(type === 'diagnosis'){ state.service = 'Diagnóstico electrónico'; typing(function(){ addHtml(INFO.diagnosis); setTimeout(askName,400); }); return; }
-  if(type === 'itv'){ state.service = 'Pre-revisión ITV'; typing(function(){ addHtml(INFO.itv); setTimeout(askName,400); }); return; }
-  if(type === 'neumaticos'){ state.service = 'Neumáticos'; typing(function(){ addHtml(INFO.neumaticos); setTimeout(askName,400); }); return; }
-}
-
-function backToMenu(el){
-  addMsg(el.textContent.trim(),'user');
-  el.parentElement.remove();
-  resetState();
-  typing(function(){
-    addMsg('¿Para qué servicio quieres la cita?');
-    showInitBtns();
-  },400);
-}
-
-/* ===== AVERÍA URGENTE ===== */
-function pickAveria(el, sintoma){
-  state.sintoma = sintoma;
-  state.service = 'AVERÍA URGENTE - ' + sintoma;
-  addMsg(el.textContent.trim(), 'user');
-  removeEl('averiaBtns');
-  typing(function(){
-    addMsg('Entendido. Dame tu nombre para que el taller te llame ahora.');
-    state.step = 11;
-  }, 600);
-}
-
-/* ===== ZONA / SUB-SERVICIO ===== */
-function pickZona(el){
-  state.zona = el.textContent.trim();
-  state.service = 'Chapa y pintura - ' + state.zona;
-  addMsg(el.textContent.trim(), 'user');
-  removeEl('zonaBtns');
-  askName();
-}
-
-function pickSub(el, nombre){
-  state.service = 'Mecánica - ' + nombre;
-  addMsg(el.textContent.trim(), 'user');
-  removeEl('mecBtns');
-  askName();
-}
-
-/* ===== FORMULARIO NORMAL ===== */
-function askName(){
-  typing(function(){
-    addMsg('Para reservar la cita de ' + state.service + ', necesito unos datos.\n\n¿Cómo te llamas?');
-    state.step = 1;
-  });
-}
-
-/* ===== INPUT ===== */
-function sendMsg(){
-  var inp = document.getElementById('chatInput');
-  var m = inp.value.trim();
-  if(!m) return;
-  inp.value = '';
-  addMsg(m, 'user');
-
-  /* FLUJO URGENTE: nombre → tel → matrícula */
-  if(state.step === 11){
-    state.name = m;
-    state.step = 12;
-    typing(function(){ addMsg('Gracias ' + state.name + '. ¿Un teléfono para llamarte ahora mismo?'); }, 500);
-    return;
-  }
-  if(state.step === 12){
-    if(!validarTel(m)){ typing(function(){ addMsg('Ese número no parece correcto. ¿Me lo repites?'); },400); return; }
-    state.tel = m;
-    state.step = 13;
-    typing(function(){ addMsg('Anotado. ¿Matrícula del vehículo?'); }, 500);
-    return;
-  }
-  if(state.step === 13){
-    state.matricula = m.toUpperCase();
-    state.step = 99;
-    typing(function(){
-      addMsg('Perfecto. Tu solicitud urgente está registrada. El taller te llama en 5 minutos.\n\nSi el coche está en zona peligrosa, sal del vehículo y pon los warnings.');
-      enviarLead(true);
-    }, 500);
-    return;
-  }
-
-  /* FLUJO NORMAL: nombre → apellidos → tel → matrícula → modelo → fecha → hora */
-  if(state.step === 1){ state.name = m; state.step = 2; typing(function(){ addMsg('Encantado, ' + state.name + '. ¿Tus apellidos?'); },500); }
-  else if(state.step === 2){ state.apellidos = m; state.step = 3; typing(function(){ addMsg('¿Un teléfono móvil para confirmar la cita?'); },500); }
-  else if(state.step === 3){
-    if(!validarTel(m)){ typing(function(){ addMsg('Ese número no parece correcto. ¿Me lo repites?'); },400); return; }
-    state.tel = m; state.step = 4;
-    typing(function(){ addMsg('Perfecto. ¿Matrícula del vehículo?'); },500);
-  }
-  else if(state.step === 4){
-    if(!validarMatricula(m)){ typing(function(){ addMsg('Esa matrícula no la reconozco (ej: 1234ABC o B1234CD). ¿Me la confirmas?'); },400); return; }
-    state.matricula = m.toUpperCase(); state.step = 5;
-    typing(function(){ addMsg('¿Marca y modelo del coche? (ej: Seat León, Ford Focus...)'); },500);
-  }
-  else if(state.step === 5){ state.modelo = m; state.step = 6; typing(function(){ addMsg('Último paso: elige el día que prefieres.\n\n La fecha y hora son orientativas. El taller te llamará para confirmar disponibilidad.'); setTimeout(showCalendar,400); },500); }
-  else if(state.step === 99){ typing(function(){ addMsg('Tu solicitud ya está registrada. El taller te contactará pronto. ¡Gracias por confiar en nosotros!'); },400); }
-}
-
-/* ===== VALIDACIONES ===== */
-function validarTel(t){
-  return /^[6-9]\d{8}$/.test(t.replace(/\s/g,''));
-}
-function validarMatricula(m){
-  var clean = m.replace(/\s/g,'').toUpperCase();
-  return /^\d{4}[A-Z]{3}$/.test(clean) || /^[A-Z]{1,2}\d{4}[A-Z]{1,2}$/.test(clean) || /^[A-Z]{1,2}\d{4,5}$/.test(clean);
-}
-
-/* ===== CALENDARIO ===== */
-function showCalendar(){
-  var today = new Date(), mo = today.getMonth(), yr = today.getFullYear();
-  var dim = new Date(yr, mo+1, 0).getDate();
-  var fd = new Date(yr, mo, 1).getDay();
-  var off = fd === 0 ? 6 : fd - 1;
-  var mn = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  var h = '<div class="cal"><div class="cal-title">' + mn[mo] + ' ' + yr + '</div><div class="cal-grid">';
-  ['L','M','X','J','V','S','D'].forEach(function(d){ h += '<div class="cal-day">'+d+'</div>'; });
-  for(var i=0;i<off;i++) h += '<div></div>';
-  for(var d=1;d<=dim;d++){
-    var dt = new Date(yr,mo,d), dw = dt.getDay();
-    var past = dt < new Date(today.getFullYear(),today.getMonth(),today.getDate());
-    var ds = d+'/'+(mo+1)+'/'+yr;
-    if(past || dw===0 || dw===6){ h += '<div class="cal-off">'+d+'</div>'; }
-    else{ h += '<div class="cal-num" onclick="pickDate(this,\''+ds+'\')">'+d+'</div>'; }
-  }
-  h += '</div></div>';
-  addHtml(h);
-}
-
-function pickDate(el, ds){
-  el.closest('.cal-grid').querySelectorAll('.cal-num').forEach(function(x){ x.classList.remove('sel'); });
-  el.classList.add('sel');
-  state.date = ds;
-  addMsg(ds, 'user');
-  typing(function(){ addMsg('Día ' + ds + '. ¿A qué hora te viene mejor?\n\nRecuerda: el taller confirmará disponibilidad por teléfono.'); setTimeout(showTimes, 300); }, 500);
-}
-
-function showTimes(){
-  var ts = ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','16:00','16:30','17:00','17:30','18:00','18:30'];
-  var h = '<div class="times">';
-  ts.forEach(function(t){ h += '<button class="time-btn" onclick="pickTime(this,\''+t+'\')">'+t+'</button>'; });
-  h += '</div>';
-  addHtml(h);
-}
-
-function pickTime(el, t){
-  el.parentElement.querySelectorAll('.time-btn').forEach(function(x){ x.classList.remove('sel'); });
-  el.classList.add('sel');
-  state.time = t;
-  state.step = 99;
-  addMsg(state.date + ' a las ' + t, 'user');
-  typing(function(){
-    addMsg('¡Perfecto, ' + state.name + '! Resumen de tu solicitud:\n\n• Nombre: ' + state.name + ' ' + state.apellidos + '\n• Tel: ' + state.tel + '\n• Matrícula: ' + state.matricula + '\n• Vehículo: ' + state.modelo + '\n• Servicio: ' + state.service + '\n• Fecha: ' + state.date + ' a las ' + state.time + '\n\nEnviando al taller...');
-    setTimeout(function(){ enviarLead(false); }, 1000);
-  }, 600);
-}
-
-/* ====================================================
-   ENVÍO AL TALLER — VÍA EDGE FUNCTION SUPABASE
-   SIN APIKEYS EN EL CLIENTE
-   ==================================================== */
-function enviarLead(urgente){
-  var payload = {
-    nombre:    state.name + (urgente ? '' : ' ' + state.apellidos),
-    telefono:  state.tel,
-    matricula: state.matricula,
-    modelo:    urgente ? '' : state.modelo,
-    servicio:  state.service,
-    sintoma:   state.sintoma || '',
-    fecha:     state.date || '',
-    hora:      state.time || '',
-    urgente:   urgente,
-    origen:    'chatbot-taller-demo'
-  };
-
-  fetch(EDGE_FN, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).catch(function(){ /* silencioso — no exponer errores al usuario */ });
-
-  if(urgente){
-    addHtml('<div class="urgent-confirm">'+
-      '<div class="wa-icon"></div>'+
-      '<div class="u-title">Solicitud urgente registrada</div>'+
-      '<div class="u-text"><strong>El taller te llama en menos de 5 minutos.</strong><br><br>Si estás en zona peligrosa, sal del vehículo y activa los warnings. Servicio de grúa concertada disponible.</div>'+
-    '</div>');
-  } else {
-    addHtml('<div class="wa-confirm">'+
-      '<div class="wa-icon"></div>'+
-      '<div class="wa-title">¡Solicitud enviada!</div>'+
-      '<div class="wa-text"><strong>Recuerda: la cita aún NO está confirmada.</strong><br><br>El taller revisará la disponibilidad y te llamará para confirmar la fecha definitiva o proponerte alternativa si fuera necesario.<br><br>¡Gracias por confiar en Taller Ejemplo!</div>'+
-    '</div>');
-    typing(function(){
-      addMsg('¿Necesitas algo más? Estoy aquí para ayudarte ');
-    }, 800);
-  }
-}
+function quickSend(text){send(text)}
+document.getElementById('chatForm').addEventListener('submit',e=>{e.preventDefault();send(chatInput.value)});
 </script>
 </body>
 </html>
