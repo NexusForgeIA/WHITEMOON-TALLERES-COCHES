@@ -183,11 +183,10 @@ section[id]{scroll-margin-top:80px}
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:6px}
 .svc-card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .35s,transform .35s,box-shadow .35s}
 .svc-card:hover{transform:translateY(-6px);border-color:var(--p);box-shadow:0 24px 50px -26px rgba(225,29,42,.4)}
-.svc-media{height:150px;position:relative;background:radial-gradient(420px 220px at 78% 12%,rgba(225,29,42,.15),transparent 60%),linear-gradient(160deg,#111116,#0c0c10);overflow:hidden}
-.svc-media .mg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:34px 34px;opacity:.45;transition:transform .7s}
-.svc-card:hover .svc-media .mg{transform:scale(1.08)}
-.svc-media .big{position:absolute;right:16px;top:12px;color:var(--p);opacity:.13}
-.svc-media .big svg{width:96px;height:96px}
+.svc-media{height:180px;position:relative;background:radial-gradient(420px 220px at 78% 12%,rgba(225,29,42,.15),transparent 60%),linear-gradient(160deg,#111116,#0c0c10);overflow:hidden}
+.svc-media .svc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.svc-card:hover .svc-media .svc-img{transform:scale(1.06)}
+.svc-media .svc-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,13,.30) 0%,rgba(12,12,16,.52) 55%,rgba(21,21,27,.94) 100%),radial-gradient(360px 180px at 80% 8%,rgba(225,29,42,.24),transparent 60%)}
 .svc-badge{position:absolute;left:22px;bottom:-26px;z-index:2;width:70px;height:70px;border-radius:13px;background:var(--bg2);border:1.5px solid rgba(225,29,42,.5);display:grid;place-items:center;color:var(--p2);box-shadow:0 16px 34px -12px rgba(0,0,0,.75),0 0 0 3px rgba(225,29,42,.07)}
 .svc-badge svg{width:36px;height:36px;stroke-width:2.1}
 .svc-body{padding:40px 26px 26px;display:flex;flex-direction:column;flex:1}
@@ -530,7 +529,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
     <div class="svc-grid">
       <!-- 1 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80&auto=format&fit=crop" alt="Motor de coche con correas y poleas — revisión y mantenimiento" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
         </div>
         <div class="svc-body">
@@ -541,7 +542,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
       </div>
       <!-- 2 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 8V6a2 2 0 0 1 2-2h2"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?w=600&q=80&auto=format&fit=crop" alt="Cuadro de instrumentos con cuentarrevoluciones — cambio de aceite y filtros" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4l3 3v10a2 2 0 0 1-2 2h-1"/><path d="M3 8h8l3 3v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 8V6a2 2 0 0 1 2-2h2"/></svg></span>
         </div>
         <div class="svc-body">
@@ -552,7 +555,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
       </div>
       <!-- 3 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?w=600&q=80&auto=format&fit=crop" alt="Coche en el taller con iluminación — frenos y suspensión" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></span>
         </div>
         <div class="svc-body">
@@ -563,7 +568,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
       </div>
       <!-- 4 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M6 9l2 3-2 3M11 9v6"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80&auto=format&fit=crop" alt="Coche en primer plano — diagnóstico electrónico" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M6 9l2 3-2 3M11 9v6"/></svg></span>
         </div>
         <div class="svc-body">
@@ -574,7 +581,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
       </div>
       <!-- 5 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1578844251758-2f71da64c96f?w=600&q=80&auto=format&fit=crop" alt="Neumáticos apilados en el taller — neumáticos y alineación" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></span>
         </div>
         <div class="svc-body">
@@ -585,7 +594,9 @@ footer.foot{border-top:1px solid var(--line);padding:34px 0;margin-top:110px}
       </div>
       <!-- 6 -->
       <div class="svc-card reveal">
-        <div class="svc-media"><div class="mg"></div><span class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3-3a4 4 0 0 1 3 6l-4 1-1 4a4 4 0 0 1-6-3l3-3"/><path d="m9 12-6 6a2 2 0 0 0 3 3l6-6"/></svg></span>
+        <div class="svc-media">
+          <img class="svc-img" src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=600&q=80&auto=format&fit=crop" alt="Interior de taller mecánico iluminado — chapa y pintura" width="600" height="400" loading="lazy">
+          <div class="svc-shade"></div>
           <span class="svc-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3-3a4 4 0 0 1 3 6l-4 1-1 4a4 4 0 0 1-6-3l3-3"/><path d="m9 12-6 6a2 2 0 0 0 3 3l6-6"/></svg></span>
         </div>
         <div class="svc-body">
