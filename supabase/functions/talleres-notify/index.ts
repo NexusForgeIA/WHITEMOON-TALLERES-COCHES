@@ -1,0 +1,85 @@
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+
+// talleres-notify — notifica por WhatsApp un nuevo lead de la demo de talleres.
+// El lead ya se inserta en leads_web desde el cliente (origen='demo-talleres',
+// sector='automocion'); esta funcion SOLO envia la notificacion WhatsApp via
+// CallMeBot, manteniendo la apikey EXCLUSIVAMENTE server-side.
+// Mismo patron que estetica-notify / gtautomocion-notify.
+//
+// Secrets del proyecto (Supabase -> Edge Functions -> Secrets):
+//   CALLMEBOT_APIKEY  — apikey de CallMeBot vinculada al numero de WhiteMoon
+//   WA_NUMBER         — numero destino del aviso (por defecto 34643199580)
+//
+// verify_jwt: false (se llama desde el navegador sin sesion; no expone secretos).
+//
+// Recibe (POST JSON): { taller, nombre, telefono, servicio, cita_dia, cita_hora, origen }
+
+const DEFAULT_WA = "34643199580";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
+Deno.serve(async (req: Request) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  const json = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+
+  let payload: Record<string, unknown> = {};
+  try {
+    payload = await req.json();
+  } catch {
+    payload = {};
+  }
+
+  const data = (payload.args ?? payload) as Record<string, unknown>;
+  const taller = String(data.taller ?? "Taller Ejemplo").trim() || "Taller Ejemplo";
+  const nombre = String(data.nombre ?? "").trim() || "-";
+  const telefono = String(data.telefono ?? "").trim() || "-";
+  const servicio = String(data.servicio ?? "").trim() || "-";
+  const origen = String(data.origen ?? "demo-talleres").trim() || "-";
+  const citaDia = String(data.cita_dia ?? "").trim();
+  const citaHora = String(data.cita_hora ?? "").trim();
+
+  const cita = (citaDia || citaHora)
+    ? `\nCita: ${citaDia || "-"}${citaHora ? " a las " + citaHora : ""}`
+    : "";
+
+  const message =
+    `Nuevo lead ${taller} (demo)\n` +
+    `Nombre: ${nombre} | Tel: ${telefono}\n` +
+    `Servicio: ${servicio}` + cita + `\n` +
+    `Origen: ${origen}`;
+
+  const notifyPhone = (Deno.env.get("WA_NUMBER") ?? DEFAULT_WA).trim();
+
+  let notified = false;
+  try {
+    const callmebotKey = Deno.env.get("CALLMEBOT_APIKEY");
+    if (callmebotKey) {
+      const notifyUrl =
+        `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(notifyPhone)}` +
+        `&text=${encodeURIComponent(message)}&apikey=${encodeURIComponent(callmebotKey)}`;
+      const r = await fetch(notifyUrl);
+      notified = r.ok;
+      if (!r.ok) {
+        console.warn("[talleres-notify] CallMeBot fallo:", r.status);
+      }
+    } else {
+      console.warn("[talleres-notify] sin CALLMEBOT_APIKEY, mensaje:", message);
+    }
+  } catch (e) {
+    console.warn("[talleres-notify] error enviando WhatsApp:", e);
+  }
+
+  return json({ ok: true, notified });
+});
