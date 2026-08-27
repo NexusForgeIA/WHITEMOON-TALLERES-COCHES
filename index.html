@@ -849,7 +849,7 @@ window.addEventListener('DOMContentLoaded', function(){
   gsap.from('.hero h1 .ml, .hero h1 .accent', {y:60, opacity:0, duration:1, stagger:.12, ease:'power4.out', delay:.15});
   gsap.utils.toArray('.bignum').forEach(n => gsap.to(n, {yPercent:-14, ease:'none', scrollTrigger:{trigger:n.closest('section'), start:'top bottom', end:'bottom top', scrub:true}}));
 });
-/* ===== CHATBOT DIEGO — 100% cliente, lead + agenda (Supabase + CallMeBot) ===== */
+/* ===== CHATBOT DIEGO — 100% cliente, lead + agenda (Supabase + Telegram) ===== */
 const SUPABASE_URL = 'https://mlaqtniujnvfxcvcourm.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_6no6BuOgiA_2nonTJntAuQ_DTqEgrcV';
 const NOTIFY_FN = SUPABASE_URL + '/functions/v1/talleres-notify';
@@ -974,21 +974,41 @@ function pickHora(h,btn){
   estado='esperando_nombre'; showTyping();
   setTimeout(()=>{ hideTyping(); botSay('Perfecto. ¿A nombre de quién pongo la cita?'); },450);
 }
-/* Guarda el lead con cita en Supabase (leads_web) y notifica al taller por WhatsApp
-   (edge function talleres-notify -> CallMeBot). Sin abrir WhatsApp en el cliente. */
+/* Guarda el lead con cita en Supabase (leads_web) con la publishable key.
+   El aviso al taller lo manda la Edge Function talleres-notify por Telegram:
+   el token del bot vive en los Secrets de Supabase, nunca en el cliente. */
 function saveLead(nombre,telefono,servicio,citaDia,citaHora){
   fetch(SUPABASE_URL+'/rest/v1/leads_web',{
     method:'POST',
+    keepalive:true,
     headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Prefer':'return=minimal'},
     body:JSON.stringify({nombre,telefono,sector:'automocion',interes:servicio,mensaje:'Servicio: '+servicio,origen:'demo-talleres',cita_dia:citaDia,cita_hora:citaHora})
   }).catch(()=>{});
 }
+/* Aviso a la Edge Function -> Telegram. Sin credenciales en la llamada: la
+   funcion es verify_jwt:false y no necesita apikey.
+
+   OJO con el Content-Type: tiene que ser 'text/plain;charset=UTF-8'. Con
+   'application/json' deja de ser una peticion simple, Chrome lanza el preflight
+   CORS y con sendBeacon el aviso se pierde en silencio (el beacon devuelve true
+   igual). La funcion parsea con req.json() y no mira el Content-Type.
+
+   sendBeacon queda de respaldo para que el aviso salga aunque el usuario cierre
+   la pestana justo despues de dar el telefono. */
 function notifyLead(nombre,telefono,servicio,citaDia,citaHora){
-  fetch(NOTIFY_FN,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON},
-    body:JSON.stringify({taller:TALLER,nombre,telefono,servicio,cita_dia:citaDia,cita_hora:citaHora,origen:'demo-talleres'})
-  }).catch(()=>{});
+  const payload=JSON.stringify({taller:TALLER,nombre,telefono,servicio,cita_dia:citaDia,cita_hora:citaHora,origen:'demo-talleres'});
+  const beacon=()=>{
+    if(!navigator.sendBeacon) return;
+    navigator.sendBeacon(NOTIFY_FN,new Blob([payload],{type:'text/plain;charset=UTF-8'}));
+  };
+  try{
+    fetch(NOTIFY_FN,{
+      method:'POST',
+      keepalive:true,
+      headers:{'Content-Type':'text/plain;charset=UTF-8'},
+      body:payload
+    }).catch(beacon);
+  }catch(e){ beacon(); }
 }
 function procesarMensaje(texto){
   const t=texto.toLowerCase().trim();
