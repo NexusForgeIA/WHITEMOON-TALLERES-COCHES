@@ -1,0 +1,53 @@
+# Taller Ejemplo
+
+> Taller mecánico en Madrid desde 1995. Cambio de aceite, revisión general, pre-ITV, neumáticos, frenos, diagnosis electrónica y aire acondicionado, con presupuesto cerrado antes de tocar el coche y cita reservada desde la propia web. Taller ficticio: es una demo comercial de WhiteMoon Agencia IA.
+
+## Contacto
+- Teléfono: +34 643 199 580
+- Email: comercial@whitemoon.es
+- Dirección: Calle Mecánicos 45, Polígono Industrial, 28010 Madrid (España)
+- Horario: lunes a viernes de 8:00 a 14:00 y de 16:00 a 19:00; sábado de 9:00 a 14:00; domingo cerrado.
+- Web: https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/
+
+## Servicios con cita online
+Son los siete servicios que se pueden reservar por día y hora desde el chat. La duración es la que ocupa el hueco real en la agenda del taller.
+- Cambio de aceite: aceite y filtro de primera marca, reciclado del usado y repaso de niveles, luces y presión de neumáticos. 45 minutos.
+- Revisión general: frenos, suspensión, niveles, correas, batería, luces y neumáticos, con informe de lo que está bien y lo que hay que tocar. 60 minutos.
+- Pre-ITV: se comprueban los mismos puntos que mira la inspección (luces, frenos, emisiones, holguras y neumáticos) y se avisa con presupuesto de lo que no pasaría. 45 minutos.
+- Neumáticos: montaje, equilibrado y alineación, con primeras marcas y opciones económicas. 45 minutos.
+- Frenos: pastillas, discos y revisión del circuito completo, con prueba del coche después. 120 minutos.
+- Diagnosis electrónica: lectura de centralitas con equipo OBD para testigos del cuadro, fallos eléctricos y averías intermitentes. 60 minutos.
+- Aire acondicionado: revisión del circuito, búsqueda de fugas, filtro de habitáculo y recarga de gas. 60 minutos.
+
+## Áreas del taller
+- Mecánica general: motor, distribución, embrague, frenos, suspensión y dirección.
+- Electrónica y diagnosis: centralitas, fallos eléctricos, codificación y sistemas ADAS.
+- Neumáticos y climatización: ruedas, geometría y circuito completo del aire acondicionado.
+
+## Cómo se trabaja
+1. Traes el coche: con cita previa hay hueco garantizado, y si está parado se pide la grúa concertada.
+2. Diagnóstico: se revisa el vehículo y se explica en lenguaje normal qué necesita.
+3. Presupuesto cerrado: precio final antes de empezar; no se toca nada sin el visto bueno del cliente.
+4. Recogida con garantía: aviso cuando está listo, garantía por escrito y pago al recoger.
+
+## Precios orientativos (IVA incluido)
+Son cifras de referencia de una demo, no una oferta. El precio final se confirma siempre en el presupuesto cerrado, antes de empezar.
+- Cambio de aceite desde 49 €, revisión general desde 89 €, pre-ITV desde 39 €, aire acondicionado desde 55 €, cambio de batería (batería incluida) desde 90 €.
+- Frenos: pastillas por eje desde 99 €, discos y pastillas por eje desde 180 €, amortiguador por unidad desde 120 €, distribución desde 350 €, mecánica general desde 50 €/h.
+- Electrónica: diagnosis desde 45 €, codificación de centralita desde 60 €, sistema eléctrico desde 50 €/h.
+- Neumáticos: neumático de turismo montado desde 59 €/ud, alineación y equilibrado desde 50 €, cambio de ruedas (4 unidades) desde 20 €.
+- El importe del diagnóstico se descuenta de la factura si la reparación se hace en el taller.
+
+## Garantías
+- Presupuesto cerrado antes de tocar el coche: no se hace nada sin la aprobación del cliente.
+- Garantía por escrito en cada reparación y piezas de primera marca.
+- Grúa concertada 24 horas para coches parados o averías en carretera.
+- Solo se sustituye lo necesario: cada coche pasa por el área que le corresponde.
+
+## Notas
+- No se publican reseñas, testimonios, valoraciones ni cifras de clientes: esta web no incluye ninguna métrica ni opinión no verificada.
+- El único canal conversacional es el agente IA "Leo" en la web. Pregunta el servicio, el nombre y el teléfono, y solo después ofrece día y hora entre los huecos reales de la agenda. Si se elige hora, la cita queda escrita de verdad; si no, queda la solicitud para que el taller llame.
+- Desde el mismo chat se puede cambiar o cancelar una cita ya hecha: se identifica por el teléfono con el que se reservó y hay que confirmar el nombre.
+- Leo no cierra precios: solo repite los importes orientativos publicados en esta misma web, siempre como "desde".
+- Las fotografías son de stock bajo licencia Unsplash. No representan a clientes, profesionales ni instalaciones reales, y no se usan como testimonios.
+- Es una demo comercial de WhiteMoon (https://whitemoon.es); «Taller Ejemplo» no es un taller real y sus datos son ilustrativos, no constituyen una oferta.

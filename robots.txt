@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# El panel de la agenda es privado: no se indexa.
+Disallow: /agenda.html
+
+Sitemap: https://nexusforgeia.github.io/WHITEMOON-TALLERES-COCHES/sitemap.xml
