@@ -1,0 +1,1015 @@
+/* =========================================================================
+   Leo — Agente IA de Taller Ejemplo (demo WhiteMoon)
+
+   Flujo de cita: servicio -> nombre -> teléfono -> día -> hora ->
+   confirmación. El día y la hora van DETRÁS del contacto a propósito: así, si
+   alguien abandona en el calendario, el lead ya está completo y no se pierde.
+
+   Flujo de gestión (cambiar o cancelar una cita ya hecha): teléfono ->
+   `buscar-cita` -> se muestra la cita -> nombre para confirmar identidad ->
+   cambiar (nuevo día y hora entre los huecos reales) o cancelar. La comprueba
+   y la mueve el servidor: aquí no viaja ningún id de cita.
+
+   Los huecos NO se inventan en cliente: se piden a la Edge Function
+   `talleres-cita` (action 'huecos'), y al elegir hora se reserva de verdad
+   (action 'reservar'), así la cita aparece en agenda.html.
+
+   El lead se guarda SIEMPRE en leads_web (con cita_dia / cita_hora si las
+   hay); es lo que lee Scout. El aviso por Telegram, en cambio, es UNO SOLO
+   por evento:
+     - con cita reservada -> avisa `talleres-cita` con su "🔧 NUEVA CITA"
+     - sin reserva        -> avisa `talleres-notify` con el lead
+   Así nunca salen dos mensajes por la misma solicitud.
+
+   Nada de apikeys en cliente: la publishable key solo puede INSERT en
+   leads_web vía RLS, y `talleres-cita` / `talleres-notify` son verify_jwt:false
+   con sus tokens en Secrets.
+
+   Estilo de respuesta: máximo 3 frases por mensaje y UNA pregunta cada vez.
+   Leo nunca cierra precios: los importes que cuenta son los orientativos
+   públicos de la web, y siempre "desde", porque el precio final sale del
+   presupuesto cerrado.
+   ========================================================================= */
+(() => {
+  "use strict";
+
+  const SUPABASE_URL = "https://mlaqtniujnvfxcvcourm.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_6no6BuOgiA_2nonTJntAuQ_DTqEgrcV";
+  const NOTIFY_FN = SUPABASE_URL + "/functions/v1/talleres-notify";
+  const CITA_FN = SUPABASE_URL + "/functions/v1/talleres-cita";
+  const LEADS_URL = SUPABASE_URL + "/rest/v1/leads_web";
+  const ORIGEN = "demo-taller";
+  const SECTOR = "automocion";
+  const EMPRESA = "WhiteMoon";
+  const TALLER = "Taller Ejemplo";
+  const TELEFONO = "643 199 580";
+  /* Cierre de una cita cerrada: sin número al que llamar y sin remitir a otro
+     canal. Si hay que cambiarla, se cambia aquí mismo. */
+  const CIERRE_CITA =
+    "Te esperamos en el taller. ¿Necesitas cambiarla o cancelarla? Vuelve a " +
+    "hablar conmigo y dime tu teléfono, y te lo gestiono al momento.";
+
+  /* Servicios: los `label` son EXACTAMENTE los data-servicio de los botones
+     "Reservar" de las tarjetas, para que al entrar desde una tarjeta se
+     salte la pregunta inicial.
+
+     `svc` es el nombre del servicio tal y como existe en la agenda (tabla
+     servicios_taller), porque es lo que espera `reservar`.
+
+     `dur` es solo el valor por defecto: al abrir el chat se refresca con la
+     duración real de la agenda, que el taller puede editar en el panel. */
+  const SERVICIOS = [
+    { label: "Cambio de aceite",      interes: "Cambio de aceite",      svc: "Cambio de aceite",      dur: 45 },
+    { label: "Revisión general",      interes: "Revisión general",      svc: "Revisión general",      dur: 60 },
+    { label: "Pre-ITV",               interes: "Pre-ITV",               svc: "Pre-ITV",               dur: 45 },
+    { label: "Neumáticos",            interes: "Neumáticos",            svc: "Neumáticos",            dur: 45 },
+    { label: "Frenos",                interes: "Frenos",                svc: "Frenos",                dur: 120 },
+    { label: "Diagnosis electrónica", interes: "Diagnosis electrónica", svc: "Diagnosis electrónica", dur: 60 },
+    { label: "Aire acondicionado",    interes: "Aire acondicionado",    svc: "Aire acondicionado",    dur: 60 },
+  ];
+
+  /* Qué incluye cada servicio — se cuenta antes de pedir los datos.
+     Máximo 3 frases, sin preguntas: la pregunta va siempre aparte.
+     Los importes son los mismos precios orientativos que aparecen en la web. */
+  const INFO = {
+    "Cambio de aceite": "Aceite y filtro de aceite con producto de primera marca, más el reciclado del usado. Son unos 45 minutos y aprovechamos para revisar niveles, luces y presión de neumáticos. Orientativo desde 49 €.",
+    "Revisión general": "Repaso completo del coche: frenos, suspensión, niveles, correas, batería, luces y neumáticos. Sale un informe con lo que está bien, lo que conviene vigilar y lo que hay que tocar ya. Dura una hora y es orientativo desde 89 €.",
+    "Pre-ITV": "Comprobamos los mismos puntos que mira la inspección: luces, frenos, emisiones, holguras y neumáticos. Si algo no pasaría, te lo decimos con presupuesto antes de tocar nada. Son 45 minutos, orientativo desde 39 €.",
+    "Neumáticos": "Montaje, equilibrado y alineación, con primeras marcas y opciones más económicas. Te contamos qué medida lleva tu coche y qué diferencia real hay entre las opciones. Unos 45 minutos, orientativo desde 59 €.",
+    "Frenos": "Pastillas, discos y revisión del circuito completo, con piezas de primera marca. Es la intervención más larga: reservamos dos horas para hacerla sin prisa y probar el coche después. Orientativo desde 99 €.",
+    "Diagnosis electrónica": "Lectura de centralitas con equipo OBD: testigos del cuadro, fallos eléctricos y averías intermitentes. Te explicamos qué código sale y qué significa, sin tecnicismos. Una hora, orientativo desde 45 €.",
+    "Aire acondicionado": "Revisión del circuito, comprobación de fugas, cambio del filtro de habitáculo y recarga de gas. Si sopla pero no enfría, casi siempre es esto. Una hora, orientativo desde 55 €.",
+  };
+
+  /* ---------- fechas ---------- */
+  const MESES_VISTA = 6;
+  const DIAS_CORTOS = ["L", "M", "X", "J", "V", "S", "D"];
+  const DIAS_LARGOS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+
+  const hoy = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  const mismoDia = (a, b) =>
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  /* getDay() da domingo=0, que descoloca la rejilla: aquí lunes=0 */
+  const diaSemanaLunes = (d) => (d.getDay() + 6) % 7;
+  const formatoLargo = (d) =>
+    d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const formatoCorto = (d) =>
+    d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  const isoLocal = (d) =>
+    d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+
+  /* Los ISO que devuelve `huecos` ya vienen en hora de Madrid con su offset
+     ("2026-09-07T08:30:00+02:00"). Se cortan a pelo en vez de pasar por Date
+     para que el navegador no los reinterprete en su propia zona horaria. */
+  const horaDe = (iso) => iso.slice(11, 16);
+
+  /* Un día es candidato si el taller abre y no ha pasado. Es la misma regla
+     que aplica talleres-cita en `esLaborable` (lunes a sábado); sirve para no
+     lanzar 30 peticiones por mes solo para pintar el calendario. Los huecos
+     reales se piden al elegir día. */
+  const diaCandidato = (fecha) => diaSemanaLunes(fecha) <= 5 && fecha >= hoy();
+
+  const $ = (s, c = document) => c.querySelector(s);
+  const panel = $("#leo");
+  if (!panel) return;
+  const body = $(".leo-body", panel);
+  const quick = $(".leo-quick", panel);
+  const form = $(".leo-foot", panel);
+  const input = $(".leo-foot input", panel);
+  const sendBtn = $(".leo-foot button", panel);
+  const btn = $("#leo-open");
+
+  /* Entrada extra del menú inicial: no es un servicio, abre la autogestión. */
+  const GESTION = { label: "Cambiar o cancelar mi cita", gestion: true };
+
+  const lead = {
+    servicio: "", interes: "", svc: "", dur: 60,
+    nombre: "", telefono: "",
+    dia: "", diaISO: "", hora: "", citaAt: "", citaId: "",
+  };
+  /* Datos de la autogestión, separados del lead a propósito: cambiar una cita
+     que ya existe no es un lead nuevo y no debe acabar en leads_web. */
+  const gestion = { telefono: "", nombre: "", cita: null, accion: "", dia: "", diaISO: "" };
+
+  let step = "svc";        // svc -> name -> phone -> fecha -> hora -> done
+                           // gestión: g-tel -> g-nombre -> fecha -> hora
+  let modo = "reserva";    // reserva | gestion — decide a dónde va el calendario
+  let started = false;
+  let vista = null;        // mes que pinta el calendario
+  let enviado = false;     // el lead solo se manda una vez
+
+  /* ---------- helpers UI ---------- */
+  const scroll = () => { body.scrollTop = body.scrollHeight; };
+  const addMsg = (text, who = "bot") => {
+    const el = document.createElement("div");
+    el.className = "leo-msg " + who;
+    el.textContent = text;
+    body.appendChild(el); scroll();
+  };
+  const typing = () => {
+    const t = document.createElement("div");
+    t.className = "leo-typing";
+    t.innerHTML = "<span></span><span></span><span></span>";
+    body.appendChild(t); scroll();
+    return t;
+  };
+  const botSay = (text, after) =>
+    new Promise((res) => {
+      const t = typing();
+      setTimeout(() => {
+        t.remove(); addMsg(text, "bot");
+        if (after) after();
+        res();
+      }, Math.min(900, 340 + text.length * 8));
+    });
+  const clearQuick = () => { quick.innerHTML = ""; };
+  const setQuick = (items, onPick) => {
+    clearQuick();
+    items.forEach((it) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = it.label || it;
+      b.addEventListener("click", () => onPick(it));
+      quick.appendChild(b);
+    });
+  };
+  const setInput = (enabled, placeholder) => {
+    input.disabled = !enabled; sendBtn.disabled = !enabled;
+    input.placeholder = placeholder || "Escribe tu respuesta…";
+    if (enabled) setTimeout(() => input.focus(), 60);
+  };
+
+  /* Widget único: se vuelve a pintar en el sitio en vez de apilar copias */
+  const widget = (cls) => {
+    let w = $("#leo-widget", body);
+    if (!w) { w = document.createElement("div"); w.id = "leo-widget"; body.appendChild(w); }
+    w.className = cls;
+    w.innerHTML = "";
+    scroll();
+    return w;
+  };
+  const quitaWidget = () => { const w = $("#leo-widget", body); if (w) w.remove(); };
+
+  /* ---------- llamadas a talleres-cita ---------- */
+  const agenda = async (payload) => {
+    try {
+      const r = await fetch(CITA_FN, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await r.json();
+      if (!r.ok) console.warn("[leo] talleres-cita", r.status, data);
+      return data;
+    } catch (e) {
+      console.warn("[leo] talleres-cita sin red:", e);
+      return { _neterr: true };
+    }
+  };
+
+  /* Duraciones reales de la agenda: el taller puede cambiarlas desde el
+     panel, y la duración decide qué huecos entran. Si falla, se siguen
+     usando las de SERVICIOS. */
+  const sincronizaDuraciones = async () => {
+    const res = await agenda({ action: "servicios-list" });
+    if (!res || !res.ok || !Array.isArray(res.servicios)) return;
+    const porNombre = new Map(res.servicios.map((s) => [s.nombre, s]));
+    SERVICIOS.forEach((w) => {
+      const s = porNombre.get(w.svc);
+      if (s && s.duracion_min) w.dur = s.duracion_min;
+    });
+  };
+
+  /* ---------- flujo ---------- */
+  const start = async () => {
+    if (started) return; started = true;
+    setInput(false);
+    sincronizaDuraciones();
+    await botSay("Hola, soy Leo, el asistente de Taller Ejemplo. Te reservo cita en un minuto, sin llamadas.");
+    await botSay("¿Qué necesita tu coche?", () => menuInicial());
+  };
+
+  const menuInicial = () => {
+    modo = "reserva";
+    step = "svc";
+    setInput(false);
+    setQuick(SERVICIOS.concat([GESTION]), (w) => {
+      addMsg(w.label, "user");
+      if (w.gestion) askGestionTel(); else pickServicio(w.label);
+    });
+  };
+
+  /* Elegido el servicio: primero cuenta en qué consiste, luego pide el nombre. */
+  const pickServicio = async (label) => {
+    const w = SERVICIOS.find((x) => x.label === label) || SERVICIOS[0];
+    lead.servicio = w.label;
+    lead.interes = w.interes;
+    lead.svc = w.svc;
+    lead.dur = w.dur;
+    clearQuick();
+    const info = INFO[w.label];
+    if (info) await botSay(info);
+    askName();
+  };
+
+  const askName = async () => {
+    step = "name";
+    clearQuick();
+    await botSay("Voy a buscarte hueco. ¿A nombre de quién pongo la cita?",
+      () => setInput(true, "Tu nombre…"));
+  };
+
+  const askPhone = async () => {
+    step = "phone";
+    await botSay("Gracias, " + lead.nombre.split(" ")[0] + ". ¿A qué teléfono te avisamos si hay algún cambio?", () =>
+      setInput(true, "Tu teléfono…")
+    );
+  };
+
+  /* ---------- día ---------- */
+  const askFecha = async () => {
+    step = "fecha";
+    clearQuick();
+    if (!vista) { const t = hoy(); vista = new Date(t.getFullYear(), t.getMonth(), 1); }
+    await botSay("Ya te tengo apuntado. ¿Qué día te viene bien? Abrimos de lunes a sábado.", () => {
+      setInput(false, "Elige un día en el calendario");
+      pintaCalendario();
+    });
+  };
+
+  function pintaCalendario() {
+    const box = widget("leo-cal");
+    const t = hoy();
+    const mesActual = new Date(t.getFullYear(), t.getMonth(), 1);
+    const limite = new Date(t.getFullYear(), t.getMonth() + MESES_VISTA, 1);
+
+    const nav = document.createElement("div");
+    nav.className = "leo-cal__nav";
+    const mk = (txt, aria, off, dis) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "leo-cal__btn"; b.textContent = txt;
+      b.setAttribute("aria-label", aria); b.disabled = dis;
+      b.addEventListener("click", () => {
+        vista = new Date(vista.getFullYear(), vista.getMonth() + off, 1);
+        pintaCalendario();
+      });
+      return b;
+    };
+    /* Sin retroceder del mes actual */
+    nav.appendChild(mk("‹", "Mes anterior", -1, vista <= mesActual));
+    const etiquetaMes = vista.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+    const titulo = document.createElement("p");
+    titulo.className = "leo-cal__mes";
+    titulo.setAttribute("aria-live", "polite");
+    /* es-ES da "septiembre de 2026"; con capitalize saldría "Septiembre De 2026" */
+    titulo.textContent = etiquetaMes.charAt(0).toUpperCase() + etiquetaMes.slice(1);
+    nav.appendChild(titulo);
+    nav.appendChild(mk("›", "Mes siguiente", 1, vista >= limite));
+    box.appendChild(nav);
+
+    const grid = document.createElement("div");
+    grid.className = "leo-cal__grid";
+    grid.setAttribute("role", "group");
+    grid.setAttribute("aria-label", "Días disponibles de " + etiquetaMes);
+    DIAS_CORTOS.forEach((d, i) => {
+      const c = document.createElement("span");
+      c.className = "leo-cal__wd"; c.setAttribute("aria-hidden", "true");
+      c.textContent = d; c.title = DIAS_LARGOS[i];
+      grid.appendChild(c);
+    });
+    const primero = new Date(vista.getFullYear(), vista.getMonth(), 1);
+    for (let h = 0; h < diaSemanaLunes(primero); h++) {
+      const v = document.createElement("span");
+      v.className = "leo-cal__day is-empty"; v.setAttribute("aria-hidden", "true");
+      grid.appendChild(v);
+    }
+    const ultimo = new Date(vista.getFullYear(), vista.getMonth() + 1, 0).getDate();
+    for (let n = 1; n <= ultimo; n++) {
+      const fecha = new Date(vista.getFullYear(), vista.getMonth(), n);
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "leo-cal__day"; b.textContent = String(n);
+      if (mismoDia(fecha, new Date())) b.classList.add("is-today");
+      if (!diaCandidato(fecha)) {
+        b.disabled = true;
+        b.setAttribute("aria-label", formatoLargo(fecha) + ", cerrado");
+      } else {
+        b.setAttribute("aria-label", formatoLargo(fecha));
+        b.addEventListener("click", () => eligeFecha(fecha));
+      }
+      grid.appendChild(b);
+    }
+    box.appendChild(grid);
+
+    const nota = document.createElement("p");
+    nota.className = "leo-cal__nota";
+    nota.textContent = modo === "gestion"
+      ? "L-V de 8:00 a 19:00 y sábado de 9:00 a 14:00. Elige el nuevo día."
+      : "L-V de 8:00 a 19:00 y sábado de 9:00 a 14:00. Si el coche está parado, llámanos al " + TELEFONO + ".";
+    box.appendChild(nota);
+
+    const salir = document.createElement("button");
+    salir.type = "button"; salir.className = "leo-back";
+    if (modo === "gestion") {
+      /* En gestión, salir del calendario es dejar la cita donde estaba. */
+      salir.textContent = "Dejarla como está";
+      salir.addEventListener("click", () => {
+        addMsg("Dejarla como está", "user");
+        quitaWidget();
+        cierreGestion("Perfecto, no toco nada: tu cita sigue igual.");
+      });
+    } else {
+      /* Salida sin cita: se cierra igual y llamamos nosotros. */
+      salir.textContent = "Prefiero que me llaméis vosotros";
+      salir.addEventListener("click", () => {
+        addMsg("Prefiero que me llaméis vosotros", "user");
+        quitaWidget();
+        cierreSinCita();
+      });
+    }
+    box.appendChild(salir);
+  }
+
+  const eligeFecha = async (fecha) => {
+    if (modo === "gestion") {
+      gestion.diaISO = isoLocal(fecha);
+      gestion.dia = formatoLargo(fecha);
+    } else {
+      lead.dia = formatoLargo(fecha);
+      lead.diaISO = isoLocal(fecha);
+    }
+    addMsg(formatoCorto(fecha), "user");
+    quitaWidget();
+    askHora(fecha);
+  };
+
+  /* "Elegir otro día" vuelve al calendario, pero el texto cambia: en una cita
+     nueva se está apuntando por primera vez y en una gestión se está moviendo
+     algo que ya existe. */
+  const otroDia = async () => {
+    if (modo !== "gestion") { askFecha(); return; }
+    step = "fecha";
+    clearQuick();
+    await botSay("Sin problema. ¿Qué otro día te viene mejor?", () => {
+      setInput(false, "Elige un día en el calendario");
+      pintaCalendario();
+    });
+  };
+
+  /* ---------- hora: huecos REALES de la agenda ---------- */
+  const askHora = async (fecha) => {
+    step = "hora";
+    const dia = modo === "gestion" ? gestion.diaISO : lead.diaISO;
+    const dur = modo === "gestion" ? (gestion.cita && gestion.cita.duracion_min) || 60 : lead.dur;
+    const t = typing();
+    const res = await agenda({ action: "huecos", dia: dia, duracion_min: dur });
+    t.remove();
+
+    const huecos = res && res.ok && Array.isArray(res.huecos) ? res.huecos : [];
+    if (!huecos.length) {
+      const motivo = res && res._neterr
+        ? "No he podido consultar la agenda ahora mismo."
+        : "Ese día lo tenemos completo.";
+      await botSay(motivo + " ¿Probamos con otro?", () => pintaSinHuecos());
+      return;
+    }
+    await botSay("Perfecto. ¿A qué hora te viene mejor?", () => {
+      setInput(false, "Elige una hora");
+      pintaHoras(huecos, fecha);
+    });
+  };
+
+  function pintaSinHuecos() {
+    const box = widget("leo-slots");
+    const atras = document.createElement("button");
+    atras.type = "button"; atras.className = "leo-back";
+    atras.textContent = "Elegir otro día";
+    atras.addEventListener("click", () => { quitaWidget(); otroDia(); });
+    box.appendChild(atras);
+    const salir = document.createElement("button");
+    salir.type = "button"; salir.className = "leo-back";
+    if (modo === "gestion") {
+      salir.textContent = "Dejarla como está";
+      salir.addEventListener("click", () => {
+        addMsg("Dejarla como está", "user");
+        quitaWidget();
+        cierreGestion("Perfecto, no toco nada: tu cita sigue igual.");
+      });
+    } else {
+      salir.textContent = "Prefiero que me llaméis vosotros";
+      salir.addEventListener("click", () => {
+        addMsg("Prefiero que me llaméis vosotros", "user");
+        quitaWidget();
+        cierreSinCita();
+      });
+    }
+    box.appendChild(salir);
+  }
+
+  function pintaHoras(huecos, fecha) {
+    const box = widget("leo-slots");
+    /* El taller abre en dos turnos entre semana; se agrupan por la hora del
+       propio hueco en vez de repetir aquí los tramos del backend. El sábado
+       solo hay mañana, así que el separador de tarde no llega a pintarse. */
+    const manana = huecos.filter((h) => parseInt(horaDe(h), 10) < 14);
+    const tarde = huecos.filter((h) => parseInt(horaDe(h), 10) >= 14);
+    [["Mañana", manana], ["Tarde", tarde]].forEach(([etiqueta, lista]) => {
+      if (!lista.length) return;
+      const sep = document.createElement("p");
+      sep.className = "leo-slots__sep";
+      sep.textContent = etiqueta;
+      box.appendChild(sep);
+      lista.forEach((iso) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "leo-slot"; b.textContent = horaDe(iso);
+        b.setAttribute("aria-label", horaDe(iso) + " del " + formatoCorto(fecha));
+        b.addEventListener("click", () => eligeHora(iso, fecha));
+        box.appendChild(b);
+      });
+    });
+    const atras = document.createElement("button");
+    atras.type = "button"; atras.className = "leo-back";
+    atras.textContent = "Elegir otro día";
+    atras.addEventListener("click", () => { addMsg("Prefiero otro día", "user"); quitaWidget(); otroDia(); });
+    box.appendChild(atras);
+  }
+
+  const eligeHora = async (iso, fecha) => {
+    if (modo === "gestion") {
+      addMsg(horaDe(iso), "user");
+      quitaWidget();
+      confirmaCambio(iso, fecha);
+      return;
+    }
+    lead.hora = horaDe(iso);
+    lead.citaAt = iso;
+    addMsg(lead.hora, "user");
+    quitaWidget();
+    reservar(fecha);
+  };
+
+  const CHECK_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" ' +
+    'stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+  /* Aviso simple: el SVG del check es decorativo (aria-hidden), el texto es
+     quien transmite el resultado. */
+  const tarjetaExito = (texto) => {
+    const el = document.createElement("div");
+    el.className = "leo-ok";
+    el.setAttribute("role", "status");
+    const ic = document.createElement("span");
+    ic.className = "leo-ok__ic";
+    ic.setAttribute("aria-hidden", "true");
+    ic.innerHTML = CHECK_SVG;
+    const p = document.createElement("p");
+    p.textContent = texto;
+    el.append(ic, p);
+    body.appendChild(el);
+    scroll();
+  };
+
+  /* Tarjeta verde de cita: un resguardo, no un mensaje más del chat. Se pinta
+     con nodos y textContent, nunca con innerHTML, para que un nombre con
+     comillas o un "<" no pueda inyectar nada. `filas` es [[etiqueta, valor]].
+     role="status" hace que un lector de pantalla la lea al aparecer. */
+  const tarjetaCita = (titulo, filas) => {
+    const el = document.createElement("div");
+    el.className = "leo-cita";
+    el.setAttribute("role", "status");
+
+    const head = document.createElement("div");
+    head.className = "leo-cita__head";
+    const ic = document.createElement("span");
+    ic.className = "leo-cita__ic";
+    ic.setAttribute("aria-hidden", "true");
+    ic.innerHTML = CHECK_SVG;
+    const b = document.createElement("b");
+    b.textContent = titulo;
+    head.append(ic, b);
+
+    const dl = document.createElement("dl");
+    dl.className = "leo-cita__rows";
+    filas.forEach(([k, v]) => {
+      if (!v) return;
+      const row = document.createElement("div");
+      row.className = "leo-cita__row";
+      const dt = document.createElement("dt");
+      dt.textContent = k;
+      const dd = document.createElement("dd");
+      dd.textContent = v;
+      row.append(dt, dd);
+      dl.appendChild(row);
+    });
+
+    el.append(head, dl);
+    body.appendChild(el);
+    scroll();
+  };
+
+  /* Una cita, en filas etiqueta/valor. `datos` viene del servidor ya
+     formateado en hora de Madrid. */
+  const filasCita = (datos) => [
+    ["Nombre", datos.nombre],
+    ["Teléfono", datos.telefono],
+    ["Servicio", datos.servicio],
+    ["Fecha", datos.fecha],
+    ["Hora", datos.hora],
+    ["Taller", TALLER],
+  ];
+
+  /* ---------- reserva real contra la agenda ---------- */
+  const reservar = async (fecha) => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({
+      action: "reservar",
+      cliente_nombre: lead.nombre,
+      cliente_telefono: lead.telefono,
+      servicio: lead.svc,
+      duracion_min: lead.dur,
+      cita_at: lead.citaAt,
+    });
+    t.remove();
+
+    /* Se lo ha llevado otra persona entre que pintamos los huecos y confirmó */
+    if (res && res.ok === false && res.reason) {
+      await botSay("Vaya, ese hueco lo acaban de coger. Te enseño las horas que siguen libres ese día.");
+      askHora(fecha);
+      return;
+    }
+
+    if (!res || !res.ok) {
+      /* La agenda no responde, pero el lead no se pierde: lo guardamos con la
+         franja que pidió y que le llamen para confirmarla. */
+      await cierreSinCita(true);
+      return;
+    }
+
+    step = "done";
+    lead.citaId = res.cita_id || "";
+    /* La fecha y la hora las pone el servidor en hora de Madrid; el `lead`
+       guarda las del navegador solo para el texto del aviso interno. */
+    if (res.fecha) lead.dia = res.fecha;
+    if (res.hora) lead.hora = res.hora;
+    await enviarLead();
+    tarjetaCita("¡Cita confirmada!", filasCita({
+      nombre: lead.nombre,
+      telefono: lead.telefono,
+      servicio: lead.servicio,
+      fecha: res.fecha || lead.dia,
+      hora: res.hora || lead.hora,
+    }));
+    setTimeout(() => addMsg(CIERRE_CITA, "bot"), 700);
+  };
+
+  /* Cierre sin cita confirmada: el lead se guarda igual. */
+  const cierreSinCita = async (conFranja) => {
+    step = "done";
+    setInput(false); clearQuick(); quitaWidget();
+    const t = typing();
+    if (!conFranja) { lead.dia = ""; lead.diaISO = ""; lead.hora = ""; }
+    const ok = await enviarLead();
+    t.remove();
+    if (ok) {
+      tarjetaExito("Anotado. Te llamamos al " + lead.telefono + " para cerrar el día y la hora.");
+    } else {
+      addMsg(
+        "He guardado tus datos pero hubo un problema de conexión. Para no esperar, llámanos al " + TELEFONO + " y te atendemos al momento.",
+        "bot"
+      );
+    }
+  };
+
+  /* ====================================================================
+     GESTIÓN DE UNA CITA YA HECHA
+     teléfono -> buscar -> nombre para confirmar -> cambiar o cancelar.
+     Aquí no viaja ningún id: el servidor resuelve la cita por teléfono y
+     comprueba el nombre antes de tocarla.
+     ==================================================================== */
+
+  const askGestionTel = async () => {
+    modo = "gestion";
+    step = "g-tel";
+    clearQuick();
+    gestion.cita = null; gestion.nombre = ""; gestion.accion = "";
+    await botSay("Claro, te la busco. ¿Con qué teléfono la reservaste?",
+      () => setInput(true, "Tu teléfono…"));
+  };
+
+  const buscaCita = async () => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({ action: "buscar-cita", telefono: gestion.telefono });
+    t.remove();
+
+    if (!res || res._neterr || !res.ok) {
+      await botSay("No he podido consultar la agenda ahora mismo. ¿Lo intentamos otra vez?", () => {
+        setQuick([{ label: "Probar otra vez" }, { label: "Pedir otra cita" }], (o) => {
+          addMsg(o.label, "user");
+          if (o.label === "Probar otra vez") buscaCita(); else menuInicial();
+        });
+      });
+      return;
+    }
+
+    if (!res.encontrada) {
+      await botSay("No encuentro ninguna cita futura con ese teléfono. Puede que la reservaras con otro número, o que ya haya pasado.");
+      await botSay("¿Quieres probar con otro teléfono o te busco hueco para otra cosa?", () => {
+        setQuick([{ label: "Probar con otro teléfono" }, { label: "Pedir otra cita" }], (o) => {
+          addMsg(o.label, "user");
+          if (o.label === "Probar con otro teléfono") askGestionTel(); else menuInicial();
+        });
+      });
+      return;
+    }
+
+    gestion.cita = res.cita;
+    /* Se enseña el servicio, la fecha y la hora, pero NO el nombre: es justo
+       el dato que se pide después para comprobar que la cita es de quien
+       escribe. */
+    tarjetaCita("Esta es tu cita", [
+      ["Servicio", res.cita.servicio],
+      ["Fecha", res.cita.fecha],
+      ["Hora", res.cita.hora],
+      ["Taller", TALLER],
+    ]);
+    await botSay("¿Qué quieres hacer con ella?", () => {
+      setQuick([
+        { label: "Cambiar el día y la hora", accion: "cambiar" },
+        { label: "Cancelar la cita", accion: "cancelar" },
+        { label: "Dejarla como está", accion: "nada" },
+      ], (o) => {
+        addMsg(o.label, "user");
+        if (o.accion === "nada") { cierreGestion("Perfecto, no toco nada: tu cita sigue igual."); return; }
+        gestion.accion = o.accion;
+        askGestionNombre();
+      });
+    });
+  };
+
+  const askGestionNombre = async () => {
+    step = "g-nombre";
+    clearQuick();
+    await botSay("Solo para asegurarme de que es tuya: ¿a nombre de quién está la cita?",
+      () => setInput(true, "Nombre de la cita…"));
+  };
+
+  /* Con el nombre ya dado se comprueba ANTES de nada. Si no se comprobara
+     aquí, quien se equivoca de nombre elegiría día y hora para toparse con el
+     rechazo al final, después de todo el trabajo. La acción que muta vuelve a
+     comprobarlo por su cuenta: esto es comodidad, no la barrera. */
+  const sigueGestion = async () => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({
+      action: "comprobar-nombre",
+      telefono: gestion.telefono,
+      nombre: gestion.nombre,
+    });
+    t.remove();
+
+    if (!res || res._neterr || !res.ok) {
+      await botSay("No he podido comprobarlo ahora mismo. ¿Lo intentamos otra vez?", () => {
+        setQuick([{ label: "Probar otra vez" }], () => { addMsg("Probar otra vez", "user"); sigueGestion(); });
+      });
+      return;
+    }
+    if (res.reason === "sin-cita") { sinCitaYa(); return; }
+    if (!res.coincide) { nombreNoCuadra(); return; }
+
+    if (gestion.accion === "cancelar") { cancelaCita(); return; }
+    if (!vista) { const d = hoy(); vista = new Date(d.getFullYear(), d.getMonth(), 1); }
+    step = "fecha";
+    await botSay("Perfecto. ¿Qué día te viene mejor ahora?", () => {
+      setInput(false, "Elige un día en el calendario");
+      pintaCalendario();
+    });
+  };
+
+  /* Nombre que no cuadra: se deja reintentar, pero sin pistas sobre cuál es
+     el correcto. */
+  const nombreNoCuadra = async () => {
+    gestion.nombre = "";
+    await botSay("Ese nombre no me cuadra con la cita. ¿Lo repasas? Escríbelo tal y como lo diste al pedirla.", () => {
+      step = "g-nombre";
+      setInput(true, "Nombre de la cita…");
+    });
+  };
+
+  const sinCitaYa = async () => {
+    await botSay("Vaya, ya no encuentro esa cita. Puede que la acaben de cancelar desde el taller.", () => {
+      setQuick([{ label: "Pedir otra cita" }], (o) => { addMsg(o.label, "user"); menuInicial(); });
+    });
+  };
+
+  const cancelaCita = async () => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({
+      action: "cancelar-cita",
+      telefono: gestion.telefono,
+      nombre: gestion.nombre,
+    });
+    t.remove();
+
+    if (!res || res._neterr) {
+      await botSay("No he podido conectar con la agenda. Tu cita sigue en pie; inténtalo de nuevo en un momento.");
+      cierreGestion();
+      return;
+    }
+    if (res.ok === false && res.reason === "nombre-no-coincide") { nombreNoCuadra(); return; }
+    if (res.ok === false && res.reason === "sin-cita") { sinCitaYa(); return; }
+    if (!res.ok) { await botSay("No he podido cancelarla. Vuelve a intentarlo en un momento, por favor."); cierreGestion(); return; }
+
+    step = "done";
+    tarjetaCita("Cita cancelada", [
+      ["Servicio", res.servicio],
+      ["Fecha", res.fecha],
+      ["Hora", res.hora],
+      ["Estado", "Cancelada"],
+    ]);
+    setTimeout(() => addMsg(
+      "Listo, ese hueco vuelve a estar libre. Cuando quieras volver, dímelo y te busco cita.", "bot"), 700);
+  };
+
+  const confirmaCambio = async (iso, fecha) => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({
+      action: "reprogramar-cita",
+      telefono: gestion.telefono,
+      nombre: gestion.nombre,
+      cita_at: iso,
+    });
+    t.remove();
+
+    if (!res || res._neterr) {
+      await botSay("No he podido conectar con la agenda. Tu cita sigue en la hora de antes; inténtalo de nuevo en un momento.");
+      cierreGestion();
+      return;
+    }
+    if (res.ok === false && res.reason === "hueco-ocupado") {
+      await botSay("Vaya, ese hueco lo acaban de coger. Te enseño las horas que siguen libres ese día.");
+      askHora(fecha);
+      return;
+    }
+    if (res.ok === false && res.reason === "nombre-no-coincide") { nombreNoCuadra(); return; }
+    if (res.ok === false && res.reason === "sin-cita") { sinCitaYa(); return; }
+    if (!res.ok) { await botSay("No he podido cambiarla. Vuelve a intentarlo en un momento, por favor."); cierreGestion(); return; }
+
+    step = "done";
+    tarjetaCita("¡Cita cambiada!", filasCita({
+      nombre: gestion.nombre,
+      telefono: gestion.telefono,
+      servicio: res.servicio,
+      fecha: res.fecha,
+      hora: res.hora,
+    }));
+    setTimeout(() => addMsg(CIERRE_CITA, "bot"), 700);
+  };
+
+  const cierreGestion = (texto) => {
+    step = "done";
+    modo = "reserva";
+    setInput(false); clearQuick(); quitaWidget();
+    if (texto) addMsg(texto, "bot");
+  };
+
+  /* ---------- entrada de texto ---------- */
+  /* Guard: mínimo 9 dígitos reales (admite prefijo +34 / 0034 y separadores). */
+  const isPhone = (v) => {
+    const d = String(v).replace(/\D/g, "").replace(/^(?:0034|34)(?=[6-9]\d{8})/, "");
+    return d.length >= 9 && /^[6-9]\d{8,}$/.test(d);
+  };
+  const handleText = (raw) => {
+    const v = raw.trim();
+    if (!v) return;
+    addMsg(v, "user");
+    input.value = "";
+    if (step === "name") {
+      if (v.length < 2) { botSay("¿Me dices tu nombre, por favor?"); return; }
+      lead.nombre = v; setInput(false); askPhone();
+    } else if (step === "phone") {
+      if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
+      lead.telefono = v; setInput(false); askFecha();
+    } else if (step === "g-tel") {
+      if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
+      gestion.telefono = v; setInput(false); buscaCita();
+    } else if (step === "g-nombre") {
+      if (v.length < 2) { botSay("¿Me dices el nombre de la cita, por favor?"); return; }
+      gestion.nombre = v; setInput(false); sigueGestion();
+    }
+  };
+
+  form.addEventListener("submit", (e) => { e.preventDefault(); handleText(input.value); });
+
+  /* Con nombre y teléfono ya tenemos un lead válido. Si se marcha en mitad
+     del calendario, se manda igual al salir de la página: mejor un lead sin
+     franja que ningún lead. */
+  window.addEventListener("pagehide", () => {
+    if (!enviado && lead.nombre && lead.telefono) enviarLead();
+  });
+
+  /* ---------- envío del lead ----------
+     Patrón WhiteMoon: las dos cosas salen EN PARALELO, no encadenadas. Si
+     una falla, la otra ni se entera.
+
+       1) INSERT en leads_web con la clave PUBLICABLE (solo INSERT vía RLS).
+          Es la fila que lee Scout en tiempo real, así que no puede fallar en
+          silencio: va con keepalive para sobrevivir al cierre de la pestaña,
+          y se reintenta UNA vez si PostgREST devuelve 503 (el proyecto acaba
+          de despertar). Con un solo reintento el lead se salva sin arriesgar
+          duplicados por insistir.
+
+       2) AVISO a `talleres-notify`, que notifica por Telegram. Va por
+          navigator.sendBeacon, que el navegador se lleva aunque el visitante
+          cierre la pestaña justo después de dejar el teléfono — que es
+          exactamente cuando se pierden los avisos con fetch. sendBeacon exige
+          un tipo CORS-safelisted, así que el cuerpo viaja como Blob
+          text/plain;charset=UTF-8 y NO como application/json: ese content-type
+          dispararía un preflight que sendBeacon no sabe hacer. La función lo
+          parsea igual con req.json(), que no mira el content-type.
+
+     Ningún token ni secreto vive en este fichero. */
+
+  /* INSERT en leads_web. Un único reintento ante 503. */
+  const insertaLead = (fila, reintentos) =>
+    fetch(LEADS_URL, {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+      },
+      body: JSON.stringify(fila),
+    }).then((r) => {
+      if (r.status === 503 && reintentos > 0) {
+        console.warn("[leo] leads_web 503, reintentando una vez");
+        return new Promise((ok) => setTimeout(ok, 800))
+          .then(() => insertaLead(fila, reintentos - 1));
+      }
+      if (!r.ok) console.warn("[leo] leads_web:", r.status);
+      return r.ok;
+    }).catch((e) => {
+      console.warn("[leo] leads_web error:", e);
+      return false;
+    });
+
+  /* Aviso a la Edge Function. sendBeacon devuelve false si el navegador no lo
+     encola (cuerpo demasiado grande, o no existe la API); en ese caso se cae
+     a un fetch normal con keepalive para no perder el aviso. */
+  const avisa = (cuerpo) => {
+    const texto = JSON.stringify(cuerpo);
+    try {
+      if (navigator.sendBeacon) {
+        const blob = new Blob([texto], { type: "text/plain;charset=UTF-8" });
+        if (navigator.sendBeacon(NOTIFY_FN, blob)) return Promise.resolve(true);
+      }
+    } catch (e) {
+      console.warn("[leo] sendBeacon error:", e);
+    }
+    return fetch(NOTIFY_FN, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: texto,
+      keepalive: true,
+    }).then((r) => {
+      if (!r.ok) console.warn("[leo] notify:", r.status);
+      return r.ok;
+    }).catch((e) => {
+      console.warn("[leo] notify error:", e);
+      return false;
+    });
+  };
+
+  async function enviarLead() {
+    if (enviado) return true;
+    enviado = true;
+
+    const cuando = lead.diaISO && lead.hora
+      ? " · Día: " + lead.dia + " a las " + lead.hora
+      : "";
+
+    const insert = insertaLead({
+      nombre: lead.nombre,
+      telefono: lead.telefono,
+      empresa: EMPRESA,
+      sector: SECTOR,
+      interes: lead.interes,
+      mensaje: "Servicio: " + lead.servicio + cuando,
+      origen: ORIGEN,
+      cita_dia: lead.diaISO || null,
+      cita_hora: lead.hora || null,
+    }, 1);
+
+    /* UN SOLO Telegram por evento. Cuando `reservar` sale bien, `talleres-cita`
+       ya ha mandado su "🔧 NUEVA CITA": disparar aquí además el aviso de lead
+       dejaría dos mensajes por la misma solicitud. Con cita_id el aviso ya
+       está dado; sin él, este es el único. */
+    const notify = lead.citaId ? Promise.resolve(true) : avisa({
+      taller: TALLER,
+      empresa: EMPRESA,
+      nombre: lead.nombre,
+      telefono: lead.telefono,
+      sector: SECTOR,
+      motivo: lead.servicio,
+      interes: lead.interes,
+      dia: lead.dia,
+      hora: lead.hora,
+      reservada: false,
+      origen: ORIGEN,
+    });
+
+    const [inserted] = await Promise.all([insert, notify]);
+    return inserted;
+  }
+
+  /* ---------- abrir / cerrar ---------- */
+  const open = (servicio) => {
+    panel.classList.add("open");
+    /* Cerrado el panel es invisible pero sus botones seguirían siendo
+       enfocables con el teclado: inert los saca del recorrido de tabulación. */
+    panel.removeAttribute("inert");
+    if (btn) btn.style.display = "none";
+    /* Se cerró el chat con algo ya resuelto y se vuelve a abrir: el cierre de
+       una cita invita justo a esto ("vuelve a hablar conmigo"), así que hay
+       que dar salida en vez de dejar el campo bloqueado. */
+    if (started && step === "done") {
+      botSay("¿Te ayudo con algo más?", () => {
+        setQuick([
+          { label: "Cambiar o cancelar mi cita", gestion: true },
+          { label: "Pedir otra cita" },
+        ], (o) => {
+          addMsg(o.label, "user");
+          if (o.gestion) askGestionTel(); else menuInicial();
+        });
+      });
+      return;
+    }
+    start();
+    /* Si vienen de una tarjeta de servicio, saltamos la elección inicial. */
+    if (servicio && step === "svc") {
+      setTimeout(() => {
+        if (step !== "svc") return;
+        addMsg(servicio, "user");
+        pickServicio(servicio);
+      }, 900);
+    }
+  };
+  const close = () => {
+    panel.classList.remove("open");
+    panel.setAttribute("inert", "");
+    if (btn) btn.style.display = "";
+    if (btn) btn.focus();
+  };
+  if (btn) btn.addEventListener("click", () => open());
+  $(".leo-head__close", panel).addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && panel.classList.contains("open")) close();
+  });
+  document.querySelectorAll("[data-leo]").forEach((el) =>
+    el.addEventListener("click", (e) => { e.preventDefault(); open(el.dataset.servicio); })
+  );
+})();
