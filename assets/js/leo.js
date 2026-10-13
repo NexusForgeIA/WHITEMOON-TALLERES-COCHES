@@ -267,6 +267,22 @@
     );
   };
 
+  /* Vehículo: marca, modelo y matrícula, de una en una. El taller necesita
+     saber qué coche viene antes de que llegue. */
+  const askMarca = async () => {
+    step = "marca";
+    await botSay("¿De qué marca es el coche?", () => setInput(true, "Marca (Seat, Renault…)"));
+  };
+  const askModelo = async () => {
+    step = "modelo";
+    await botSay("¿Y el modelo?", () => setInput(true, "Modelo (León, Clio…)"));
+  };
+  const askMatricula = async () => {
+    step = "matricula";
+    await botSay("Por último, la matrícula, para tener la ficha lista cuando llegues.", () => setInput(true, "1234 BCD"));
+  };
+  const normMatricula = (v) => v.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
   /* ---------- día ---------- */
   const askFecha = async () => {
     step = "fecha";
