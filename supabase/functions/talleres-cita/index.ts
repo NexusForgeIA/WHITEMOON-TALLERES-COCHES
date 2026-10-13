@@ -9,7 +9,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 // Diagnosis electrónica, Aire acondicionado).
 //
 // Acciones:
-//   huecos · reservar · buscar-cita · comprobar-nombre · cancelar-cita ·
+//   huecos · reservar · cita-crear · citas-importar · vehiculo-set · buscar-cita · comprobar-nombre · cancelar-cita ·
 //   reprogramar-cita · servicios-list · servicio-set · agenda · estado ·
 //   notas · reprogramar · config-get · config-set · clientes · cliente-get ·
 //   cliente-set
@@ -92,6 +92,34 @@ function mismoNombre(dado: string, guardado: string): boolean {
   if (pilaA.length >= 3 && pilaA === pilaB) return true;
   return b.includes(a) || a.includes(b);
 }
+
+// Matricula: se guarda en mayusculas y sin espacios ni guiones ("1234 BCD" y
+// "1234-bcd" son el mismo coche). Vale cualquier formato europeo/antiguo de
+// 4 a 10 caracteres alfanumericos; no se valida contra un patron concreto
+// porque el taller recibe matriculas viejas, de remolque y extranjeras.
+function normMatricula(m: unknown): string {
+  return String(m || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+function matriculaValida(m: string): boolean { return /^[A-Z0-9]{4,10}$/.test(m); }
+
+// Vehiculo del body (o de una fila de importacion). Devuelve el error en
+// texto si falta algo o la matricula no es valida; `exigir` decide si
+// marca/modelo/matricula son obligatorias (alta manual e importacion) o
+// opcionales (reserva desde el chat de una version anterior de Leo).
+function leerVehiculo(src: any, exigir: boolean): { v?: { marca: string | null; modelo: string | null; matricula: string | null }; error?: string } {
+  const marca = String(src?.marca || '').trim().slice(0, 60);
+  const modelo = String(src?.modelo || '').trim().slice(0, 60);
+  const matricula = normMatricula(src?.matricula);
+  if (exigir && (!marca || !modelo || !matricula)) return { error: 'marca, modelo y matricula obligatorias' };
+  if (matricula && !matriculaValida(matricula)) return { error: 'matricula no valida (4-10 letras o numeros)' };
+  return { v: { marca: marca || null, modelo: modelo || null, matricula: matricula || null } };
+}
+function lineaVehiculo(v: { marca?: string | null; modelo?: string | null; matricula?: string | null }): string {
+  const coche = [v.marca, v.modelo].filter(Boolean).join(' ');
+  return (coche || v.matricula) ? `\nVehiculo: ${coche}${v.matricula ? ' · ' + v.matricula : ''}` : '';
+}
+
+const MAX_IMPORT = 200;
 
 function clampDur(v: unknown, fallback = 60): number {
   const n = parseInt(String(v), 10);
@@ -325,7 +353,7 @@ Deno.serve(async (req: Request) => {
       const rows = await r.json();
       const cliente = Array.isArray(rows) ? rows[0] : null;
       if (!cliente) return json({ error: 'cliente no encontrado' }, 404);
-      const cr = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller?cliente_id=eq.${encodeURIComponent(cid)}&select=id,cita_at,servicio,duracion_min,estado,notas,resena_enviada&order=cita_at.desc&limit=100`, { headers: REST_HEADERS });
+      const cr = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller?cliente_id=eq.${encodeURIComponent(cid)}&select=id,cita_at,servicio,duracion_min,estado,notas,resena_enviada,marca,modelo,matricula&order=cita_at.desc&limit=100`, { headers: REST_HEADERS });
       const citas = await cr.json();
       return json({ ok: true, cliente, historial: Array.isArray(citas) ? citas : [] });
     }
@@ -388,6 +416,8 @@ Deno.serve(async (req: Request) => {
       if (!nombre || !telefono || !servicio || isNaN(Date.parse(citaAt))) {
         return json({ error: 'cliente_nombre, cliente_telefono, servicio y cita_at ISO obligatorios' }, 400);
       }
+      const veh = leerVehiculo(body, false);
+      if (veh.error) return json({ error: veh.error }, 400);
       const ini = Date.parse(citaAt);
       const fin = ini + duracion * 60000;
       const dia = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(citaAt));
@@ -404,14 +434,14 @@ Deno.serve(async (req: Request) => {
       const insRes = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller`, {
         method: 'POST',
         headers: { ...REST_HEADERS, 'Prefer': 'return=representation' },
-        body: JSON.stringify({ cliente_nombre: nombre, cliente_telefono: telefono, servicio, duracion_min: duracion, cita_at: citaAt, cliente_id: clienteId, origen: 'demo-taller' }),
+        body: JSON.stringify({ cliente_nombre: nombre, cliente_telefono: telefono, servicio, duracion_min: duracion, cita_at: citaAt, cliente_id: clienteId, origen: 'demo-taller', ...veh.v }),
       });
       const rows = await insRes.json();
       const cita = Array.isArray(rows) ? rows[0] : null;
       if (!cita) return json({ error: 'no se pudo crear la cita' }, 500);
       const cfg = await getConfig();
       await log(cita.id, 'reservada', `${servicio} ${citaAt} (${nombre})`);
-      const notified = await notificarTaller(`🔧 NUEVA CITA${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${nombre}\nTel: ${telefono}\nServicio: ${servicio} (${duracion} min)\nCuando: ${fmtMadrid(citaAt)}`);
+      const notified = await notificarTaller(`🔧 NUEVA CITA${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${nombre}\nTel: ${telefono}\nServicio: ${servicio} (${duracion} min)${lineaVehiculo(veh.v!)}\nCuando: ${fmtMadrid(citaAt)}`);
       return json({ ok: true, cita_id: cita.id, cita_at: citaAt, cuando: fmtMadrid(citaAt), fecha: fmtFechaLarga(citaAt), hora: fmtHoraMadrid(citaAt), dia: fmtDiaISO(citaAt), notified });
     }
 
@@ -472,7 +502,7 @@ Deno.serve(async (req: Request) => {
       if (!nombre) return json({ error: 'nombre obligatorio' }, 400);
 
       const desde = new Date().toISOString();
-      const url = `${SUPABASE_URL}/rest/v1/citas_taller?cliente_telefono_norm=eq.${encodeURIComponent(tn)}&cita_at=gte.${encodeURIComponent(desde)}&estado=in.(agendada,confirmada)&select=id,cliente_nombre,cliente_telefono,servicio,duracion_min,cita_at&order=cita_at.asc&limit=1`;
+      const url = `${SUPABASE_URL}/rest/v1/citas_taller?cliente_telefono_norm=eq.${encodeURIComponent(tn)}&cita_at=gte.${encodeURIComponent(desde)}&estado=in.(agendada,confirmada)&select=id,cliente_nombre,cliente_telefono,servicio,duracion_min,cita_at,marca,modelo,matricula&order=cita_at.asc&limit=1`;
       const r = await fetch(url, { headers: REST_HEADERS });
       const rows = await r.json();
       const cita = Array.isArray(rows) ? rows[0] : null;
@@ -488,7 +518,7 @@ Deno.serve(async (req: Request) => {
           body: JSON.stringify({ estado: 'cancelada' }),
         });
         await log(cita.id, 'cancelada-cliente', `${cita.servicio} ${cita.cita_at} (${cita.cliente_nombre})`);
-        const notified = await notificarTaller(`❌ CITA CANCELADA por el cliente${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${cita.cliente_nombre}\nTel: ${cita.cliente_telefono}\nServicio: ${cita.servicio}\nEra: ${fmtMadrid(cita.cita_at)}\n\nEl hueco vuelve a estar libre.`);
+        const notified = await notificarTaller(`❌ CITA CANCELADA por el cliente${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${cita.cliente_nombre}\nTel: ${cita.cliente_telefono}\nServicio: ${cita.servicio}${lineaVehiculo(cita)}\nEra: ${fmtMadrid(cita.cita_at)}\n\nEl hueco vuelve a estar libre.`);
         return json({ ok: true, cancelada: true, servicio: cita.servicio, cuando: fmtMadrid(cita.cita_at), fecha: fmtFechaLarga(cita.cita_at), hora: fmtHoraMadrid(cita.cita_at), notified });
       }
 
@@ -518,8 +548,105 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({ cita_at: citaAt }),
       });
       await log(cita.id, 'reprogramada-cliente', `${cita.cita_at} -> ${citaAt}`);
-      const notified = await notificarTaller(`🔁 CITA CAMBIADA por el cliente${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${cita.cliente_nombre}\nTel: ${cita.cliente_telefono}\nServicio: ${cita.servicio} (${duracion} min)\nAntes: ${fmtMadrid(cita.cita_at)}\nAhora: ${fmtMadrid(citaAt)}`);
+      const notified = await notificarTaller(`🔁 CITA CAMBIADA por el cliente${cfg.taller_nombre ? ' - ' + cfg.taller_nombre : ''}\nCliente: ${cita.cliente_nombre}\nTel: ${cita.cliente_telefono}\nServicio: ${cita.servicio} (${duracion} min)${lineaVehiculo(cita)}\nAntes: ${fmtMadrid(cita.cita_at)}\nAhora: ${fmtMadrid(citaAt)}`);
       return json({ ok: true, reprogramada: true, servicio: cita.servicio, antes: fmtMadrid(cita.cita_at), cuando: fmtMadrid(citaAt), cita_at: citaAt, fecha: fmtFechaLarga(citaAt), hora: fmtHoraMadrid(citaAt), dia: fmtDiaISO(citaAt), notified });
+    }
+
+    // ---- CITA-CREAR (panel, alta manual): bloquea si solapa ----
+    // Walk-ins, llamadas y migraciones: vale cualquier fecha y hora, incluso
+    // fuera del horario del taller (el dueño sabe lo que hace). El unico corte
+    // es el solape con otra cita viva: un taller = un puesto.
+    if (action === 'cita-crear') {
+      const nombre = String(body.cliente_nombre || '').slice(0, 120).trim();
+      const telefono = String(body.cliente_telefono || '').slice(0, 30).trim();
+      const servicio = String(body.servicio || '').slice(0, 80).trim();
+      const duracion = clampDur(body.duracion_min);
+      const citaAt = String(body.cita_at || '');
+      const estado = body.estado ? String(body.estado) : 'agendada';
+      const notas = (body.notas === undefined || body.notas === null || body.notas === '') ? null : String(body.notas).slice(0, 2000);
+      if (!nombre || telClave(telefono).length < 9 || !servicio || isNaN(Date.parse(citaAt))) {
+        return json({ error: 'cliente_nombre, cliente_telefono (min 9 digitos), servicio y cita_at ISO obligatorios' }, 400);
+      }
+      if (!ESTADOS.includes(estado)) return json({ error: `estado debe ser ${ESTADOS.join('|')}` }, 400);
+      const veh = leerVehiculo(body, true);
+      if (veh.error) return json({ error: veh.error }, 400);
+      const ini = Date.parse(citaAt);
+      const fin = ini + duracion * 60000;
+      const dia = fmtDiaISO(citaAt);
+      const off = madridOffset(dia);
+      const ocupadas = await citasDelRango(`${dia}T00:00:00${off}`, `${dia}T23:59:59${off}`);
+      const choca = ocupadas.some((c: any) => {
+        const cIni = Date.parse(c.cita_at);
+        return seSolapan(ini, fin, cIni, cIni + (c.duracion_min || 60) * 60000);
+      });
+      if (choca) return json({ ok: false, reason: 'hueco-ocupado' });
+      const clienteId = await resolverCliente(nombre, telefono);
+      const ins = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller`, {
+        method: 'POST',
+        headers: { ...REST_HEADERS, 'Prefer': 'return=representation' },
+        body: JSON.stringify({ cliente_nombre: nombre, cliente_telefono: telefono, servicio, duracion_min: duracion, cita_at: citaAt, estado, notas, cliente_id: clienteId, origen: 'manual', ...veh.v }),
+      });
+      const rows = await ins.json();
+      const cita = Array.isArray(rows) ? rows[0] : null;
+      if (!cita) return json({ error: 'no se pudo crear la cita' }, 500);
+      await log(cita.id, 'alta-manual', `${servicio} ${citaAt} (${nombre}, ${veh.v!.matricula})`);
+      return json({ ok: true, cita_id: cita.id, cita_at: citaAt, cuando: fmtMadrid(citaAt), fecha: fmtFechaLarga(citaAt), hora: fmtHoraMadrid(citaAt), dia });
+    }
+
+    // ---- CITAS-IMPORTAR (panel, CSV en bloque): carga tal cual, NO bloquea por solape ----
+    // Migracion desde la agenda de papel o el Excel del taller. Valida fila a
+    // fila y devuelve las que fallan; las buenas entran aunque haya malas.
+    if (action === 'citas-importar') {
+      const filas = Array.isArray(body.filas) ? body.filas : null;
+      if (!filas || !filas.length) return json({ error: 'filas debe ser un array no vacio' }, 400);
+      if (filas.length > MAX_IMPORT) return json({ error: `maximo ${MAX_IMPORT} filas por lote; divide el CSV en trozos` }, 400);
+      const errores: Array<{ fila: number; motivo: string }> = [];
+      let creadas = 0;
+      for (let i = 0; i < filas.length; i++) {
+        const f = filas[i] || {};
+        const nombre = String(f.cliente_nombre || '').slice(0, 120).trim();
+        const telefono = String(f.cliente_telefono || '').slice(0, 30).trim();
+        const servicio = String(f.servicio || '').slice(0, 80).trim();
+        const citaAt = String(f.cita_at || '');
+        const duracion = clampDur(f.duracion_min);
+        const estado = f.estado ? String(f.estado) : 'agendada';
+        const notas = (f.notas === undefined || f.notas === null || f.notas === '') ? null : String(f.notas).slice(0, 2000);
+        if (!nombre || telClave(telefono).length < 9 || !servicio || isNaN(Date.parse(citaAt))) { errores.push({ fila: i + 1, motivo: 'faltan datos o cita_at invalido' }); continue; }
+        if (!ESTADOS.includes(estado)) { errores.push({ fila: i + 1, motivo: `estado invalido (${ESTADOS.join('|')})` }); continue; }
+        const veh = leerVehiculo(f, true);
+        if (veh.error) { errores.push({ fila: i + 1, motivo: veh.error }); continue; }
+        try {
+          const clienteId = await resolverCliente(nombre, telefono);
+          const ins = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller`, {
+            method: 'POST',
+            headers: { ...REST_HEADERS, 'Prefer': 'return=representation' },
+            body: JSON.stringify({ cliente_nombre: nombre, cliente_telefono: telefono, servicio, duracion_min: duracion, cita_at: citaAt, estado, notas, cliente_id: clienteId, origen: 'importado', ...veh.v }),
+          });
+          const rows = await ins.json();
+          if (Array.isArray(rows) && rows[0]) creadas++; else errores.push({ fila: i + 1, motivo: 'insert fallido' });
+        } catch (_) {
+          errores.push({ fila: i + 1, motivo: 'error interno en la fila' });
+        }
+      }
+      await log(null, 'importacion', `Importadas ${creadas}/${filas.length}${errores.length ? `, ${errores.length} errores` : ''}`);
+      return json({ ok: true, creadas, total: filas.length, errores });
+    }
+
+    // ---- VEHICULO-SET (panel): corregir marca/modelo/matricula de una cita ----
+    if (action === 'vehiculo-set') {
+      const citaId = String(body.cita_id || '');
+      if (!citaId) return json({ error: 'cita_id obligatorio' }, 400);
+      const veh = leerVehiculo(body, true);
+      if (veh.error) return json({ error: veh.error }, 400);
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/citas_taller?id=eq.${encodeURIComponent(citaId)}`, {
+        method: 'PATCH',
+        headers: { ...REST_HEADERS, 'Prefer': 'return=representation' },
+        body: JSON.stringify(veh.v),
+      });
+      const rows = await r.json();
+      if (!Array.isArray(rows) || !rows[0]) return json({ error: 'cita no encontrada' }, 404);
+      await log(citaId, 'vehiculo', `${veh.v!.marca} ${veh.v!.modelo} ${veh.v!.matricula}`);
+      return json({ ok: true, cita_id: citaId, ...veh.v });
     }
 
     // ---- AGENDA ----
@@ -527,7 +654,7 @@ Deno.serve(async (req: Request) => {
       const desde = String(body.desde || '');
       const hasta = String(body.hasta || '');
       if (isNaN(Date.parse(desde)) || isNaN(Date.parse(hasta))) return json({ error: 'desde y hasta ISO obligatorios' }, 400);
-      const url = `${SUPABASE_URL}/rest/v1/citas_taller?cita_at=gte.${encodeURIComponent(desde)}&cita_at=lt.${encodeURIComponent(hasta)}&select=id,created_at,cliente_nombre,cliente_telefono,cliente_id,servicio,duracion_min,cita_at,estado,resena_enviada,notas&order=cita_at.asc`;
+      const url = `${SUPABASE_URL}/rest/v1/citas_taller?cita_at=gte.${encodeURIComponent(desde)}&cita_at=lt.${encodeURIComponent(hasta)}&select=id,created_at,cliente_nombre,cliente_telefono,cliente_id,servicio,duracion_min,cita_at,estado,resena_enviada,notas,marca,modelo,matricula,origen&order=cita_at.asc`;
       const r = await fetch(url, { headers: REST_HEADERS });
       const rows = await r.json();
       return json({ ok: true, citas: Array.isArray(rows) ? rows : [] });
@@ -607,7 +734,7 @@ Deno.serve(async (req: Request) => {
       return json({ ok: true, cita_id: citaId, cita_at: citaAt, cuando: fmtMadrid(citaAt) });
     }
 
-    return json({ error: 'action debe ser huecos, reservar, buscar-cita, comprobar-nombre, cancelar-cita, reprogramar-cita, agenda, estado, notas, reprogramar, config-get, config-set, clientes, cliente-get, cliente-set, servicios-list o servicio-set' }, 400);
+    return json({ error: 'action debe ser huecos, reservar, cita-crear, citas-importar, vehiculo-set, buscar-cita, comprobar-nombre, cancelar-cita, reprogramar-cita, agenda, estado, notas, reprogramar, config-get, config-set, clientes, cliente-get, cliente-set, servicios-list o servicio-set' }, 400);
   } catch (e) {
     return json({ error: String(e) }, 500);
   }

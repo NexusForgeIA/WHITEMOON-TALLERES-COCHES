@@ -48,6 +48,7 @@ Deno.serve(async (req: Request) => {
   // `motivo` es el nombre nuevo del campo; se acepta `servicio` por si queda
   // alguna pestaña abierta con la versión anterior de la página.
   const motivo = String(data.motivo ?? data.servicio ?? "").trim();
+  const vehiculo = String(data.vehiculo ?? "").trim().slice(0, 120);
   const dia = String(data.dia ?? data.cita_dia ?? "").trim();
   const hora = String(data.hora ?? data.cita_hora ?? "").trim();
   const origen = String(data.origen ?? "demo-taller").trim() || "demo-taller";
@@ -63,6 +64,7 @@ Deno.serve(async (req: Request) => {
     `👤 ${nombre}\n` +
     `📱 ${telefono}\n` +
     `🛠️ Servicio: ${motivo || "-"}\n` +
+    (vehiculo ? `🚗 Vehículo: ${vehiculo}\n` : "") +
     (dia && hora ? `📅 ${dia} a las ${hora}\n` : "📅 Sin franja elegida\n") +
     `\n` +
     (reservada
