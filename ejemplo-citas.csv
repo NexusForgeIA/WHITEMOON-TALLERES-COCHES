@@ -1,0 +1,4 @@
+fecha,hora,nombre,telefono,marca,modelo,matricula,servicio,duracion_min,estado,notas
+2026-10-20,09:00,Marta Gil,600111222,Seat,León,1234 BCD,Cambio de aceite,45,agendada,Filtro de aire
+2026-10-20,10:30,Javier Ortega,611222333,Renault,Clio,5678-KLM,Frenos,120,confirmada,Ruido al frenar
+2026-10-21,16:00,Lucía Prada,622333444,Toyota,Yaris,9012 FGH,Pre-ITV,,agendada,

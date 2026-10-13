@@ -232,6 +232,25 @@ textarea.ta{min-height:90px;resize:vertical;line-height:1.5}
 .hist-mid{font-size:.82rem;color:var(--muted)}
 .hist-nota{font-size:.82rem;color:var(--text);background:var(--card);border-radius:9px;padding:8px 11px;margin-top:8px;line-height:1.5}
 
+
+/* ALTA MANUAL · IMPORTAR · VEHÍCULO */
+.wacts{display:flex;gap:8px;margin-left:auto}
+.modal.tall .modal-body{max-height:calc(100dvh - 110px);overflow-y:auto}
+.fld-hint{font-size:.8rem;color:var(--muted)}
+.fld-hint b{color:var(--text)}
+.csv-res{font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.csv-errs{max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:11px;padding:10px 13px;font-size:.82rem;line-height:1.6;color:#fca5a5}
+.csv-errs b{color:var(--text)}
+.fld-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal select.inp,.modal input.inp{color-scheme:dark}
+.inp.mat{text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.matricula{display:inline-block;font-weight:800;letter-spacing:1.5px;font-size:.82rem;padding:2px 9px;border-radius:6px;background:#f5f5f0;color:#111;border:2px solid #111}
+.cita .cv{font-size:.64rem;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.6px}
+.vehline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vehedit{margin-top:10px}
+.vehedit .fld-2{margin-bottom:10px}
+.srvlink{color:var(--primary);cursor:pointer;background:none;border:none;font:inherit;font-size:.8rem;padding:0;text-decoration:underline}
+
 /* MODAL */
 .modal-scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px;animation:mfade .2s ease}
 @keyframes mfade{from{opacity:0}to{opacity:1}}
@@ -319,6 +338,8 @@ textarea.ta{min-height:90px;resize:vertical;line-height:1.5}
   .counters{order:3;width:100%;margin-left:0;justify-content:flex-start}
 }
 @media(max-width:600px){
+  .wbtns,.wacts{flex:1 1 100%;margin-left:0}
+  .wbtns .wbtn,.wacts>*{flex:1;justify-content:center}
   .top{padding:12px 16px}
   .weeknav{padding:16px 16px 4px}
   .weeknav .range{font-size:1.02rem}
@@ -392,6 +413,10 @@ textarea.ta{min-height:90px;resize:vertical;line-height:1.5}
         <button class="wbtn" onclick="shiftWeek(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span>Anterior</span></button>
         <button class="wbtn now" onclick="thisWeek()">Esta semana</button>
         <button class="wbtn" onclick="shiftWeek(1)"><span>Siguiente</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="wacts">
+        <button class="wbtn" onclick="openImportarCSV()">Importar CSV</button>
+        <button class="btn-prim" onclick="openNuevaCita()">+ Añadir cita</button>
       </div>
     </div>
 
@@ -620,7 +645,7 @@ function citaBlock(c){
   el.style.background=hexA(info.c,.16);
   el.style.borderLeftColor=info.c;
   el.style.color=lighten(info.c);
-  el.innerHTML='<div class="ct">'+minToStr(start)+'</div><div class="cn">'+esc(c.cliente_nombre)+noteIco(c)+'</div><div class="cs">'+esc(c.servicio||'')+'</div>';
+  el.innerHTML='<div class="ct">'+minToStr(start)+'</div><div class="cn">'+esc(c.cliente_nombre)+noteIco(c)+'</div><div class="cs">'+esc(c.servicio||'')+'</div>'+(c.matricula?'<div class="cv">'+esc(c.matricula)+'</div>':'');
   el.onclick=function(){ openPanel(c); };
   return el;
 }
@@ -638,7 +663,7 @@ function renderList(days, todayIso){
       var row=document.createElement('div');
       row.className='lrow '+x.estado; row.style.borderLeftColor=info.c;
       row.innerHTML='<div class="lt">'+minToStr(citaMinutes(x))+'</div>'+
-        '<div class="li"><b>'+esc(x.cliente_nombre)+noteIco(x)+'</b><span>'+esc(x.servicio||'')+' · '+(x.duracion_min||30)+' min</span></div>'+
+        '<div class="li"><b>'+esc(x.cliente_nombre)+noteIco(x)+'</b><span>'+esc(x.servicio||'')+' · '+(x.duracion_min||30)+' min'+(vehTxt(x)||x.matricula?' · '+esc(vehTxt(x))+(x.matricula?' '+esc(x.matricula):''):'')+'</span></div>'+
         '<span class="pill" style="background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span>';
       row.onclick=function(){ openPanel(x); };
       grp.appendChild(row);
@@ -666,6 +691,7 @@ function openPanel(c){
   b.innerHTML=
     '<div class="field"><label>Estado</label><div><span class="pill" style="position:static;margin:0;background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span></div></div>'+
     '<div class="field"><label>Servicio</label><div>'+esc(c.servicio||'—')+' · '+(c.duracion_min||30)+' min</div></div>'+
+    '<div class="field"><label>Vehículo</label><div class="vehline" id="vehView">'+vehViewHTML(c)+'</div><div id="vehEdit"></div></div>'+
     '<div class="field"><label>Teléfono</label><div><a href="tel:'+esc(c.cliente_telefono||'')+'">'+esc(c.cliente_telefono||'—')+'</a></div></div>'+
     (c.resena_enviada?'<div class="field"><label>Reseña GMB</label><div>✓ Enviada</div></div>':'')+
     '<div class="notas-box">'+
@@ -687,6 +713,37 @@ function openPanel(c){
   updateNotasCount();
   document.getElementById('scrim').classList.add('open');
   document.getElementById('panel').classList.add('open');
+}
+function vehViewHTML(c){
+  var t=vehTxt(c);
+  return (t||c.matricula ? '<span>'+(esc(t)||'—')+'</span> '+matHTML(c) : '<span style="color:var(--muted)">Sin datos</span>')+
+    ' <button class="srvlink" onclick="startVehEdit()">Editar</button>';
+}
+function startVehEdit(){
+  if(!current) return;
+  document.getElementById('vehEdit').innerHTML=
+    '<div class="vehedit"><div class="fld-2">'+
+      '<input class="inp" id="ve-marca" maxlength="60" placeholder="Marca" value="'+esc(current.marca||'')+'">'+
+      '<input class="inp" id="ve-modelo" maxlength="60" placeholder="Modelo" value="'+esc(current.modelo||'')+'">'+
+    '</div><input class="inp mat" id="ve-mat" maxlength="14" placeholder="Matrícula" value="'+esc(current.matricula||'')+'">'+
+    '<div class="form-err" id="ve-err"></div>'+
+    '<button class="btn-prim" id="ve-save" onclick="saveVeh()">Guardar vehículo</button></div>';
+}
+async function saveVeh(){
+  if(!current) return;
+  var err=document.getElementById('ve-err'); err.textContent='';
+  var marca=val('ve-marca').trim(), modelo=val('ve-modelo').trim(), mat=normMat(val('ve-mat'));
+  if(!marca||!modelo){ err.textContent='Indica marca y modelo.'; return; }
+  if(!/^[A-Z0-9]{4,10}$/.test(mat)){ err.textContent='La matrícula debe tener entre 4 y 10 letras o números.'; return; }
+  var btn=document.getElementById('ve-save'); btn.disabled=true;
+  var res=await taller({action:'vehiculo-set', cita_id:current.id, marca:marca, modelo:modelo, matricula:mat});
+  btn.disabled=false;
+  if(res && res.ok && !res._neterr){
+    current.marca=marca; current.modelo=modelo; current.matricula=mat;
+    document.getElementById('vehView').innerHTML=vehViewHTML(current);
+    document.getElementById('vehEdit').innerHTML='';
+    toast('Vehículo guardado','ok'); render();
+  } else err.textContent=(res && (res.error||res.reason)) || 'No se pudo guardar el vehículo';
 }
 function closePanel(){
   document.getElementById('scrim').classList.remove('open');
@@ -774,6 +831,199 @@ async function doRepro(cita_at){
     toast((res && res.reason) || 'No se pudo reprogramar','err');
     if(current){ var p=cita_at.slice(0,10).split('-'),cc={y:+p[0],m:+p[1],d:+p[2]}; reproSlots(cita_at.slice(0,10), DOW[dowOf(cc)]+' '+cc.d+' '+MES[cc.m-1]); }
   }
+}
+
+// ===== NUEVA CITA (alta manual) =====
+// Walk-ins, llamadas y migraciones: cualquier fecha/hora. El único corte es el
+// solape con otra cita viva, y lo hace el backend (cita-crear → hueco-ocupado).
+var ncServicios=[];
+async function catalogoActivo(){
+  var res=await taller({action:'servicios-list'});
+  if(!res || res._neterr || res.ok===false){ toast('No se pudo cargar el catálogo de servicios','err'); return null; }
+  return (res.servicios||[]).filter(function(t){ return t.activo; }).sort(byOrden);
+}
+async function openNuevaCita(){
+  var cat=await catalogoActivo();
+  if(!cat) return;
+  if(!cat.length){ toast('Primero activa un servicio en la pestaña Servicios','err'); return; }
+  ncServicios=cat;
+  var srvOpts=cat.map(function(t,i){ return '<option value="'+i+'">'+esc(t.nombre)+' · '+t.duracion_min+' min</option>'; }).join('');
+  var estOpts=Object.keys(ESTADOS).map(function(k){ return '<option value="'+k+'"'+(k==='agendada'?' selected':'')+'>'+ESTADOS[k].label+'</option>'; }).join('');
+  document.getElementById('modalHost').innerHTML=
+    '<div class="modal-scrim" onclick="closeModalBg(event)">'+
+      '<div class="modal tall">'+
+        '<div class="modal-head"><h3>Añadir cita</h3>'+
+          '<button class="panel-close" onclick="closeModal()" aria-label="Cerrar">×</button></div>'+
+        '<div class="modal-body">'+
+          field('Cliente','<input class="inp" id="nc-nombre" maxlength="120" placeholder="Nombre y apellidos">')+
+          field('Teléfono','<input class="inp" id="nc-tel" maxlength="30" placeholder="600111222" inputmode="tel">')+
+          '<div class="fld-2">'+
+            field('Marca','<input class="inp" id="nc-marca" maxlength="60" placeholder="Seat">')+
+            field('Modelo','<input class="inp" id="nc-modelo" maxlength="60" placeholder="León">')+
+          '</div>'+
+          field('Matrícula','<input class="inp mat" id="nc-mat" maxlength="14" placeholder="1234 BCD">')+
+          field('Servicio','<select class="inp" id="nc-srv">'+srvOpts+'</select>')+
+          '<div class="fld-2">'+
+            field('Fecha','<input class="inp" id="nc-fecha" type="date" value="'+nextBusinessDays(1)[0].iso+'">')+
+            field('Hora','<input class="inp" id="nc-hora" type="time" step="300" value="10:00">')+
+          '</div>'+
+          field('Estado','<select class="inp" id="nc-estado">'+estOpts+'</select>')+
+          field('Observaciones','<textarea class="inp ta" id="nc-notas" maxlength="2000" placeholder="Síntoma, piezas pedidas, avisos… (opcional)"></textarea>')+
+          '<div class="form-err" id="nc-err"></div>'+
+          '<button class="btn-prim wide" id="nc-save" onclick="crearCita()">Añadir cita</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  setTimeout(function(){ var e=document.getElementById('nc-nombre'); if(e) e.focus(); }, 60);
+}
+async function crearCita(){
+  var err=document.getElementById('nc-err'); err.textContent='';
+  var nombre=val('nc-nombre').trim(), tel=val('nc-tel').trim();
+  var marca=val('nc-marca').trim(), modelo=val('nc-modelo').trim(), mat=normMat(val('nc-mat'));
+  var srv=ncServicios[+val('nc-srv')], fecha=val('nc-fecha'), hora=val('nc-hora');
+  if(nombre.length<2){ err.textContent='El nombre del cliente es obligatorio.'; return; }
+  if((tel.match(/\d/g)||[]).length<9){ err.textContent='El teléfono debe tener al menos 9 dígitos.'; return; }
+  if(!marca || !modelo){ err.textContent='Indica la marca y el modelo del vehículo.'; return; }
+  if(!/^[A-Z0-9]{4,10}$/.test(mat)){ err.textContent='La matrícula debe tener entre 4 y 10 letras o números.'; return; }
+  if(!srv){ err.textContent='Elige un servicio.'; return; }
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(fecha) || !/^\d{2}:\d{2}$/.test(hora)){ err.textContent='Indica fecha y hora.'; return; }
+  var notas=val('nc-notas').trim();
+  var btn=document.getElementById('nc-save'); var prev=btn.textContent; btn.disabled=true; btn.textContent='Guardando…';
+  var res=await taller({action:'cita-crear', cliente_nombre:nombre, cliente_telefono:tel, marca:marca, modelo:modelo, matricula:mat,
+    servicio:srv.nombre, cita_at:citaAtMadrid(fecha, hora), duracion_min:srv.duracion_min, estado:val('nc-estado'), notas:notas||null});
+  btn.disabled=false; btn.textContent=prev;
+  if(res && res.ok && !res._neterr){
+    closeModal(); toast('Cita añadida','ok');
+    var p=fecha.split('-'); currentMonday=mondayOf({y:+p[0],m:+p[1],d:+p[2]});
+    await loadWeek();
+    return;
+  }
+  if(res && res.reason==='hueco-ocupado'){ err.textContent='Ya hay una cita a esa hora.'; toast('Ya hay una cita a esa hora','err'); return; }
+  if(res && res._neterr){ err.textContent='Error de conexión. Inténtalo de nuevo.'; return; }
+  err.textContent=(res && (res.error||res.reason)) || 'No se pudo añadir la cita';
+}
+
+// ===== IMPORTAR CSV =====
+// Migración tal cual: el backend (citas-importar) NO bloquea solapes ni
+// de-duplica. Lotes de ≤200 filas. "Fila N" = número de fila del archivo
+// (la cabecera es la 1), como lo ve el dueño en Excel.
+var CSV_OBLIG=['fecha','hora','nombre','telefono','marca','modelo','matricula','servicio'];
+var CSV_LOTE=200;
+var csvPend=null;
+function openImportarCSV(){
+  csvPend=null;
+  document.getElementById('modalHost').innerHTML=
+    '<div class="modal-scrim" onclick="closeModalBg(event)">'+
+      '<div class="modal tall">'+
+        '<div class="modal-head"><h3>Importar citas (CSV)</h3>'+
+          '<button class="panel-close" onclick="closeModal()" aria-label="Cerrar">×</button></div>'+
+        '<div class="modal-body" id="csv-body">'+
+          '<div class="srv-note" style="margin:0 0 16px">Columnas: <b>fecha</b> (AAAA-MM-DD), <b>hora</b> (HH:MM), <b>nombre</b>, <b>telefono</b>, <b>marca</b>, <b>modelo</b>, <b>matricula</b>, <b>servicio</b> y, opcionales, <b>duracion_min</b>, <b>estado</b>, <b>notas</b>. '+
+            '<a href="ejemplo-citas.csv" download style="color:var(--primary)">Descargar ejemplo</a></div>'+
+          '<div class="srv-note" style="margin:0 0 16px"><b>Si importas el mismo archivo dos veces, se duplican las citas.</b> Las citas se cargan tal cual, aunque se solapen con otras.</div>'+
+          field('Archivo','<input class="inp" id="csv-file" type="file" accept=".csv,text/csv" onchange="csvElegido(this)">')+
+          '<div class="form-err" id="csv-err"></div>'+
+          '<div id="csv-step"></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+}
+// CSV con comillas ("" escapa), separador , o ; (Excel en español) y BOM.
+function parseCSV(txt){
+  if(txt.charCodeAt(0)===0xFEFF) txt=txt.slice(1);
+  var cab=txt.split(/\r?\n/,1)[0];
+  var sep=cab.split(';').length>cab.split(',').length ? ';' : ',';
+  var out=[], cells=[], f='', q=false, fila=1, inicio=1;
+  function cerrar(){ cells.push(f); f=''; if(cells.some(function(c){ return c.trim()!==''; })) out.push({fila:inicio, cells:cells}); cells=[]; }
+  for(var i=0;i<txt.length;i++){
+    var ch=txt[i];
+    if(q){
+      if(ch==='"'){ if(txt[i+1]==='"'){ f+='"'; i++; } else q=false; }
+      else { if(ch==='\n') fila++; f+=ch; }
+    }
+    else if(ch==='"') q=true;
+    else if(ch===sep){ cells.push(f); f=''; }
+    else if(ch==='\n' || ch==='\r'){
+      if(ch==='\r' && txt[i+1]==='\n') i++;
+      cerrar(); fila++; inicio=fila;
+    }
+    else f+=ch;
+  }
+  if(f!=='' || cells.length) cerrar();
+  return out;
+}
+async function csvElegido(inp){
+  var err=document.getElementById('csv-err'), step=document.getElementById('csv-step');
+  err.textContent=''; step.innerHTML=''; csvPend=null;
+  var file=inp.files && inp.files[0]; if(!file) return;
+  if(file.size>2*1024*1024){ err.textContent='El archivo pasa de 2 MB. Divídelo en varios.'; return; }
+  var recs=parseCSV(await file.text());
+  if(recs.length<2){ err.textContent='El archivo no tiene filas de citas (la primera fila es la cabecera).'; return; }
+  var idx={};
+  recs[0].cells.forEach(function(c,i){ idx[c.trim().toLowerCase()]=i; });
+  var faltan=CSV_OBLIG.filter(function(k){ return !(k in idx); });
+  if(faltan.length){ err.textContent='Faltan columnas en la cabecera: '+faltan.join(', ')+'.'; return; }
+  // Sin duracion_min en la fila → la del servicio en el catálogo (si no, el backend pone 60).
+  var cat=await catalogoActivo(), durDe={};
+  (cat||[]).forEach(function(t){ durDe[t.nombre.trim().toLowerCase()]=t.duracion_min; });
+  var validas=[], errores=[];
+  recs.slice(1).forEach(function(r){
+    function col(k){ return k in idx ? String(r.cells[idx[k]]||'').trim() : ''; }
+    var fecha=col('fecha'), hm=col('hora').match(/^(\d{1,2}):(\d{2})(:\d{2})?$/), dur=col('duracion_min');
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(fecha)){ errores.push({fila:r.fila, motivo:'fecha debe ser AAAA-MM-DD'}); return; }
+    if(!hm){ errores.push({fila:r.fila, motivo:'hora debe ser HH:MM'}); return; }
+    if(dur && !/^\d+$/.test(dur)){ errores.push({fila:r.fila, motivo:'duracion_min debe ser un número de minutos'}); return; }
+    if(!col('marca') || !col('modelo')){ errores.push({fila:r.fila, motivo:'faltan marca o modelo'}); return; }
+    if(!/^[A-Z0-9]{4,10}$/.test(normMat(col('matricula')))){ errores.push({fila:r.fila, motivo:'matrícula no válida (4-10 letras o números)'}); return; }
+    var d={cliente_nombre:col('nombre'), cliente_telefono:col('telefono'), servicio:col('servicio'),
+      marca:col('marca'), modelo:col('modelo'), matricula:normMat(col('matricula')),
+      cita_at:citaAtMadrid(fecha, pad(+hm[1])+':'+hm[2])};
+    var durSrv=durDe[d.servicio.toLowerCase()];
+    if(dur) d.duracion_min=+dur; else if(durSrv) d.duracion_min=durSrv;
+    if(col('estado')) d.estado=col('estado').toLowerCase();
+    if(col('notas')) d.notas=col('notas');
+    validas.push({fila:r.fila, datos:d});
+  });
+  csvPend={total:recs.length-1, validas:validas, errores:errores};
+  step.innerHTML=
+    '<div class="fld-hint" style="margin-bottom:12px">'+esc(file.name)+': <b>'+csvPend.total+'</b> fila'+(csvPend.total===1?'':'s')+' de citas'+
+      (errores.length?' · '+errores.length+' con formato incorrecto (no se enviarán)':'')+'.</div>'+
+    (validas.length?'<button class="btn-prim wide" id="csv-go" onclick="csvImportar()">Importar '+validas.length+' cita'+(validas.length===1?'':'s')+'</button>':'')+
+    (errores.length&&!validas.length?csvErroresHTML(errores):'');
+}
+function csvErroresHTML(errores){
+  if(!errores.length) return '';
+  return '<div class="csv-errs">'+errores.map(function(e){ return '<div><b>Fila '+e.fila+':</b> '+esc(e.motivo)+'</div>'; }).join('')+'</div>';
+}
+async function csvImportar(){
+  if(!csvPend) return;
+  var p=csvPend; csvPend=null;
+  var btn=document.getElementById('csv-go'), file=document.getElementById('csv-file');
+  btn.disabled=true; file.disabled=true;
+  var errores=p.errores.slice(), creadas=0;
+  for(var i=0;i<p.validas.length;i+=CSV_LOTE){
+    var lote=p.validas.slice(i,i+CSV_LOTE);
+    btn.textContent='Importando '+Math.min(i+CSV_LOTE,p.validas.length)+' de '+p.validas.length+'…';
+    var res=await taller({action:'citas-importar', filas:lote.map(function(x){ return x.datos; })});
+    if(!res || res._neterr || !res.ok){
+      // Lote fallido: lo que queda no se envía, para no duplicar al reintentar a ciegas.
+      var por=res && res._neterr ? 'error de conexión' : ((res && (res.error||res.reason)) || 'error del servidor');
+      p.validas.slice(i).forEach(function(x){ errores.push({fila:x.fila, motivo:'no enviada ('+por+')'}); });
+      break;
+    }
+    creadas+=res.creadas||0;
+    (res.errores||[]).forEach(function(e){
+      var x=lote[e.fila-1];
+      errores.push({fila:x ? x.fila : '?', motivo:e.motivo});
+    });
+  }
+  errores.sort(function(a,b){ return a.fila-b.fila; });
+  document.getElementById('csv-body').innerHTML=
+    '<div class="csv-res">'+creadas+' de '+p.total+' importadas</div>'+
+    (errores.length?'<div class="fld-hint" style="margin-bottom:8px">Filas con error (no se han creado):</div>'+csvErroresHTML(errores):'')+
+    '<button class="btn-prim wide" style="margin-top:16px" onclick="closeModal()">Cerrar</button>';
+  toast(creadas+' de '+p.total+' importadas', errores.length?'err':'ok');
+  await loadWeek();
 }
 
 // ===== WEEK NAV =====
@@ -911,7 +1161,7 @@ function renderFicha(p, hist){
     return '<div class="hist-row" style="border-left-color:'+info.c+'">'+
       '<div class="hist-top"><span class="hist-when">'+when+'</span>'+
         '<span class="pill" style="position:static;margin:0;background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span></div>'+
-      '<div class="hist-mid">'+esc(h.servicio||'—')+' · '+(h.duracion_min||30)+' min'+(h.resena_enviada?' · reseña ✓':'')+'</div>'+
+      '<div class="hist-mid">'+esc(h.servicio||'—')+' · '+(h.duracion_min||30)+' min'+(h.resena_enviada?' · reseña ✓':'')+((vehTxt(h)||h.matricula)?' · '+esc(vehTxt(h))+(h.matricula?' '+esc(h.matricula):''):'')+'</div>'+
       (hasNotas(h)?'<div class="hist-nota">📝 '+esc(h.notas)+'</div>':'')+
     '</div>';
   }).join('') : '<div class="pac-empty">Sin citas registradas</div>';
@@ -1241,6 +1491,10 @@ function openFichaFromStats(id){
 }
 
 // ===== UTILS =====
+function vehTxt(c){ return [c && c.marca, c && c.modelo].filter(Boolean).join(' '); }
+function matHTML(c){ return (c && c.matricula) ? '<span class="matricula">'+esc(c.matricula)+'</span>' : ''; }
+function normMat(m){ return String(m||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+function citaAtMadrid(fecha, hora){ return fecha+'T'+hora+':00'+madridOffset(new Date(fecha+'T12:00:00Z')); }
 function hasNotas(c){ return !!(c && c.notas!=null && String(c.notas).trim()!==''); }
 function noteIco(c){ return hasNotas(c) ? ' <span class="note-ico" title="Tiene observaciones">📝</span>' : ''; }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }

@@ -1,7 +1,7 @@
 /* =========================================================================
    Leo — Agente IA de Taller Ejemplo (demo WhiteMoon)
 
-   Flujo de cita: servicio -> nombre -> teléfono -> día -> hora ->
+   Flujo de cita: servicio -> nombre -> teléfono -> marca -> modelo -> matrícula -> día -> hora ->
    confirmación. El día y la hora van DETRÁS del contacto a propósito: así, si
    alguien abandona en el calendario, el lead ya está completo y no se pierde.
 
@@ -125,13 +125,14 @@
   const lead = {
     servicio: "", interes: "", svc: "", dur: 60,
     nombre: "", telefono: "",
+    marca: "", modelo: "", matricula: "",
     dia: "", diaISO: "", hora: "", citaAt: "", citaId: "",
   };
   /* Datos de la autogestión, separados del lead a propósito: cambiar una cita
      que ya existe no es un lead nuevo y no debe acabar en leads_web. */
   const gestion = { telefono: "", nombre: "", cita: null, accion: "", dia: "", diaISO: "" };
 
-  let step = "svc";        // svc -> name -> phone -> fecha -> hora -> done
+  let step = "svc";        // svc -> name -> phone -> marca -> modelo -> matricula -> fecha -> hora -> done
                            // gestión: g-tel -> g-nombre -> fecha -> hora
   let modo = "reserva";    // reserva | gestion — decide a dónde va el calendario
   let started = false;
@@ -551,6 +552,8 @@
   const filasCita = (datos) => [
     ["Nombre", datos.nombre],
     ["Teléfono", datos.telefono],
+    ["Vehículo", datos.vehiculo],
+    ["Matrícula", datos.matricula],
     ["Servicio", datos.servicio],
     ["Fecha", datos.fecha],
     ["Hora", datos.hora],
@@ -565,6 +568,9 @@
       action: "reservar",
       cliente_nombre: lead.nombre,
       cliente_telefono: lead.telefono,
+      marca: lead.marca,
+      modelo: lead.modelo,
+      matricula: lead.matricula,
       servicio: lead.svc,
       duracion_min: lead.dur,
       cita_at: lead.citaAt,
@@ -595,6 +601,8 @@
     tarjetaCita("¡Cita confirmada!", filasCita({
       nombre: lead.nombre,
       telefono: lead.telefono,
+      vehiculo: [lead.marca, lead.modelo].filter(Boolean).join(" "),
+      matricula: lead.matricula,
       servicio: lead.servicio,
       fecha: res.fecha || lead.dia,
       hora: res.hora || lead.hora,
@@ -831,7 +839,17 @@
       lead.nombre = v; setInput(false); askPhone();
     } else if (step === "phone") {
       if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
-      lead.telefono = v; setInput(false); askFecha();
+      lead.telefono = v; setInput(false); askMarca();
+    } else if (step === "marca") {
+      if (v.length < 2) { botSay("¿Me dices la marca del coche, por favor?"); return; }
+      lead.marca = v.slice(0, 60); setInput(false); askModelo();
+    } else if (step === "modelo") {
+      if (!v) { botSay("¿Me dices el modelo, por favor?"); return; }
+      lead.modelo = v.slice(0, 60); setInput(false); askMatricula();
+    } else if (step === "matricula") {
+      const m = normMatricula(v);
+      if (!/^[A-Z0-9]{4,10}$/.test(m)) { botSay("Esa matrícula no me cuadra. Escríbela como aparece en el coche, por ejemplo 1234 BCD."); return; }
+      lead.matricula = m; setInput(false); askFecha();
     } else if (step === "g-tel") {
       if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
       gestion.telefono = v; setInput(false); buscaCita();
@@ -924,6 +942,11 @@
     });
   };
 
+  const vehiculoTxt = () => {
+    const coche = [lead.marca, lead.modelo].filter(Boolean).join(" ");
+    return coche || lead.matricula ? " · Vehículo: " + coche + (lead.matricula ? " (" + lead.matricula + ")" : "") : "";
+  };
+
   async function enviarLead() {
     if (enviado) return true;
     enviado = true;
@@ -938,7 +961,7 @@
       empresa: EMPRESA,
       sector: SECTOR,
       interes: lead.interes,
-      mensaje: "Servicio: " + lead.servicio + cuando,
+      mensaje: "Servicio: " + lead.servicio + vehiculoTxt() + cuando,
       origen: ORIGEN,
       cita_dia: lead.diaISO || null,
       cita_hora: lead.hora || null,
@@ -955,6 +978,7 @@
       telefono: lead.telefono,
       sector: SECTOR,
       motivo: lead.servicio,
+      vehiculo: vehiculoTxt().replace(/^ · Vehículo: /, ""),
       interes: lead.interes,
       dia: lead.dia,
       hora: lead.hora,
