@@ -138,6 +138,10 @@ button{font-family:inherit}
 .act.done:hover{background:rgba(148,163,184,.16);border-color:var(--completada)}
 .act.noshow:hover{background:rgba(239,68,68,.14);border-color:var(--noshow);color:#fca5a5}
 .act.cancel:hover{background:rgba(239,68,68,.10);border-color:var(--noshow);color:#fca5a5}
+.act.resena{display:block;width:100%;margin-top:14px;text-align:center;text-decoration:none;font-family:inherit}
+.act.resena:not(:disabled):hover{background:rgba(16,185,129,.16);border-color:var(--confirmada);color:#6ee7b7}
+.resena-aviso{font-size:.76rem;color:var(--muted);margin-top:6px}
+.resena-copiar{display:block;margin:6px auto 0;background:none;border:none;padding:2px 4px;color:var(--primary);font-size:.76rem;font-family:inherit;text-decoration:underline;cursor:pointer}
 .act.repro{grid-column:1/3}
 .act.repro:hover{background:rgba(212,175,55,.14);border-color:var(--primary);color:#e8c766}
 .act:disabled{opacity:.4;cursor:default;transform:none}
@@ -693,7 +697,8 @@ function openPanel(c){
     '<div class="field"><label>Servicio</label><div>'+esc(c.servicio||'—')+' · '+(c.duracion_min||30)+' min</div></div>'+
     '<div class="field"><label>Vehículo</label><div class="vehline" id="vehView">'+vehViewHTML(c)+'</div><div id="vehEdit"></div></div>'+
     '<div class="field"><label>Teléfono</label><div><a href="tel:'+esc(c.cliente_telefono||'')+'">'+esc(c.cliente_telefono||'—')+'</a></div></div>'+
-    (c.resena_enviada?'<div class="field"><label>Reseña GMB</label><div>✓ Enviada</div></div>':'')+
+    (c.resena_enviada?'<div class="field"><label>Reseña</label><div title="Al completar el trabajo se lanza el aviso al taller con el enlace de reseñas. Al cliente no se le envía nada solo.">Reseña gestionada</div></div>':'')+
+    (c.estado==='completada'?'<div id="resenaCita"></div>':'')+
     '<div class="notas-box">'+
       '<label>Observaciones</label>'+
       '<textarea id="notasTa" maxlength="2000" oninput="updateNotasCount()" placeholder="Notas internas de la cita: matrícula, síntoma, piezas pedidas, avisos…">'+esc(c.notas||'')+'</textarea>'+
@@ -710,6 +715,7 @@ function openPanel(c){
       '<button class="act repro" onclick="startRepro()">🔁 Reprogramar</button>'+
     '</div>'+
     '<div id="reproBox"></div>';
+  if(c.estado==='completada') pintarResena('resenaCita', c.cliente_nombre, c.cliente_telefono, c);
   updateNotasCount();
   document.getElementById('scrim').classList.add('open');
   document.getElementById('panel').classList.add('open');
@@ -754,8 +760,15 @@ async function act(estado){
   if(!current) return;
   var res=await taller({action:'estado', cita_id:current.id, estado:estado});
   if(res && res.ok!==false && !res._neterr){
-    var msg = estado==='completada' ? 'Cita completada · reseña enviada' : 'Cita marcada como '+estadoInfo(estado).label.toLowerCase();
-    toast(msg,'ok'); closePanel(); await loadWeek();
+    var msg = estado==='completada' ? 'Cita completada · ya puedes pedir la reseña por WhatsApp' : 'Cita marcada como '+estadoInfo(estado).label.toLowerCase();
+    toast(msg,'ok');
+    var id=current.id;
+    if(estado==='completada'){
+      // Se queda el panel abierto: ahora aparece el botón de reseña por WhatsApp.
+      await loadWeek();
+      var c2=citas.filter(function(x){ return x.id===id; })[0];
+      if(c2) openPanel(c2); else closePanel();
+    } else { closePanel(); await loadWeek(); }
   } else {
     toast((res && res.reason) || 'No se pudo actualizar','err');
   }
@@ -1026,6 +1039,53 @@ async function csvImportar(){
   await loadWeek();
 }
 
+
+// ===== RESEÑA POR WHATSAPP =====
+// Abre WhatsApp con el mensaje ya escrito al teléfono del cliente; NUNCA
+// envía solo: pulsa enviar una persona del taller. No usa la API de WhatsApp
+// Business. api.whatsapp.com/send y no wa.me: la redirección de wa.me cambia
+// cada emoji por U+FFFD; el destino directo los conserva.
+var GMB_FALLBACK='https://maps.app.goo.gl/3b9zDZrC8uvJfmYt7';
+var PLANTILLA_RESENA='¡Hola {nombre}! 👋 Somos {taller}. Ya tienes tu coche listo{vehiculo}. Si tienes 1 minuto, nos ayudarías muchísimo dejándonos tu opinión sobre el trabajo aquí 👉 {link} ¡Gracias por confiar en nosotros! 🔧';
+async function configResena(){
+  if(!configCache){ var r=await taller({action:'config-get'}); if(r && r.ok) configCache=r.config||{}; }
+  return configCache||{};
+}
+function textoResena(nombre, cfg, cita){
+  var coche=vehTxt(cita||{});
+  var v={ nombre:String(nombre||'').trim().split(/\s+/)[0],
+          taller:((cfg.taller_nombre||'').trim()||'el taller'),
+          vehiculo:coche?' ('+coche+(cita&&cita.matricula?' '+cita.matricula:'')+')':'',
+          link:((cfg.gmb_url||'').trim()||GMB_FALLBACK) };
+  return PLANTILLA_RESENA.replace(/\{(nombre|taller|vehiculo|link)\}/g, function(_, k){ return v[k]; });
+}
+async function pintarResena(hostId, nombre, telefono, cita){
+  var host=document.getElementById(hostId); if(!host) return;
+  var cfg=await configResena();
+  if(!host.isConnected) return; // el panel cambió mientras cargaba
+  var tel=String(telefono||'').replace(/\D/g,'').slice(-9);
+  if(tel.length<9){
+    host.innerHTML='<button class="act resena" disabled>⭐ Pedir reseña por WhatsApp</button><div class="resena-aviso">El teléfono del cliente no es válido</div>';
+    return;
+  }
+  var txt=textoResena(nombre, cfg, cita);
+  host.innerHTML='<a class="act resena" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?phone=34'+tel+'&text='+encodeURIComponent(txt)+'">⭐ Pedir reseña por WhatsApp</a>'+
+    '<div class="resena-aviso">Se abre WhatsApp con el mensaje escrito; lo envías tú.</div>'+
+    '<button class="resena-copiar">copiar texto</button>';
+  host.querySelector('.resena-copiar').onclick=function(){ copiarResena(txt); };
+}
+function copiarResena(txt){
+  var ok=function(){ toast('Copiado al portapapeles','ok'); };
+  var viejo=function(){
+    var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); ok(); }catch(e){ toast('No se pudo copiar','err'); }
+    ta.remove();
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, viejo);
+  else viejo();
+}
+
 // ===== WEEK NAV =====
 function shiftWeek(n){ currentMonday=addDays(currentMonday,n*7); loadWeek(); }
 function thisWeek(){ currentMonday=mondayOf(madridToday()); loadWeek(); }
@@ -1161,7 +1221,7 @@ function renderFicha(p, hist){
     return '<div class="hist-row" style="border-left-color:'+info.c+'">'+
       '<div class="hist-top"><span class="hist-when">'+when+'</span>'+
         '<span class="pill" style="position:static;margin:0;background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span></div>'+
-      '<div class="hist-mid">'+esc(h.servicio||'—')+' · '+(h.duracion_min||30)+' min'+(h.resena_enviada?' · reseña ✓':'')+((vehTxt(h)||h.matricula)?' · '+esc(vehTxt(h))+(h.matricula?' '+esc(h.matricula):''):'')+'</div>'+
+      '<div class="hist-mid">'+esc(h.servicio||'—')+' · '+(h.duracion_min||30)+' min'+(h.resena_enviada?' · reseña gestionada':'')+((vehTxt(h)||h.matricula)?' · '+esc(vehTxt(h))+(h.matricula?' '+esc(h.matricula):''):'')+'</div>'+
       (hasNotas(h)?'<div class="hist-nota">📝 '+esc(h.notas)+'</div>':'')+
     '</div>';
   }).join('') : '<div class="pac-empty">Sin citas registradas</div>';
