@@ -121,6 +121,9 @@
 
   /* Entrada extra del menú inicial: no es un servicio, abre la autogestión. */
   const GESTION = { label: "Cambiar o cancelar mi cita", gestion: true };
+  /* Autoconsulta del coche: ¿está recibido, en el taller o listo? Evita la
+     llamada de "¿cómo va mi coche?". */
+  const ESTADO_COCHE = { label: "¿Cómo está mi coche?", coche: true };
 
   const lead = {
     servicio: "", interes: "", svc: "", dur: 60,
@@ -131,6 +134,7 @@
   /* Datos de la autogestión, separados del lead a propósito: cambiar una cita
      que ya existe no es un lead nuevo y no debe acabar en leads_web. */
   const gestion = { telefono: "", nombre: "", cita: null, accion: "", dia: "", diaISO: "" };
+  const consulta = { telefono: "", matricula: "" };
 
   let step = "svc";        // svc -> name -> phone -> marca -> modelo -> matricula -> fecha -> hora -> done
                            // gestión: g-tel -> g-nombre -> fecha -> hora
@@ -234,9 +238,10 @@
     modo = "reserva";
     step = "svc";
     setInput(false);
-    setQuick(SERVICIOS.concat([GESTION]), (w) => {
+    setQuick(SERVICIOS.concat([GESTION, ESTADO_COCHE]), (w) => {
       addMsg(w.label, "user");
-      if (w.gestion) askGestionTel(); else pickServicio(w.label);
+      if (w.coche) askCocheTel();
+      else if (w.gestion) askGestionTel(); else pickServicio(w.label);
     });
   };
 
@@ -651,6 +656,78 @@
      comprueba el nombre antes de tocarla.
      ==================================================================== */
 
+
+  /* ====================================================================
+     ¿CÓMO ESTÁ MI COCHE?
+     teléfono + matrícula -> fase (recepcionado / trabajando / terminado).
+     Hacen falta las dos cosas y deben cuadrar con la misma cita: con solo
+     la matrícula cualquiera podría mirar coches ajenos. Si no cuadra, la
+     respuesta es la misma que si no existiera.
+     ==================================================================== */
+  const askCocheTel = async () => {
+    step = "c-tel";
+    clearQuick();
+    consulta.telefono = ""; consulta.matricula = "";
+    await botSay("Claro, te digo cómo va. ¿Con qué teléfono dejaste el coche?",
+      () => setInput(true, "Tu teléfono…"));
+  };
+  const askCocheMat = async () => {
+    step = "c-mat";
+    await botSay("¿Y la matrícula del coche?", () => setInput(true, "Matrícula…"));
+  };
+  const FRASES_FASE = {
+    recepcionado: "Tu coche está recepcionado: ya lo tenemos en el taller y en breve se pone en marcha.",
+    trabajando: "Tu coche está en el taller y estamos trabajando en él ahora mismo.",
+    terminado: "¡Tu coche está terminado! Ya puedes pasar a recogerlo en nuestro horario.",
+  };
+  const consultaCoche = async () => {
+    setInput(false); clearQuick();
+    const t = typing();
+    const res = await agenda({ action: "estado-coche", telefono: consulta.telefono, matricula: consulta.matricula });
+    t.remove();
+    if (!res || res._neterr || !res.ok) {
+      await botSay("No he podido consultarlo ahora mismo. ¿Lo intentamos otra vez?", () => {
+        setQuick([{ label: "Probar otra vez" }, { label: "Volver al menú" }], (o) => {
+          addMsg(o.label, "user");
+          if (o.label === "Probar otra vez") consultaCoche(); else menuInicial();
+        });
+      });
+      return;
+    }
+    if (!res.encontrado) {
+      await botSay("No encuentro ningún coche con ese teléfono y esa matrícula. Comprueba que son los mismos que diste al pedir la cita.");
+      await botSay("¿Lo pruebas de nuevo?", () => {
+        setQuick([{ label: "Probar de nuevo" }, { label: "Volver al menú" }], (o) => {
+          addMsg(o.label, "user");
+          if (o.label === "Probar de nuevo") askCocheTel(); else menuInicial();
+        });
+      });
+      return;
+    }
+    if (res.fase && FRASES_FASE[res.fase]) {
+      tarjetaCita("Estado de tu coche", [
+        ["Vehículo", res.vehiculo || consulta.matricula],
+        ["Trabajo", res.servicio],
+        ["Estado", { recepcionado: "Recepcionado", trabajando: "Trabajando", terminado: "Terminado" }[res.fase]],
+        ...(res.desde ? [["Desde", res.desde]] : []),
+      ]);
+      await botSay(FRASES_FASE[res.fase]);
+    } else {
+      await botSay("Todavía no consta que tu coche haya entrado en el taller. Tu cita es: " + res.cita + ".");
+    }
+    cierreCoche();
+  };
+  const cierreCoche = () => {
+    step = "done";
+    setInput(false);
+    botSay("¿Te ayudo con algo más?", () => {
+      setQuick([ESTADO_COCHE, GESTION, { label: "Pedir otra cita" }], (o) => {
+        addMsg(o.label, "user");
+        if (o.coche) askCocheTel(); else if (o.gestion) askGestionTel(); else menuInicial();
+      });
+    });
+  };
+
   const askGestionTel = async () => {
     modo = "gestion";
     step = "g-tel";
@@ -866,6 +943,13 @@
       const m = normMatricula(v);
       if (!/^[A-Z0-9]{4,10}$/.test(m)) { botSay("Esa matrícula no me cuadra. Escríbela como aparece en el coche, por ejemplo 1234 BCD."); return; }
       lead.matricula = m; setInput(false); askFecha();
+    } else if (step === "c-tel") {
+      if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
+      consulta.telefono = v; setInput(false); askCocheMat();
+    } else if (step === "c-mat") {
+      const m = normMatricula(v);
+      if (!/^[A-Z0-9]{4,10}$/.test(m)) { botSay("Esa matrícula no me cuadra. Escríbela como aparece en el coche, por ejemplo 1234 BCD."); return; }
+      consulta.matricula = m; setInput(false); consultaCoche();
     } else if (step === "g-tel") {
       if (!isPhone(v)) { botSay("Ese teléfono no parece válido. Escríbelo con 9 dígitos, por favor."); return; }
       gestion.telefono = v; setInput(false); buscaCita();
@@ -1020,10 +1104,11 @@
       botSay("¿Te ayudo con algo más?", () => {
         setQuick([
           { label: "Cambiar o cancelar mi cita", gestion: true },
+          ESTADO_COCHE,
           { label: "Pedir otra cita" },
         ], (o) => {
           addMsg(o.label, "user");
-          if (o.gestion) askGestionTel(); else menuInicial();
+          if (o.coche) askCocheTel(); else if (o.gestion) askGestionTel(); else menuInicial();
         });
       });
       return;

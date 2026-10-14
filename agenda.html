@@ -142,6 +142,19 @@ button{font-family:inherit}
 .act.resena:not(:disabled):hover{background:rgba(16,185,129,.16);border-color:var(--confirmada);color:#6ee7b7}
 .resena-aviso{font-size:.76rem;color:var(--muted);margin-top:6px}
 .resena-copiar{display:block;margin:6px auto 0;background:none;border:none;padding:2px 4px;color:var(--primary);font-size:.76rem;font-family:inherit;text-decoration:underline;cursor:pointer}
+.fase-box{margin:4px 0 18px;padding:14px;border:1px solid var(--border2);border-radius:12px;background:rgba(255,255,255,.02)}
+.fase-box>label{display:block;font-size:.68rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:9px}
+.fase-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.fase-btn{border:1px solid var(--border2);background:var(--card);color:var(--muted);padding:10px 4px;border-radius:10px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s}
+.fase-btn:hover{color:var(--text);border-color:var(--primary)}
+.fase-btn.on{background:rgba(212,175,55,.16);border-color:var(--primary);color:#e8c766}
+.fase-btn.on.fin{background:rgba(16,185,129,.16);border-color:var(--confirmada);color:#6ee7b7}
+.fase-meta{font-size:.74rem;color:var(--muted);margin-top:8px}
+.fase-quitar{background:none;border:none;color:var(--primary);font-size:.74rem;font-family:inherit;text-decoration:underline;cursor:pointer;padding:0;margin-left:6px}
+.act.listo{display:block;width:100%;margin-top:12px;text-align:center;text-decoration:none;font-family:inherit}
+.act.listo:hover{background:rgba(16,185,129,.16);border-color:var(--confirmada);color:#6ee7b7}
+.fase-tag{display:inline-block;font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:6px;background:rgba(212,175,55,.16);color:#e8c766;margin-left:4px;vertical-align:middle}
+.fase-tag.fin{background:rgba(16,185,129,.16);color:#6ee7b7}
 .act.repro{grid-column:1/3}
 .act.repro:hover{background:rgba(212,175,55,.14);border-color:var(--primary);color:#e8c766}
 .act:disabled{opacity:.4;cursor:default;transform:none}
@@ -649,7 +662,7 @@ function citaBlock(c){
   el.style.background=hexA(info.c,.16);
   el.style.borderLeftColor=info.c;
   el.style.color=lighten(info.c);
-  el.innerHTML='<div class="ct">'+minToStr(start)+'</div><div class="cn">'+esc(c.cliente_nombre)+noteIco(c)+'</div><div class="cs">'+esc(c.servicio||'')+'</div>'+(c.matricula?'<div class="cv">'+esc(c.matricula)+'</div>':'');
+  el.innerHTML='<div class="ct">'+minToStr(start)+'</div><div class="cn">'+esc(c.cliente_nombre)+noteIco(c)+'</div><div class="cs">'+esc(c.servicio||'')+'</div>'+(c.matricula?'<div class="cv">'+esc(c.matricula)+'</div>':'')+(c.fase_coche?'<div class="cv">🚗 '+faseLabel(c.fase_coche)+'</div>':'');
   el.onclick=function(){ openPanel(c); };
   return el;
 }
@@ -668,6 +681,7 @@ function renderList(days, todayIso){
       row.className='lrow '+x.estado; row.style.borderLeftColor=info.c;
       row.innerHTML='<div class="lt">'+minToStr(citaMinutes(x))+'</div>'+
         '<div class="li"><b>'+esc(x.cliente_nombre)+noteIco(x)+'</b><span>'+esc(x.servicio||'')+' · '+(x.duracion_min||30)+' min'+(vehTxt(x)||x.matricula?' · '+esc(vehTxt(x))+(x.matricula?' '+esc(x.matricula):''):'')+'</span></div>'+
+        (x.fase_coche?'<span class="fase-tag'+(x.fase_coche==='terminado'?' fin':'')+'">🚗 '+faseLabel(x.fase_coche)+'</span>':'')+
         '<span class="pill" style="background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span>';
       row.onclick=function(){ openPanel(x); };
       grp.appendChild(row);
@@ -696,6 +710,7 @@ function openPanel(c){
     '<div class="field"><label>Estado</label><div><span class="pill" style="position:static;margin:0;background:'+hexA(info.c,.16)+';color:'+lighten(info.c)+'">'+info.label+'</span></div></div>'+
     '<div class="field"><label>Servicio</label><div>'+esc(c.servicio||'—')+' · '+(c.duracion_min||30)+' min</div></div>'+
     '<div class="field"><label>Vehículo</label><div class="vehline" id="vehView">'+vehViewHTML(c)+'</div><div id="vehEdit"></div></div>'+
+    ((c.estado==='cancelada'||c.estado==='no_show')?'':'<div class="fase-box" id="faseBox">'+faseHTML(c)+'</div>')+
     '<div class="field"><label>Teléfono</label><div><a href="tel:'+esc(c.cliente_telefono||'')+'">'+esc(c.cliente_telefono||'—')+'</a></div></div>'+
     (c.resena_enviada?'<div class="field"><label>Reseña</label><div title="Al completar el trabajo se lanza el aviso al taller con el enlace de reseñas. Al cliente no se le envía nada solo.">Reseña gestionada</div></div>':'')+
     (c.estado==='completada'?'<div id="resenaCita"></div>':'')+
@@ -716,6 +731,7 @@ function openPanel(c){
     '</div>'+
     '<div id="reproBox"></div>';
   if(c.estado==='completada') pintarResena('resenaCita', c.cliente_nombre, c.cliente_telefono, c);
+  if(c.fase_coche==='terminado') pintarListo('listoCita', c);
   updateNotasCount();
   document.getElementById('scrim').classList.add('open');
   document.getElementById('panel').classList.add('open');
@@ -1039,6 +1055,56 @@ async function csvImportar(){
   await loadWeek();
 }
 
+
+// ===== ESTADO DEL COCHE =====
+// Recepcionado -> Trabajando -> Terminado. Es lo que Leo le cuenta al cliente
+// cuando pregunta "¿cómo está mi coche?", para que no tenga que llamar.
+// Al pasar a Terminado aparece el aviso por WhatsApp ya escrito: lo envía una
+// persona del taller, nunca sale solo (no usa la API de WhatsApp Business).
+var FASES = [
+  {k:'recepcionado', label:'Recepcionado'},
+  {k:'trabajando',   label:'Trabajando'},
+  {k:'terminado',    label:'Terminado'}
+];
+function faseLabel(k){ var f=FASES.filter(function(x){return x.k===k;})[0]; return f?f.label:''; }
+function faseHTML(c){
+  var cur=c.fase_coche||'';
+  var btns=FASES.map(function(f){
+    return '<button class="fase-btn'+(cur===f.k?' on':'')+(cur===f.k&&f.k==='terminado'?' fin':'')+'" onclick="setFase(\''+f.k+'\')">'+f.label+'</button>';
+  }).join('');
+  var meta = cur
+    ? 'El cliente ve: «'+faseLabel(cur)+'»'+(c.fase_at?' · desde '+esc(fmtShort(c.fase_at)+' '+madridParts(c.fase_at).hm):'')+'<button class="fase-quitar" onclick="setFase(\'\')">quitar</button>'
+    : 'Aún no ha entrado en el taller. Marca la fase y el cliente la verá al preguntar a Leo.';
+  return '<label>Estado del coche</label><div class="fase-steps">'+btns+'</div><div class="fase-meta">'+meta+'</div><div id="listoCita"></div>';
+}
+async function setFase(fase){
+  if(!current) return;
+  var id=current.id;
+  var res=await taller({action:'fase-set', cita_id:id, fase:fase});
+  if(res && res.ok && !res._neterr){
+    current.fase_coche=res.fase; current.fase_at=res.fase_at;
+    var l=citas.filter(function(x){ return x.id===id; })[0];
+    if(l){ l.fase_coche=res.fase; l.fase_at=res.fase_at; }
+    var box=document.getElementById('faseBox');
+    if(box){ box.innerHTML=faseHTML(current); if(res.fase==='terminado') pintarListo('listoCita', current); }
+    toast(fase?'Coche: '+faseLabel(fase).toLowerCase():'Estado del coche quitado','ok');
+    render();
+  } else toast((res && (res.error||res.reason)) || 'No se pudo actualizar','err');
+}
+async function pintarListo(hostId, cita){
+  var host=document.getElementById(hostId); if(!host) return;
+  var cfg=await configResena();
+  if(!host.isConnected) return;
+  var tel=String(cita.cliente_telefono||'').replace(/\D/g,'').slice(-9);
+  if(tel.length<9){
+    host.innerHTML='<button class="act listo" disabled>🚗 Avisar por WhatsApp: coche listo</button><div class="resena-aviso">El teléfono del cliente no es válido</div>';
+    return;
+  }
+  var coche=vehTxt(cita);
+  var txt='¡Hola '+String(cita.cliente_nombre||'').trim().split(/\s+/)[0]+'! 👋 Te escribimos de '+((cfg.taller_nombre||'').trim()||'el taller')+': tu coche'+(coche?' ('+coche+(cita.matricula?' '+cita.matricula:'')+')':'')+' ya está listo para recoger. ¡Te esperamos! 🔧';
+  host.innerHTML='<a class="act listo" target="_blank" rel="noopener" href="https://api.whatsapp.com/send?phone=34'+tel+'&text='+encodeURIComponent(txt)+'">🚗 Avisar por WhatsApp: coche listo</a>'+
+    '<div class="resena-aviso">Se abre WhatsApp con el mensaje escrito; lo envías tú.</div>';
+}
 
 // ===== RESEÑA POR WHATSAPP =====
 // Abre WhatsApp con el mensaje ya escrito al teléfono del cliente; NUNCA
